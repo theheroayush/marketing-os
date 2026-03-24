@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Client Collaboration | MarkU</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "tertiary-fixed-dim": "#e5c096",
+              "surface-tint": "#934b00",
+              "error": "#ba1a1a",
+              "on-secondary-fixed": "#231a0f",
+              "on-error-container": "#93000a",
+              "on-secondary-fixed-variant": "#504537",
+              "on-surface": "#1d1c17",
+              "surface-bright": "#fef9f1",
+              "secondary-container": "#f1e0cd",
+              "inverse-on-surface": "#f5f0e8",
+              "tertiary-fixed": "#ffddb7",
+              "surface-variant": "#e7e2da",
+              "on-surface-variant": "#544338",
+              "secondary-fixed": "#f1e0cd",
+              "on-primary-container": "#fffbff",
+              "surface-container-lowest": "#ffffff",
+              "on-tertiary-container": "#fffbff",
+              "surface-container-high": "#ece8e0",
+              "on-tertiary": "#ffffff",
+              "on-primary-fixed": "#301400",
+              "surface": "#fef9f1",
+              "inverse-surface": "#32302b",
+              "background": "#fef9f1",
+              "on-background": "#1d1c17",
+              "tertiary": "#735735",
+              "on-tertiary-fixed": "#2a1700",
+              "surface-dim": "#ded9d2",
+              "secondary-fixed-dim": "#d4c4b2",
+              "on-secondary": "#ffffff",
+              "tertiary-container": "#8d6f4b",
+              "on-error": "#ffffff",
+              "on-primary": "#ffffff",
+              "secondary": "#695c4e",
+              "on-secondary-container": "#6f6253",
+              "primary-container": "#b15f14",
+              "surface-container": "#f2ede5",
+              "outline": "#877366",
+              "primary": "#904900",
+              "error-container": "#ffdad6",
+              "surface-container-low": "#f8f3eb",
+              "primary-fixed-dim": "#ffb782",
+              "primary-fixed": "#ffdcc5",
+              "on-tertiary-fixed-variant": "#5b4222",
+              "surface-container-highest": "#e7e2da",
+              "outline-variant": "#dac2b3",
+              "on-primary-fixed-variant": "#703800",
+              "inverse-primary": "#ffb782"
+            },
+            fontFamily: {
+              "headline": ["Plus Jakarta Sans"],
+              "body": ["Plus Jakarta Sans"],
+              "label": ["Plus Jakarta Sans"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        vertical-align: middle;
+      }
+      body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface selection:bg-primary-fixed selection:text-on-primary-fixed">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-[#fef9f1]/80 backdrop-blur-xl shadow-[0px_12px_32px_rgba(29,28,23,0.06)] flex justify-between items-center px-8 h-16 w-full">
+<div class="flex items-center gap-4">
+<span class="text-xl font-bold tracking-tighter text-[#904900]">MarkU</span>
+</div>
+<div class="flex items-center gap-6">
+<nav class="hidden md:flex gap-8 items-center">
+<a class="text-sm font-medium text-[#904900] transition-colors" href="#">Approvals</a>
+<a class="text-sm font-medium text-[#735735] hover:text-[#904900] transition-colors" href="#">Campaigns</a>
+<a class="text-sm font-medium text-[#735735] hover:text-[#904900] transition-colors" href="#">Analytics</a>
+</nav>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-[#735735] hover:bg-[#f8f3eb] p-2 rounded-full transition-colors">notifications</button>
+<div class="w-8 h-8 rounded-full bg-secondary-container flex items-center justify-center overflow-hidden ring-2 ring-primary/10">
+<img class="w-full h-full object-cover" data-alt="professional consultant headshot with warm lighting and a neutral studio background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBkLuMDqcBWG-xP9asWlhZJTo7AjufQAZFfAJFEaYVO3lFuQ0fGw5KfX9Fs3wMQrwFMk7DABEi3dkRUPMST8D9xmP80zkDuJX7yoeDtYB4Cq1VSYLWfpcYu9PT30SSPXr02R17Zjo13nF8uUgKcKA1RTANMohilSWrOYEhu9lWh18J5xWxsNUVx2LdOzgKF4t7bl9RDkPndOEiGbHrwJkVFPKHOdyrG_5drlFjq3OQcPcCINcSA5V768ZS4skAgjASeTCf1j8Blemo"/>
+</div>
+</div>
+</div>
+</header>
+<main class="pt-24 pb-32 px-4 md:px-8 max-w-7xl mx-auto min-h-screen">
+<!-- Hero Header Section -->
+<section class="mb-12">
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+<div>
+<span class="label-md text-[0.75rem] font-bold uppercase tracking-[0.05em] text-tertiary">Review Center</span>
+<h1 class="text-4xl md:text-5xl font-extrabold tracking-tight text-on-surface mt-2">Ready for Review</h1>
+</div>
+<div class="flex items-center gap-2 text-on-surface-variant bg-surface-container-low px-4 py-2 rounded-xl border border-outline-variant/20">
+<span class="material-symbols-outlined text-sm">pending_actions</span>
+<span class="text-sm font-medium">4 items awaiting your feedback</span>
+</div>
+</div>
+</section>
+<!-- Bento Grid Collaboration Feed -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-8">
+<!-- Item 1: Featured Content (Wide) -->
+<div class="md:col-span-8 group bg-surface-container-lowest rounded-xl overflow-hidden shadow-[0px_12px_32px_rgba(29,28,23,0.04)] hover:shadow-[0px_16px_48px_rgba(29,28,23,0.08)] transition-all duration-300">
+<div class="relative h-64 overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" data-alt="editorial desk with luxury stationery, open magazine, and high-end coffee cup in soft morning light" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC-6QkgnzuceQmx8icguC0iPiUs8iJ9PfYg6BjYPl0_9_hLjDN24Bcm-vMyDcxJmqsllnVClWeuDj2dL-EXtLmKjdglebQ81UVfC-yC9to6yFVjPJxcO8ijxRjVbPEJHkWQ-zuWW0vixh0TZIR2QmzKQlrMyhHahv-yZ5JTQa_MkNk3tfCj4oJ__-TwSFjLGFI0nNN-_7EndfH7GhZ6fUnAoe9JNfAIy3zhNntWq_Yye4ju1mI8gP9YDOPPav_gTjufopOBSEh0mP4"/>
+<div class="absolute top-4 left-4 flex gap-2">
+<span class="px-3 py-1 bg-primary text-white text-[10px] font-bold uppercase tracking-widest rounded-full">Blog Post</span>
+<span class="px-3 py-1 bg-surface-container-lowest/90 backdrop-blur-md text-on-surface text-[10px] font-bold uppercase tracking-widest rounded-full">DRAFT V2</span>
+</div>
+</div>
+<div class="p-8">
+<div class="flex justify-between items-start mb-6">
+<div>
+<h2 class="text-2xl font-bold tracking-tight text-on-surface">The Future of Digital Luxury: 2024 Strategy</h2>
+<p class="text-on-surface-variant mt-2 leading-relaxed">A deep-dive article exploring how legacy brands are pivoting to decentralized luxury experiences. Targeted for Q3 Thought Leadership.</p>
+</div>
+</div>
+<div class="flex flex-wrap gap-4 items-center pt-6 border-t border-outline-variant/10">
+<button class="flex items-center gap-2 bg-gradient-to-br from-[#904900] to-[#b15f14] text-white px-6 py-3 rounded-md font-bold text-sm hover:opacity-90 transition-all active:scale-95">
+<span class="material-symbols-outlined text-sm">check_circle</span>
+                            Approve
+                        </button>
+<button class="flex items-center gap-2 bg-surface-container-low text-on-surface px-6 py-3 rounded-md font-bold text-sm border border-outline-variant/20 hover:bg-surface-container transition-all">
+<span class="material-symbols-outlined text-sm">history_edu</span>
+                            Request Changes
+                        </button>
+<button class="flex items-center gap-2 text-tertiary px-4 py-3 font-bold text-sm hover:underline decoration-2 underline-offset-4 transition-all">
+<span class="material-symbols-outlined text-sm">chat_bubble</span>
+                            Add Comment
+                        </button>
+</div>
+</div>
+</div>
+<!-- Sidebar Stats / Quick Actions -->
+<div class="md:col-span-4 space-y-8">
+<div class="bg-surface-dim p-8 rounded-xl border border-outline-variant/10">
+<h3 class="label-md font-bold text-tertiary uppercase tracking-widest mb-4">Project Velocity</h3>
+<div class="space-y-6">
+<div class="flex items-center justify-between">
+<span class="text-sm font-medium">Monthly Progress</span>
+<span class="text-sm font-bold text-primary">82%</span>
+</div>
+<div class="h-2 w-full bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-primary w-[82%] rounded-full"></div>
+</div>
+<div class="grid grid-cols-2 gap-4 pt-2">
+<div class="bg-surface-container-low p-4 rounded-lg">
+<span class="block text-xl font-extrabold">12</span>
+<span class="text-[10px] uppercase font-bold text-on-surface-variant opacity-60">Approved</span>
+</div>
+<div class="bg-surface-container-low p-4 rounded-lg">
+<span class="block text-xl font-extrabold text-primary">04</span>
+<span class="text-[10px] uppercase font-bold text-on-surface-variant opacity-60">Pending</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Ad Set Preview Card -->
+<div class="bg-surface-container-low p-6 rounded-xl border border-outline-variant/10">
+<div class="flex items-center justify-between mb-4">
+<span class="px-2 py-1 bg-secondary-container text-on-secondary-container text-[9px] font-bold uppercase tracking-widest rounded">Ad Creative</span>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer">open_in_new</span>
+</div>
+<div class="aspect-square rounded-lg mb-4 overflow-hidden bg-surface-container-highest">
+<img class="w-full h-full object-cover" data-alt="vibrant abstract digital texture with golden swirls and deep brown gradients" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDZ2Mdvyjg7vKUvfW96kT94KX6AkNAnce6fgHDMoLbLnzUbej0PeDvrulHYb0pceZ7Mm9oXuehKNE9eSmFpniPhAAjDNrvtp0mFW18ta09NoBgbEoXS1VD_BMxlb0UcpBerh0aif3Z1iurHqnmyKST2H4ZGJqxJ6q-6_uPhJ4_cZh1r5YAjvNDBWSHEeQ-vJDDALIsuCaWL9CQ2tOqcGR_7SxvZPjQMf-N8igrysxnJXbZng592vOA4oZE0SCJrOOsr8cJ_2dMld_Y"/>
+</div>
+<h4 class="font-bold text-on-surface">Summer Retargeting Set</h4>
+<p class="text-xs text-on-surface-variant mt-1">Facebook &amp; Instagram (5 Variations)</p>
+<div class="mt-4 flex gap-2">
+<button class="flex-1 bg-on-surface text-surface text-[10px] font-bold uppercase py-2 rounded transition-opacity hover:opacity-90">Approve</button>
+<button class="flex-1 border border-outline-variant text-on-surface text-[10px] font-bold uppercase py-2 rounded hover:bg-surface-container-high transition-colors">Review</button>
+</div>
+</div>
+</div>
+<!-- Row 2: Social Calendar (Full Width) -->
+<div class="md:col-span-12 bg-surface-container-low rounded-xl p-8 border border-outline-variant/10">
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8">
+<div>
+<h2 class="text-2xl font-bold tracking-tight text-on-surface">Social Content Calendar</h2>
+<p class="text-sm text-on-surface-variant mt-1">Week of October 14th — October 20th</p>
+</div>
+<div class="flex gap-4">
+<button class="flex items-center gap-2 bg-primary text-white px-5 py-2.5 rounded-md font-bold text-xs uppercase tracking-wider shadow-sm">
+<span class="material-symbols-outlined text-sm">done_all</span>
+                            Approve Week
+                        </button>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<!-- Monday -->
+<div class="bg-surface-container-lowest p-5 rounded-lg border border-outline-variant/10 flex flex-col justify-between">
+<div>
+<div class="flex justify-between items-center mb-3">
+<span class="text-[10px] font-bold uppercase tracking-widest text-tertiary">Mon, Oct 14</span>
+<span class="material-symbols-outlined text-sm text-[#b15f14]">schedule</span>
+</div>
+<p class="text-sm font-medium leading-relaxed">"Innovation is the bridge between heritage and future." — Instagram Carousel Preview.</p>
+</div>
+<div class="mt-4 flex items-center justify-between pt-4 border-t border-outline-variant/10">
+<div class="flex -space-x-2">
+<div class="w-6 h-6 rounded-full border-2 border-surface bg-surface-dim"></div>
+<div class="w-6 h-6 rounded-full border-2 border-surface bg-primary-fixed"></div>
+</div>
+<button class="text-[10px] font-bold text-primary uppercase hover:underline">Edit Caption</button>
+</div>
+</div>
+<!-- Tuesday -->
+<div class="bg-surface-container-lowest p-5 rounded-lg border border-outline-variant/10 flex flex-col justify-between">
+<div>
+<div class="flex justify-between items-center mb-3">
+<span class="text-[10px] font-bold uppercase tracking-widest text-tertiary">Tue, Oct 15</span>
+<span class="material-symbols-outlined text-sm text-[#b15f14]">videocam</span>
+</div>
+<p class="text-sm font-medium leading-relaxed">Behind the scenes: The Atelier Craftsmanship. Reel/TikTok Draft V1.</p>
+</div>
+<div class="mt-4 flex items-center justify-between pt-4 border-t border-outline-variant/10">
+<span class="text-[10px] bg-secondary-container text-on-secondary-container px-2 py-0.5 rounded uppercase font-bold">Needs Video</span>
+<button class="text-[10px] font-bold text-primary uppercase hover:underline">Add Feedback</button>
+</div>
+</div>
+<!-- Wednesday -->
+<div class="bg-surface-container-lowest p-5 rounded-lg border border-outline-variant/10 flex flex-col justify-between">
+<div>
+<div class="flex justify-between items-center mb-3">
+<span class="text-[10px] font-bold uppercase tracking-widest text-tertiary">Wed, Oct 16</span>
+<span class="material-symbols-outlined text-sm text-[#b15f14]">article</span>
+</div>
+<p class="text-sm font-medium leading-relaxed">LinkedIn Article: 5 Strategies for the modern CEO.</p>
+</div>
+<div class="mt-4 flex items-center justify-between pt-4 border-t border-outline-variant/10">
+<div class="flex items-center gap-1 text-[10px] text-on-surface-variant font-bold">
+<span class="material-symbols-outlined text-xs">chat_bubble</span> 2 Comments
+                            </div>
+<button class="text-[10px] font-bold text-primary uppercase hover:underline">View Post</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full flex justify-around items-center px-4 pb-6 pt-2 bg-[#f8f3eb]/80 backdrop-blur-md border-t border-[#dac2b3]/20 z-50">
+<div class="flex flex-col items-center justify-center text-[#735735] p-2">
+<span class="material-symbols-outlined">lightbulb</span>
+<span class="font-['Plus_Jakarta_Sans'] text-[10px] font-bold uppercase tracking-widest mt-1">Strategy</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#735735] p-2">
+<span class="material-symbols-outlined">auto_awesome</span>
+<span class="font-['Plus_Jakarta_Sans'] text-[10px] font-bold uppercase tracking-widest mt-1">Content</span>
+</div>
+<div class="flex flex-col items-center justify-center bg-gradient-to-br from-[#904900] to-[#b15f14] text-white rounded-xl p-2 scale-110 -translate-y-1">
+<span class="material-symbols-outlined">token</span>
+<span class="font-['Plus_Jakarta_Sans'] text-[10px] font-bold uppercase tracking-widest mt-1">MarkU</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#735735] p-2">
+<span class="material-symbols-outlined">campaign</span>
+<span class="font-['Plus_Jakarta_Sans'] text-[10px] font-bold uppercase tracking-widest mt-1">Ads</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#735735] p-2">
+<span class="material-symbols-outlined">query_stats</span>
+<span class="font-['Plus_Jakarta_Sans'] text-[10px] font-bold uppercase tracking-widest mt-1">Analytic</span>
+</div>
+</nav>
+<!-- Consultant Interaction Sheet (Desktop Overlay Style) -->
+<div class="fixed bottom-8 right-8 z-[60] hidden lg:block">
+<div class="bg-surface-container-lowest rounded-2xl shadow-2xl border border-outline-variant/20 w-80 overflow-hidden">
+<div class="bg-primary-container p-4 flex items-center justify-between text-white">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">auto_awesome</span>
+<span class="text-xs font-bold uppercase tracking-widest">MarkU Assistant</span>
+</div>
+<span class="material-symbols-outlined text-sm cursor-pointer">close</span>
+</div>
+<div class="p-6">
+<p class="text-sm font-medium text-on-surface leading-relaxed">Good morning! I've prepared the Q3 Strategy draft for your review. Should we walk through the highlights together?</p>
+<div class="mt-4 flex flex-col gap-2">
+<button class="w-full text-left px-3 py-2 bg-surface-container-low hover:bg-surface-container text-xs font-bold text-primary rounded-md transition-colors flex items-center justify-between">
+                        Brief me on the blog post
+                        <span class="material-symbols-outlined text-xs">arrow_forward</span>
+</button>
+<button class="w-full text-left px-3 py-2 bg-surface-container-low hover:bg-surface-container text-xs font-bold text-primary rounded-md transition-colors flex items-center justify-between">
+                        Analyze social metrics
+                        <span class="material-symbols-outlined text-xs">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</body></html>

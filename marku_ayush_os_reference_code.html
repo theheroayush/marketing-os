@@ -1,0 +1,32 @@
+import { useState, useRef, useEffect, useCallback } from "react";
+/* ─── PALETTE ─────────────────────────────────────────────────────────────── */
+const P = {
+  bg:       "#F5F0E8",
+  surface:  "#FDFAF4",
+  card:     "#FFFFFF",
+  border:   "#E5DDD0",
+  border2:  "#D4C9B8",
+  text:     "#1C1409",
+  sub:  "#6B5A48",
+  muted:    "#9C8C7A",
+  accent:   "#B8651A",
+  accentBg: "#FBF0E6",
+  green:    "#2D7A4F",
+  greenBg:  "#E8F5EE",
+  red:      "#C0392B",
+  shadow:   "rgba(60,40,10,0.08)",
+};
+/* ─── CATEGORY CONFIG ────────────────────────────────────────────────────── */
+const CATS = {
+  "Foundation": { color:"#8B6914", bg:"#FBF4E3", icon:"🏗️" },
+  "CRO":        { color:"#C25B1A", bg:"#FBF0E8", icon:"📈" },
+  "Copy":       { color:"#6B4FA0", bg:"#F3EEF9", icon:"✍️" },
+  "Outreach":   { color:"#1A7AC2", bg:"#E8F3FB", icon:"📨" },
+  "SEO":        { color:"#1A8C5E", bg:"#E8F7F2", icon:"🔍" },
+  "Paid":       { color:"#B87A1A", bg:"#FBF5E8", icon:"💰" },
+  "Revenue":    { color:"#1A7A4F", bg:"#E8F7F0", icon:"💎" },
+  "Content":    { color:"#C2421A", bg:"#FBF0EE", icon:"📝" },
+  "Growth":     { color:"#1A5EC2", bg:"#E8EEF7", icon:"🚀" },
+  "Strategy":   { color:"#8C1A6B", bg:"#F7E8F3", icon:"🧠" },
+};
+// ... rest of the code provided by user

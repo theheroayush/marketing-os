@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>MarkU | AI Strategy Builder</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "on-tertiary-container": "#fffbff",
+                        "inverse-on-surface": "#f5f0e8",
+                        "surface-container-highest": "#e7e2da",
+                        "inverse-primary": "#ffb782",
+                        "on-surface-variant": "#544338",
+                        "secondary-container": "#f1e0cd",
+                        "primary-fixed-dim": "#ffb782",
+                        "surface-container": "#f2ede5",
+                        "on-primary-fixed": "#301400",
+                        "outline-variant": "#dac2b3",
+                        "background": "#fef9f1",
+                        "secondary-fixed-dim": "#d4c4b2",
+                        "tertiary": "#735735",
+                        "on-primary-container": "#fffbff",
+                        "on-tertiary": "#ffffff",
+                        "on-tertiary-fixed-variant": "#5b4222",
+                        "surface-container-high": "#ece8e0",
+                        "inverse-surface": "#32302b",
+                        "on-tertiary-fixed": "#2a1700",
+                        "surface-bright": "#fef9f1",
+                        "error": "#ba1a1a",
+                        "tertiary-container": "#8d6f4b",
+                        "surface": "#fef9f1",
+                        "primary": "#904900",
+                        "on-primary-fixed-variant": "#703800",
+                        "on-background": "#1d1c17",
+                        "primary-fixed": "#ffdcc5",
+                        "on-error": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "on-secondary-fixed": "#231a0f",
+                        "on-primary": "#ffffff",
+                        "surface-container-low": "#f8f3eb",
+                        "secondary-fixed": "#f1e0cd",
+                        "on-secondary": "#ffffff",
+                        "primary-container": "#b15f14",
+                        "outline": "#877366",
+                        "surface-variant": "#e7e2da",
+                        "surface-tint": "#934b00",
+                        "error-container": "#ffdad6",
+                        "on-secondary-container": "#6f6253",
+                        "on-secondary-fixed-variant": "#504537",
+                        "tertiary-fixed": "#ffddb7",
+                        "tertiary-fixed-dim": "#e5c096",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-dim": "#ded9d2",
+                        "secondary": "#695c4e",
+                        "on-surface": "#1d1c17"
+                    },
+                    fontFamily: {
+                        "headline": ["Plus Jakarta Sans"],
+                        "body": ["Plus Jakarta Sans"],
+                        "label": ["Plus Jakarta Sans"]
+                    },
+                    borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #fef9f1;
+            color: #1d1c17;
+        }
+        .glass-nav {
+            background: rgba(254, 249, 241, 0.8);
+            backdrop-filter: blur(20px);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface min-h-screen pb-32">
+<!-- TopAppBar -->
+<nav class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-8 h-16 glass-nav shadow-[0px_12px_32px_rgba(29,28,23,0.06)]">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-secondary-container flex items-center justify-center overflow-hidden">
+<img alt="User Profile" class="w-full h-full object-cover" data-alt="professional portrait of a marketing consultant in a bright airy studio with soft warm lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBStK0dKdyEfFiJLR_0X011TqmrWVyZVPDTFnunueymMMzon48FTiKxXaU3AsDENYmISuFgw9xImlyrwTrMAKh4n5ZAqg2AVKJJM9JOmf2UjVYsOVw9EXnwt5Xo59CVF6VA1g5TZ-Jy2iW-d0JbhlNd2A9xma4e_HyFO6fFiMu1FGvvSt5nnOP0cS65_uOXBrE4o0RWWUs-bL63Xl7Krf5btbUdXbXl8PfiSOns2HQJ8_DJkstsVTUhF_wP2mtx38gCXbbCCFLiINQ"/>
+</div>
+<span class="text-xl font-bold tracking-[-0.02em] text-[#1d1c17]">MarkU</span>
+</div>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-[#904900] hover:opacity-80 transition-opacity active:scale-95 duration-200" data-icon="notifications">notifications</button>
+<span class="text-[#904900] font-bold">Strategy</span>
+</div>
+</nav>
+<!-- Main Canvas -->
+<main class="pt-24 px-6 md:px-12 max-w-4xl mx-auto">
+<!-- Progress Indicator -->
+<div class="mb-12">
+<div class="flex justify-between items-end mb-4">
+<div>
+<span class="text-[10px] uppercase tracking-[0.05em] font-bold text-tertiary">Current Phase</span>
+<h2 class="text-2xl font-bold tracking-tight">Strategy Blueprint</h2>
+</div>
+<span class="text-primary font-bold text-sm italic">Step 1 of 4</span>
+</div>
+<div class="h-1.5 w-full bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-gradient-to-r from-primary to-primary-container w-1/4 rounded-full"></div>
+</div>
+</div>
+<!-- AI Consultant Snippet -->
+<section class="mb-10 animate-fade-in">
+<div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant/20 shadow-sm flex gap-5 items-start">
+<div class="w-12 h-12 rounded-full bg-primary flex-shrink-0 flex items-center justify-center">
+<span class="material-symbols-outlined text-white" style="font-variation-settings: 'FILL' 1;">smart_toy</span>
+</div>
+<div class="space-y-2">
+<p class="text-on-surface body-lg leading-relaxed">
+                        "Welcome. I'm your MarkU strategist. To craft a plan that truly resonates, we need to anchor your vision. What is the primary objective for this campaign?"
+                    </p>
+<div class="flex gap-2">
+<span class="text-[10px] font-bold uppercase tracking-widest text-primary bg-primary-fixed px-2 py-0.5 rounded">AI Active</span>
+<span class="text-[10px] font-bold uppercase tracking-widest text-tertiary">Refining Context...</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Step 1: Define Your Goal -->
+<section class="space-y-6">
+<div class="flex items-center justify-between">
+<h3 class="text-xl font-bold text-on-surface">Define Your Goal</h3>
+<span class="material-symbols-outlined text-outline-variant">help_outline</span>
+</div>
+<!-- Goal Options Bento Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<!-- Option 1 -->
+<button class="group p-6 text-left rounded-xl bg-surface-container-low border border-transparent hover:border-primary/30 transition-all active:scale-[0.98]">
+<div class="w-10 h-10 rounded-lg bg-surface-container-highest flex items-center justify-center mb-4 group-hover:bg-primary/10 transition-colors">
+<span class="material-symbols-outlined text-primary" data-icon="trending_up">trending_up</span>
+</div>
+<h4 class="font-bold text-on-surface mb-1">Increase Sales</h4>
+<p class="text-sm text-tertiary leading-snug">Drive direct conversions and boost your bottom line revenue.</p>
+</button>
+<!-- Option 2 -->
+<button class="group p-6 text-left rounded-xl bg-surface-container-low border border-transparent hover:border-primary/30 transition-all active:scale-[0.98]">
+<div class="w-10 h-10 rounded-lg bg-surface-container-highest flex items-center justify-center mb-4 group-hover:bg-primary/10 transition-colors">
+<span class="material-symbols-outlined text-primary" data-icon="auto_awesome">auto_awesome</span>
+</div>
+<h4 class="font-bold text-on-surface mb-1">Build Brand Awareness</h4>
+<p class="text-sm text-tertiary leading-snug">Expand your reach and make your brand a household name.</p>
+</button>
+<!-- Option 3 -->
+<button class="group p-6 text-left rounded-xl bg-surface-container-lowest border border-primary/20 shadow-md ring-1 ring-primary/10 transition-all">
+<div class="flex justify-between items-start mb-4">
+<div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary" data-icon="rocket_launch" style="font-variation-settings: 'FILL' 1;">rocket_launch</span>
+</div>
+<span class="material-symbols-outlined text-primary">check_circle</span>
+</div>
+<h4 class="font-bold text-on-surface mb-1">Launch New Product</h4>
+<p class="text-sm text-tertiary leading-snug">Create buzz and momentum for your latest innovation.</p>
+</button>
+<!-- Option 4 -->
+<button class="group p-6 text-left rounded-xl bg-surface-container-low border border-transparent hover:border-primary/30 transition-all active:scale-[0.98]">
+<div class="w-10 h-10 rounded-lg bg-surface-container-highest flex items-center justify-center mb-4 group-hover:bg-primary/10 transition-colors">
+<span class="material-symbols-outlined text-primary" data-icon="hub">hub</span>
+</div>
+<h4 class="font-bold text-on-surface mb-1">Retain Customers</h4>
+<p class="text-sm text-tertiary leading-snug">Strengthen loyalty and increase the lifetime value of users.</p>
+</button>
+</div>
+</section>
+<!-- Step 2: Audience Context -->
+<section class="mt-16 space-y-8">
+<div class="flex flex-col gap-1">
+<h3 class="text-xl font-bold text-on-surface">Who is your Audience?</h3>
+<p class="text-sm text-tertiary">Precision targeting ensures your message lands perfectly.</p>
+</div>
+<div class="space-y-6">
+<!-- Age Input -->
+<div class="space-y-2">
+<label class="text-[10px] uppercase tracking-[0.05em] font-bold text-tertiary block">Age Range</label>
+<div class="flex gap-3">
+<div class="flex-1 bg-surface-container-low p-4 rounded-xl border border-outline-variant/20 flex items-center justify-between">
+<span class="text-on-surface font-medium">18 - 24</span>
+<span class="material-symbols-outlined text-outline text-sm">expand_more</span>
+</div>
+<div class="flex-1 bg-surface-container-low p-4 rounded-xl border border-outline-variant/20 flex items-center justify-between">
+<span class="text-on-surface font-medium">35 - 45</span>
+<span class="material-symbols-outlined text-outline text-sm">expand_more</span>
+</div>
+</div>
+</div>
+<!-- Interests Multi-select -->
+<div class="space-y-3">
+<label class="text-[10px] uppercase tracking-[0.05em] font-bold text-tertiary block">Core Interests</label>
+<div class="flex flex-wrap gap-2">
+<span class="px-4 py-2 rounded-full bg-primary text-white text-xs font-bold flex items-center gap-2">
+                            Sustainability <span class="material-symbols-outlined text-xs">close</span>
+</span>
+<span class="px-4 py-2 rounded-full bg-primary text-white text-xs font-bold flex items-center gap-2">
+                            Tech Gadgets <span class="material-symbols-outlined text-xs">close</span>
+</span>
+<button class="px-4 py-2 rounded-full border border-outline-variant/40 text-on-surface text-xs font-medium hover:bg-surface-container transition-colors">
+                            + Add Interest
+                        </button>
+</div>
+</div>
+<!-- Location Map Mock -->
+<div class="space-y-3">
+<label class="text-[10px] uppercase tracking-[0.05em] font-bold text-tertiary block">Geographic Location</label>
+<div class="relative w-full h-40 rounded-xl overflow-hidden bg-surface-container border border-outline-variant/20">
+<img class="w-full h-full object-cover opacity-60 grayscale" data-alt="stylized architectural map of San Francisco in a minimalist line art style with cream and brown tones" data-location="San Francisco, CA" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCg8Uy8f3i3xMYKGeOIZ5PC61IzZb4ubM7kwfnTQ0gGD7UnARAcKVJJwpnEDMgxE0fsxaHMcm3tZBPMSdXH8qGgt02TkOXGGr1hOT3pcTHO7Jw0cV6Xg58hX1oxunn6NE87B3yvbTPkQ6Y0RJXYn2fIwve4S70V7-sLA76bDIzyL8z6qbYhR4RZ-bVWn_256Vhb62DbdtRa61ETsqydugETU6tso63b_rDG7vQPh6PrC6INzyO6I4QNL-XWuUBtboKsXc_tqYvNuvY"/>
+<div class="absolute inset-0 flex items-center justify-center">
+<div class="bg-white/90 backdrop-blur-sm px-4 py-2 rounded-full shadow-lg border border-primary/20 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-sm" style="font-variation-settings: 'FILL' 1;">location_on</span>
+<span class="text-sm font-bold text-on-surface">San Francisco, CA</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- CTA Action -->
+<div class="mt-16 flex flex-col items-center gap-4">
+<button class="w-full py-4 bg-gradient-to-br from-primary to-primary-container text-white font-bold rounded-xl shadow-lg active:scale-95 transition-transform">
+                Generate AI Strategy
+            </button>
+<button class="text-primary text-sm font-bold border-b-2 border-primary/20 pb-1 hover:border-primary transition-all">
+                Save Draft for Later
+            </button>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-6 pt-2 glass-nav shadow-[0px_-8px_24px_rgba(29,28,23,0.04)] rounded-t-[1.5rem]">
+<div class="flex flex-col items-center justify-center text-[#735735] opacity-60 px-4 py-2 hover:bg-[#f8f3eb] transition-all active:scale-90">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+<span class="font-['Plus_Jakarta_Sans'] text-[10px] uppercase tracking-[0.05em] font-bold">Home</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#735735] opacity-60 px-4 py-2 hover:bg-[#f8f3eb] transition-all active:scale-90">
+<span class="material-symbols-outlined" data-icon="Ads_click">ads_click</span>
+<span class="font-['Plus_Jakarta_Sans'] text-[10px] uppercase tracking-[0.05em] font-bold">Campaigns</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#735735] opacity-60 px-4 py-2 hover:bg-[#f8f3eb] transition-all active:scale-90">
+<span class="material-symbols-outlined" data-icon="edit_note">edit_note</span>
+<span class="font-['Plus_Jakarta_Sans'] text-[10px] uppercase tracking-[0.05em] font-bold">Content</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#904900] bg-[#f8f3eb] rounded-xl px-4 py-2 active:scale-90">
+<span class="material-symbols-outlined" data-icon="insights" style="font-variation-settings: 'FILL' 1;">insights</span>
+<span class="font-['Plus_Jakarta_Sans'] text-[10px] uppercase tracking-[0.05em] font-bold">Strategy</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#735735] opacity-60 px-4 py-2 hover:bg-[#f8f3eb] transition-all active:scale-90">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+<span class="font-['Plus_Jakarta_Sans'] text-[10px] uppercase tracking-[0.05em] font-bold">Analytics</span>
+</div>
+</nav>
+</body></html>

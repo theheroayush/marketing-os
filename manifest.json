@@ -1,0 +1,21 @@
+{
+  "name": "MarkU",
+  "short_name": "MarkU",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#0c0a1d",
+  "theme_color": "#0c0a1d",
+  "description": "MarkU AI Marketing Skills",
+  "icons": [
+    {
+      "src": "logo.jpg",
+      "sizes": "192x192",
+      "type": "image/jpeg"
+    },
+    {
+      "src": "logo.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg"
+    }
+  ]
+}

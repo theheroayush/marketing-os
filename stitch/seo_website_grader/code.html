@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>MarkU | SEO &amp; Website Grader</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "tertiary-fixed-dim": "#e5c096",
+                        "surface-tint": "#934b00",
+                        "error": "#ba1a1a",
+                        "on-secondary-fixed": "#231a0f",
+                        "on-error-container": "#93000a",
+                        "on-secondary-fixed-variant": "#504537",
+                        "on-surface": "#1d1c17",
+                        "surface-bright": "#fef9f1",
+                        "secondary-container": "#f1e0cd",
+                        "inverse-on-surface": "#f5f0e8",
+                        "tertiary-fixed": "#ffddb7",
+                        "surface-variant": "#e7e2da",
+                        "on-surface-variant": "#544338",
+                        "secondary-fixed": "#f1e0cd",
+                        "on-primary-container": "#fffbff",
+                        "surface-container-lowest": "#ffffff",
+                        "on-tertiary-container": "#fffbff",
+                        "surface-container-high": "#ece8e0",
+                        "on-tertiary": "#ffffff",
+                        "on-primary-fixed": "#301400",
+                        "surface": "#fef9f1",
+                        "inverse-surface": "#32302b",
+                        "background": "#fef9f1",
+                        "on-background": "#1d1c17",
+                        "tertiary": "#735735",
+                        "on-tertiary-fixed": "#2a1700",
+                        "surface-dim": "#ded9d2",
+                        "secondary-fixed-dim": "#d4c4b2",
+                        "on-secondary": "#ffffff",
+                        "tertiary-container": "#8d6f4b",
+                        "on-error": "#ffffff",
+                        "on-primary": "#ffffff",
+                        "secondary": "#695c4e",
+                        "on-secondary-container": "#6f6253",
+                        "primary-container": "#b15f14",
+                        "surface-container": "#f2ede5",
+                        "outline": "#877366",
+                        "primary": "#904900",
+                        "error-container": "#ffdad6",
+                        "surface-container-low": "#f8f3eb",
+                        "primary-fixed-dim": "#ffb782",
+                        "primary-fixed": "#ffdcc5",
+                        "on-tertiary-fixed-variant": "#5b4222",
+                        "surface-container-highest": "#e7e2da",
+                        "outline-variant": "#dac2b3",
+                        "on-primary-fixed-variant": "#703800",
+                        "inverse-primary": "#ffb782"
+                    },
+                    fontFamily: {
+                        "headline": ["Plus Jakarta Sans"],
+                        "body": ["Plus Jakarta Sans"],
+                        "label": ["Plus Jakarta Sans"]
+                    },
+                    borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface min-h-screen">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-[#fef9f1]/80 backdrop-blur-xl flex justify-between items-center px-8 h-16 w-full shadow-[0px_12px_32px_rgba(29,28,23,0.06)]">
+<div class="text-xl font-bold tracking-tighter text-[#904900]">MarkU</div>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-[#735735] p-2 hover:bg-[#f8f3eb] transition-colors rounded-full" data-icon="notifications">notifications</button>
+<div class="w-8 h-8 rounded-full bg-primary-container flex items-center justify-center text-white text-xs font-bold" title="Consultant Profile">CP</div>
+</div>
+</header>
+<!-- NavigationDrawer (Desktop) -->
+<aside class="hidden lg:flex fixed inset-y-0 left-0 w-72 z-[60] bg-[#fef9f1] shadow-2xl flex-col p-6 rounded-r-xl">
+<div class="mb-8">
+<span class="text-sm font-label uppercase tracking-[0.05em] text-[#735735]">The Intelligent Luminary</span>
+</div>
+<nav class="space-y-2">
+<a class="flex items-center gap-3 text-[#735735] px-4 py-3 hover:bg-[#f8f3eb] transition-all duration-300 rounded-md" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="text-sm font-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 text-[#735735] px-4 py-3 hover:bg-[#f8f3eb] transition-all duration-300 rounded-md" href="#">
+<span class="material-symbols-outlined" data-icon="architecture">architecture</span>
+<span class="text-sm font-medium">Strategy Builder</span>
+</a>
+<a class="flex items-center gap-3 text-[#735735] px-4 py-3 hover:bg-[#f8f3eb] transition-all duration-300 rounded-md" href="#">
+<span class="material-symbols-outlined" data-icon="edit_note">edit_note</span>
+<span class="text-sm font-medium">Content Creator</span>
+</a>
+<a class="flex items-center gap-3 bg-[#904900] text-[#fef9f1] px-4 py-3 rounded-md mx-2" href="#">
+<span class="material-symbols-outlined" data-icon="search_check">search_check</span>
+<span class="text-sm font-medium">SEO Audit</span>
+</a>
+<a class="flex items-center gap-3 text-[#735735] px-4 py-3 hover:bg-[#f8f3eb] transition-all duration-300 rounded-md" href="#">
+<span class="material-symbols-outlined" data-icon="insights">insights</span>
+<span class="text-sm font-medium">Analytics</span>
+</a>
+</nav>
+</aside>
+<!-- Main Content Area -->
+<main class="pt-24 pb-32 lg:pl-80 px-6 max-w-7xl mx-auto">
+<!-- Hero Search Section -->
+<section class="mb-12">
+<div class="max-w-3xl">
+<h1 class="text-4xl lg:text-5xl font-extrabold tracking-tight text-on-surface mb-4 leading-tight">
+                    Website Grader &amp; <span class="text-primary">SEO Intelligence</span>
+</h1>
+<p class="text-lg text-tertiary mb-8 leading-relaxed">
+                    Evaluate your digital presence through the lens of a consultant. MarkU audits your technical health and provides elite-level optimization strategies.
+                </p>
+<div class="relative group">
+<div class="flex items-center bg-surface-container-low p-2 rounded-xl border border-outline-variant/20 focus-within:border-primary transition-all duration-300">
+<span class="material-symbols-outlined px-4 text-tertiary" data-icon="language">language</span>
+<input class="bg-transparent border-none focus:ring-0 w-full text-on-surface font-medium placeholder:text-outline-variant" placeholder="https://yourbrand.com" type="text"/>
+<button class="bg-gradient-to-br from-primary to-primary-container text-white px-8 py-3 rounded-lg font-bold text-sm hover:opacity-90 transition-opacity">
+                            RUN AUDIT
+                        </button>
+</div>
+</div>
+</div>
+</section>
+<!-- Bento Grid Analysis -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-6 mb-12">
+<!-- Overall Score Circle -->
+<div class="md:col-span-4 bg-surface-container-lowest rounded-xl p-8 flex flex-col items-center justify-center text-center shadow-[0px_12px_32px_rgba(29,28,23,0.06)]">
+<div class="relative w-48 h-48 mb-6">
+<svg class="w-full h-full transform -rotate-90">
+<circle class="text-surface-container-high" cx="96" cy="96" fill="transparent" r="88" stroke="currentColor" stroke-width="8"></circle>
+<circle class="text-primary" cx="96" cy="96" fill="transparent" r="88" stroke="currentColor" stroke-dasharray="552.92" stroke-dashoffset="110.58" stroke-width="8"></circle>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center">
+<span class="text-5xl font-extrabold text-on-surface">82</span>
+<span class="text-xs font-label text-tertiary tracking-widest uppercase">Health Score</span>
+</div>
+</div>
+<div class="inline-flex items-center gap-2 px-3 py-1 bg-green-50 text-green-700 rounded-full text-xs font-bold mb-2">
+<span class="material-symbols-outlined text-sm" data-icon="trending_up">trending_up</span>
+                    +5.2% vs last week
+                </div>
+<p class="text-sm text-tertiary px-4 italic">"Your domain authority is strengthening, but LCP issues are capping your growth."</p>
+</div>
+<!-- Top Issues List -->
+<div class="md:col-span-8 bg-surface-container-low rounded-xl p-8">
+<div class="flex justify-between items-center mb-6">
+<h2 class="text-xl font-bold text-on-surface">Critical Observations</h2>
+<span class="text-xs font-label text-error uppercase tracking-widest px-3 py-1 bg-error-container/20 rounded-full">3 High Priority</span>
+</div>
+<div class="space-y-4">
+<div class="flex items-start gap-4 p-4 bg-surface-container-lowest rounded-lg border border-outline-variant/10">
+<span class="material-symbols-outlined text-error" data-icon="speed">speed</span>
+<div class="flex-1">
+<h3 class="font-bold text-on-surface text-sm">Slow LCP (Largest Contentful Paint)</h3>
+<p class="text-xs text-tertiary mt-1">Hero images are unoptimized, causing a 3.2s delay on mobile devices.</p>
+</div>
+<span class="text-xs font-bold text-error">-12 pts</span>
+</div>
+<div class="flex items-start gap-4 p-4 bg-surface-container-lowest rounded-lg border border-outline-variant/10">
+<span class="material-symbols-outlined text-primary" data-icon="link_off">link_off</span>
+<div class="flex-1">
+<h3 class="font-bold text-on-surface text-sm">Broken Internal Links</h3>
+<p class="text-xs text-tertiary mt-1">4 pages returning 404 errors, disrupting crawler paths and user journeys.</p>
+</div>
+<span class="text-xs font-bold text-primary">-8 pts</span>
+</div>
+<div class="flex items-start gap-4 p-4 bg-surface-container-lowest rounded-lg border border-outline-variant/10">
+<span class="material-symbols-outlined text-tertiary" data-icon="label_important">label_important</span>
+<div class="flex-1">
+<h3 class="font-bold text-on-surface text-sm">Missing Alt-Attributes</h3>
+<p class="text-xs text-tertiary mt-1">18 images lack descriptive metadata, impacting accessibility scores.</p>
+</div>
+<span class="text-xs font-bold text-tertiary">-5 pts</span>
+</div>
+</div>
+</div>
+<!-- Performance Vellum Cards -->
+<div class="md:col-span-4 bg-surface-container-high/40 rounded-xl p-6 border border-outline-variant/10">
+<div class="flex items-center gap-3 mb-4">
+<span class="material-symbols-outlined text-primary" data-icon="bolt">bolt</span>
+<h3 class="text-sm font-bold uppercase tracking-widest">Performance</h3>
+</div>
+<div class="space-y-4">
+<div>
+<div class="flex justify-between text-xs mb-1">
+<span class="text-tertiary">TTFB</span>
+<span class="font-bold">0.4s</span>
+</div>
+<div class="w-full bg-surface-container rounded-full h-1">
+<div class="bg-green-500 h-1 rounded-full w-[90%]"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between text-xs mb-1">
+<span class="text-tertiary">Total Blocking Time</span>
+<span class="font-bold">240ms</span>
+</div>
+<div class="w-full bg-surface-container rounded-full h-1">
+<div class="bg-primary h-1 rounded-full w-[65%]"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Accessibility Card -->
+<div class="md:col-span-4 bg-surface-container-high/40 rounded-xl p-6 border border-outline-variant/10">
+<div class="flex items-center gap-3 mb-4">
+<span class="material-symbols-outlined text-primary" data-icon="visibility">visibility</span>
+<h3 class="text-sm font-bold uppercase tracking-widest">Accessibility</h3>
+</div>
+<div class="flex items-center gap-4">
+<div class="text-3xl font-extrabold text-on-surface">94<span class="text-lg text-tertiary font-normal">/100</span></div>
+<div class="text-xs text-tertiary leading-tight">Excellent contrast ratios and aria-label coverage.</div>
+</div>
+</div>
+<!-- SEO Best Practices -->
+<div class="md:col-span-4 bg-surface-container-high/40 rounded-xl p-6 border border-outline-variant/10">
+<div class="flex items-center gap-3 mb-4">
+<span class="material-symbols-outlined text-primary" data-icon="verified">verified</span>
+<h3 class="text-sm font-bold uppercase tracking-widest">Best Practices</h3>
+</div>
+<div class="flex items-center gap-4">
+<div class="text-3xl font-extrabold text-on-surface">100<span class="text-lg text-tertiary font-normal">%</span></div>
+<div class="text-xs text-tertiary leading-tight">HTTPS, valid doctype, and secure cross-origin links detected.</div>
+</div>
+</div>
+</div>
+<!-- AI Recommendations (Bottom Sheet Inspired Section) -->
+<section class="bg-surface-container-lowest rounded-t-3xl p-8 border-x border-t border-outline-variant/10 shadow-xl">
+<div class="w-12 h-1 bg-primary-container/30 mx-auto rounded-full mb-8"></div>
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
+<div>
+<h2 class="text-2xl font-bold text-on-surface mb-2">Luminary AI Optimization</h2>
+<p class="text-tertiary">Bespoke strategies tailored to your current site structure.</p>
+</div>
+<button class="flex items-center gap-2 text-primary font-bold hover:underline">
+<span class="material-symbols-outlined" data-icon="auto_awesome">auto_awesome</span>
+                    Generate Detailed Report
+                </button>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+<div class="group relative overflow-hidden rounded-xl bg-surface p-6 border border-outline-variant/20 hover:border-primary transition-colors">
+<div class="flex items-center gap-4 mb-4">
+<div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined" data-icon="description">description</span>
+</div>
+<h4 class="font-bold text-on-surface">Refine Strategic Meta-Data</h4>
+</div>
+<p class="text-sm text-tertiary mb-6 leading-relaxed">
+                        Your current title tags are too generic. AI suggests incorporating "Premium Consulting" and "Digital Atelier" to align with high-intent luxury search queries.
+                    </p>
+<div class="flex gap-2">
+<span class="px-3 py-1 bg-surface-container text-xs font-bold text-tertiary rounded">Metadata</span>
+<span class="px-3 py-1 bg-surface-container text-xs font-bold text-tertiary rounded">Copywriting</span>
+</div>
+</div>
+<div class="group relative overflow-hidden rounded-xl bg-surface p-6 border border-outline-variant/20 hover:border-primary transition-colors">
+<div class="flex items-center gap-4 mb-4">
+<div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined" data-icon="dynamic_feed">dynamic_feed</span>
+</div>
+<h4 class="font-bold text-on-surface">Content Semantic Expansion</h4>
+</div>
+<p class="text-sm text-tertiary mb-6 leading-relaxed">
+                        "The Digital Atelier" concept is gaining traction. Expand your service pages to include these keywords to capture emergent high-end traffic.
+                    </p>
+<div class="flex gap-2">
+<span class="px-3 py-1 bg-surface-container text-xs font-bold text-tertiary rounded">Strategy</span>
+<span class="px-3 py-1 bg-surface-container text-xs font-bold text-tertiary rounded">Keyword Gap</span>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar (Mobile) -->
+<nav class="lg:hidden fixed bottom-0 left-0 w-full flex justify-around items-center px-4 pb-6 pt-2 bg-[#f8f3eb]/80 backdrop-blur-md border-t border-[#dac2b3]/20 z-50 shadow-[0px_-4px_16px_rgba(29,28,23,0.04)]">
+<div class="flex flex-col items-center justify-center text-[#735735] p-2 transition-transform duration-300">
+<span class="material-symbols-outlined" data-icon="lightbulb">lightbulb</span>
+<span class="text-[10px] font-bold uppercase tracking-widest mt-1">Strategy</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#735735] p-2 transition-transform duration-300">
+<span class="material-symbols-outlined" data-icon="auto_awesome">auto_awesome</span>
+<span class="text-[10px] font-bold uppercase tracking-widest mt-1">Content</span>
+</div>
+<div class="flex flex-col items-center justify-center bg-gradient-to-br from-[#904900] to-[#b15f14] text-white rounded-xl p-2 scale-110 -translate-y-1 shadow-lg">
+<span class="material-symbols-outlined" data-icon="search_check">search_check</span>
+<span class="text-[10px] font-bold uppercase tracking-widest mt-1">Audit</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#735735] p-2 transition-transform duration-300">
+<span class="material-symbols-outlined" data-icon="campaign">campaign</span>
+<span class="text-[10px] font-bold uppercase tracking-widest mt-1">Ads</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#735735] p-2 transition-transform duration-300">
+<span class="material-symbols-outlined" data-icon="query_stats">query_stats</span>
+<span class="text-[10px] font-bold uppercase tracking-widest mt-1">Analytic</span>
+</div>
+</nav>
+<!-- FAB -->
+<button class="fixed bottom-24 right-6 lg:bottom-12 lg:right-12 w-16 h-16 bg-gradient-to-br from-[#904900] to-[#b15f14] text-white rounded-full shadow-[0px_12px_32px_rgba(29,28,23,0.3)] flex items-center justify-center active:scale-95 transition-transform duration-200 z-40">
+<span class="material-symbols-outlined" data-icon="smart_toy">smart_toy</span>
+</button>
+</body></html>

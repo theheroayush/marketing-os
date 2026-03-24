@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#0c0a1d">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>MarkU | AI Marketing Skills</title>
+  <meta name="description" content="MarkU — 34 AI-powered marketing skills for CRO, copywriting, SEO, paid ads, growth engineering and more.">
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Desktop Sidebar -->
+  <aside class="desktop-sidebar">
+    <div class="sidebar-logo"><img src="logo.jpg" alt="MarkU Logo" class="sidebar-logo-img"></div>
+    <button class="sidebar-item active" data-view="dashboard" onclick="app.navigate('dashboard')">
+      <span class="material-symbols-outlined">home</span> Dashboard
+    </button>
+    <button class="sidebar-item" onclick="app.toggleTheme()">
+      <span class="material-symbols-outlined">contrast</span> Toggle Theme
+    </button>
+    <button class="sidebar-item" data-view="skills" onclick="app.navigate('skills')">
+      <span class="material-symbols-outlined">auto_awesome</span> Skills Hub
+    </button>
+    <button class="sidebar-item" data-view="content" onclick="app.navigate('content')">
+      <span class="material-symbols-outlined">edit_note</span> Content
+    </button>
+    <button class="sidebar-item" data-view="campaigns" onclick="app.navigate('campaigns')">
+      <span class="material-symbols-outlined">campaign</span> Campaigns
+    </button>
+    <button class="sidebar-item" data-view="analytics" onclick="app.navigate('analytics')">
+      <span class="material-symbols-outlined">insights</span> Analytics
+    </button>
+    <button class="sidebar-item" data-view="history" onclick="app.navigate('history')">
+      <span class="material-symbols-outlined">history</span> History
+    </button>
+  </aside>
+
+  <!-- Header (Mobile) -->
+  <header class="app-header">
+    <div class="logo"><img src="logo.jpg" alt="MarkU Logo" class="header-logo-img"></div>
+    <div class="header-actions">
+      <button class="icon-btn" onclick="app.focusSearch()"><span class="material-symbols-outlined">search</span></button>
+      <button class="icon-btn" onclick="app.toggleTheme()"><span class="material-symbols-outlined">contrast</span></button>
+      <button class="icon-btn"><span class="material-symbols-outlined">notifications</span></button>
+    </div>
+  </header>
+
+  <!-- Views -->
+  <section id="view-dashboard" class="view active"></section>
+  <section id="view-skills" class="view"></section>
+  <section id="view-skill-category" class="view"></section>
+  <section id="view-skill-tool" class="view"></section>
+  <section id="view-content" class="view"></section>
+  <section id="view-campaigns" class="view"></section>
+  <section id="view-analytics" class="view"></section>
+  <section id="view-history" class="view"></section>
+
+  <!-- Bottom Navigation (Mobile) -->
+  <nav class="bottom-nav">
+    <button class="nav-item active" data-view="dashboard" onclick="app.navigate('dashboard')">
+      <span class="material-symbols-outlined">home</span>
+      <span>Home</span>
+    </button>
+    <button class="nav-item" data-view="skills" onclick="app.navigate('skills')">
+      <span class="material-symbols-outlined">auto_awesome</span>
+      <span>Skills</span>
+    </button>
+    <button class="nav-item" data-view="content" onclick="app.navigate('content')">
+      <span class="material-symbols-outlined">edit_note</span>
+      <span>Content</span>
+    </button>
+    <button class="nav-item" data-view="campaigns" onclick="app.navigate('campaigns')">
+      <span class="material-symbols-outlined">campaign</span>
+      <span>Ads</span>
+    </button>
+    <button class="nav-item" data-view="history" onclick="app.navigate('history')">
+      <span class="material-symbols-outlined">history</span>
+      <span>History</span>
+    </button>
+  </nav>
+
+  <script src="skills-data.js?v=2"></script>
+  <script src="app.js?v=2"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+          .then(registration => console.log('SW registered'))
+          .catch(err => console.log('SW registration failed: ', err));
+      });
+    }
+  </script>
+</body>
+</html>

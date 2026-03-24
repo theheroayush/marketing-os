@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Audience Research | MarkU</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus_Jakarta_Sans:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "tertiary-fixed-dim": "#e5c096",
+              "surface-tint": "#934b00",
+              "error": "#ba1a1a",
+              "on-secondary-fixed": "#231a0f",
+              "on-error-container": "#93000a",
+              "on-secondary-fixed-variant": "#504537",
+              "on-surface": "#1d1c17",
+              "surface-bright": "#fef9f1",
+              "secondary-container": "#f1e0cd",
+              "inverse-on-surface": "#f5f0e8",
+              "tertiary-fixed": "#ffddb7",
+              "surface-variant": "#e7e2da",
+              "on-surface-variant": "#544338",
+              "secondary-fixed": "#f1e0cd",
+              "on-primary-container": "#fffbff",
+              "surface-container-lowest": "#ffffff",
+              "on-tertiary-container": "#fffbff",
+              "surface-container-high": "#ece8e0",
+              "on-tertiary": "#ffffff",
+              "on-primary-fixed": "#301400",
+              "surface": "#fef9f1",
+              "inverse-surface": "#32302b",
+              "background": "#fef9f1",
+              "on-background": "#1d1c17",
+              "tertiary": "#735735",
+              "on-tertiary-fixed": "#2a1700",
+              "surface-dim": "#ded9d2",
+              "secondary-fixed-dim": "#d4c4b2",
+              "on-secondary": "#ffffff",
+              "tertiary-container": "#8d6f4b",
+              "on-error": "#ffffff",
+              "on-primary": "#ffffff",
+              "secondary": "#695c4e",
+              "on-secondary-container": "#6f6253",
+              "primary-container": "#b15f14",
+              "surface-container": "#f2ede5",
+              "outline": "#877366",
+              "primary": "#904900",
+              "error-container": "#ffdad6",
+              "surface-container-low": "#f8f3eb",
+              "primary-fixed-dim": "#ffb782",
+              "primary-fixed": "#ffdcc5",
+              "on-tertiary-fixed-variant": "#5b4222",
+              "surface-container-highest": "#e7e2da",
+              "outline-variant": "#dac2b3",
+              "on-primary-fixed-variant": "#703800",
+              "inverse-primary": "#ffb782"
+            },
+            fontFamily: {
+              "headline": ["Plus Jakarta Sans"],
+              "body": ["Plus Jakarta Sans"],
+              "label": ["Plus Jakarta Sans"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface">
+<!-- Top Navigation Bar -->
+<nav class="fixed top-0 w-full z-50 flex justify-between items-center px-8 h-16 w-full bg-[#fef9f1]/80 backdrop-blur-xl shadow-[0px_12px_32px_rgba(29,28,23,0.06)]">
+<div class="text-xl font-bold tracking-tighter text-[#904900]">MarkU</div>
+<div class="hidden md:flex space-x-8 items-center">
+<span class="text-[#735735] font-medium text-sm hover:text-[#904900] transition-colors cursor-pointer">Strategy</span>
+<span class="text-[#735735] font-medium text-sm hover:text-[#904900] transition-colors cursor-pointer">Content</span>
+<span class="text-[#904900] font-bold text-sm tracking-tight border-b-2 border-[#904900] pb-1">Audience</span>
+<span class="text-[#735735] font-medium text-sm hover:text-[#904900] transition-colors cursor-pointer">Analytics</span>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-[#904900] p-2 hover:bg-[#f8f3eb] rounded-full transition-colors cursor-pointer" data-icon="notifications">notifications</span>
+<div class="w-8 h-8 rounded-full overflow-hidden ring-2 ring-[#904900]/20">
+<img class="w-full h-full object-cover" data-alt="professional portrait of a creative director in a minimalist studio setting with soft natural light" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB3-or-ZN36O0HYharFrzvOuVBLFwLpfFmlO0fhXszeyCQLDnPAqAnRzpDu0Nz91Zoad1duxiZFfyXo7KHTjVzP97Cdfn2xpPrH80EfbYJr2yC3cNp3luBcUl43qOnfd2OB2sXnTophhAptWYXbKLgpjz7PJ7Wi1CkVNr8EaehkLN1Rw7zGu53mGVxOiadnf_zXjJNWpdGcYjaRo0MGir45SWE9Do3oi3YCKbdArbQZTZ0W9cRgO_z0o-msc37Ss25BBOiQ0m5HXas"/>
+</div>
+</div>
+</nav>
+<!-- Sidebar Navigation (Desktop) -->
+<aside class="hidden lg:flex fixed inset-y-0 left-0 w-72 bg-[#fef9f1] shadow-2xl z-[60] flex-col py-8 rounded-r-xl">
+<div class="px-6 mb-10">
+<div class="text-lg font-bold text-[#1d1c17] mb-1">The Intelligent Luminary</div>
+<div class="text-[10px] uppercase tracking-[0.15em] text-[#735735]">Research Module</div>
+</div>
+<div class="flex-1 space-y-2 overflow-y-auto">
+<div class="flex items-center text-[#735735] px-4 py-3 mx-2 hover:bg-[#f8f3eb] rounded-md transition-all cursor-pointer">
+<span class="material-symbols-outlined mr-3" data-icon="dashboard">dashboard</span>
+<span class="text-sm font-medium">Dashboard</span>
+</div>
+<div class="flex items-center text-[#735735] px-4 py-3 mx-2 hover:bg-[#f8f3eb] rounded-md transition-all cursor-pointer">
+<span class="material-symbols-outlined mr-3" data-icon="architecture">architecture</span>
+<span class="text-sm font-medium">Strategy Builder</span>
+</div>
+<div class="flex items-center bg-[#904900] text-[#fef9f1] px-4 py-3 mx-2 rounded-md shadow-lg transition-all">
+<span class="material-symbols-outlined mr-3" data-icon="travel_explore">travel_explore</span>
+<span class="text-sm font-medium">Audience Research</span>
+</div>
+<div class="flex items-center text-[#735735] px-4 py-3 mx-2 hover:bg-[#f8f3eb] rounded-md transition-all cursor-pointer">
+<span class="material-symbols-outlined mr-3" data-icon="insights">insights</span>
+<span class="text-sm font-medium">Analytics</span>
+</div>
+<div class="flex items-center text-[#735735] px-4 py-3 mx-2 hover:bg-[#f8f3eb] rounded-md transition-all cursor-pointer">
+<span class="material-symbols-outlined mr-3" data-icon="search_check">search_check</span>
+<span class="text-sm font-medium">SEO Audit</span>
+</div>
+</div>
+<div class="px-6 pt-6 mt-auto border-t border-outline-variant/10">
+<div class="bg-surface-container-low p-4 rounded-xl border border-outline-variant/20">
+<div class="text-[10px] font-bold uppercase tracking-widest text-[#904900] mb-2">Token Usage</div>
+<div class="w-full bg-surface-container-high h-1.5 rounded-full mb-2">
+<div class="bg-[#904900] h-1.5 rounded-full w-3/4"></div>
+</div>
+<div class="text-[10px] text-[#735735]">750 / 1000 Credits used</div>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="lg:ml-72 pt-24 pb-32 px-4 md:px-8 max-w-7xl mx-auto">
+<!-- Editorial Header -->
+<header class="flex flex-col md:flex-row justify-between items-baseline mb-12 gap-4">
+<div class="max-w-2xl">
+<span class="text-[10px] font-bold uppercase tracking-[0.2em] text-[#904900] mb-2 block">Market Intelligence</span>
+<h1 class="text-4xl md:text-5xl font-bold tracking-tight text-on-surface mb-4">Decode your audience.</h1>
+<p class="text-lg text-tertiary leading-relaxed">We've analyzed 4.2M data points across social signals, search intent, and psychographic trends to reveal the architects of your brand's future.</p>
+</div>
+<div class="flex gap-3">
+<button class="px-6 py-2.5 bg-surface-container-low text-on-surface font-semibold text-sm rounded-md border border-outline-variant/20 hover:bg-surface-container-high transition-colors">Export Report</button>
+<button class="px-6 py-2.5 bg-gradient-to-br from-[#904900] to-[#b15f14] text-white font-semibold text-sm rounded-md shadow-md active:scale-95 duration-200">Refresh Data</button>
+</div>
+</header>
+<!-- Insights Summary (Bento Style) -->
+<section class="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-6 gap-6 mb-16">
+<div class="md:col-span-2 lg:col-span-2 bg-surface-container-low p-8 rounded-xl flex flex-col justify-between">
+<div>
+<span class="material-symbols-outlined text-[#904900] mb-4" data-icon="groups" style="font-size: 32px;">groups</span>
+<h3 class="text-2xl font-bold mb-2">Primary Reach</h3>
+<p class="text-sm text-tertiary">Concentrated in North American urban tech hubs (Ages 28-42).</p>
+</div>
+<div class="mt-8">
+<div class="text-3xl font-extrabold text-[#904900]">1.2M</div>
+<div class="text-[10px] uppercase font-bold tracking-widest text-tertiary">Addressable Market</div>
+</div>
+</div>
+<div class="md:col-span-2 lg:col-span-2 bg-surface-container-lowest p-8 rounded-xl shadow-sm border border-outline-variant/10 relative overflow-hidden">
+<div class="relative z-10">
+<h3 class="text-xl font-bold mb-6">Intent Distribution</h3>
+<div class="space-y-4">
+<div class="flex justify-between items-center">
+<span class="text-sm font-medium">Problem Solving</span>
+<span class="text-sm font-bold text-[#904900]">64%</span>
+</div>
+<div class="w-full bg-surface-container h-1 rounded-full">
+<div class="bg-[#904900] h-1 rounded-full" style="width: 64%"></div>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-sm font-medium">Efficiency Focus</span>
+<span class="text-sm font-bold text-[#904900]">22%</span>
+</div>
+<div class="w-full bg-surface-container h-1 rounded-full">
+<div class="bg-[#b15f14] h-1 rounded-full" style="width: 22%"></div>
+</div>
+</div>
+</div>
+<div class="absolute -right-10 -bottom-10 opacity-5">
+<span class="material-symbols-outlined" data-icon="query_stats" style="font-size: 180px;">query_stats</span>
+</div>
+</div>
+<div class="md:col-span-4 lg:col-span-2 bg-surface-dim p-8 rounded-xl flex flex-col justify-center items-center text-center">
+<div class="mb-4 flex -space-x-3">
+<img class="w-12 h-12 rounded-full border-4 border-surface-dim" data-alt="close-up of a smiling businessman in professional attire with neutral lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB4MEinQM9-yYlmYXaTjLhvHMUtzmu2fh178am-gbySGaZmQr7HqykLuxsGOV_SrqsyuExEqV_LCpcRI5mdvqxKmwBG3-_shHdmf3zc9mVp1CHVJ_TrYaWswBQgJCEF1ocIpgAMOj6ukUr5QEINMDWHBuSGePtRvanbugJkl4gHbNWYfKUXFZtw-rEKWRk6S-tuP6_6mfFp41kFrAdhiaKt19fFOewlfmKkUfN0mZaAiwD8CJjpPFVXfwYMUcR3116mySusSCZtD1o"/>
+<img class="w-12 h-12 rounded-full border-4 border-surface-dim" data-alt="portrait of a confident female leader with warm lighting and soft background focus" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDPuPOV39wRAOLK4PZ24JVsF_f18p1eFLuJ4CB4Xo_JpJFxDqSHNXtu7M7yQhl8V04ABQ65UmRUtaHWwEpeK9cJTnDMy0YelQKp-7q03ZClCXWI51iHF4P5nckZMBN5HFgQP11qolb9sdrHvVBPtO3ykLP4zQX-hwLbggWvKoMYYeuKU9S-wdN412nCEuFwfRu1oJ1KCRqPu3IfSDwzRiLJpRJy2m4TRhzBkpgF1Evdw7fRgmZutwosas4waa1goywgTJob7Agen-M"/>
+<img class="w-12 h-12 rounded-full border-4 border-surface-dim" data-alt="professional portrait of a creative individual with thoughtful expression and cool studio lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDJT7RREPJb4qk779Ik5NmolB21JistOsSyFhNNa9JMuVPgtHD59JQtXoKaiP3VoaCRB8Zxv4UybxfbJUG8ak4cv_xqVIf5-vtCT1dWESYpQnOo8XryqoTfMQxlxLdqQYH2sQmRhVaM5FtbHKrKMfBnP-Zzw7VMDlPoxktQR7FD8x8HT2Lpw9iRo6HRS8-4JobMEjj_dB79xeoovWxfqrqSsnuXAAu7dVT-KACCgawu-VBesy92RVeahYbkOcH99TFpdN0rU_-0ito"/>
+</div>
+<h3 class="text-lg font-bold">New Segment Found</h3>
+<p class="text-sm text-tertiary mt-2 italic">"Fractional Innovators" are showing 40% higher engagement this week.</p>
+<button class="mt-6 text-[#904900] text-sm font-bold underline underline-offset-8">Explore Segment</button>
+</div>
+</section>
+<!-- Persona Interactive Cards -->
+<h2 class="text-2xl font-bold mb-8 border-l-4 border-[#904900] pl-4">Synthesized Personas</h2>
+<div class="grid grid-cols-1 xl:grid-cols-2 gap-8">
+<!-- Persona Card 1 -->
+<div class="bg-surface-container-lowest rounded-xl shadow-sm hover:shadow-xl transition-all duration-500 overflow-hidden flex flex-col md:flex-row border border-outline-variant/10 group">
+<div class="md:w-1/3 h-64 md:h-auto relative">
+<img class="w-full h-full object-cover" data-alt="candid shot of a focused male entrepreneur in a modern co-working space with large windows and bright sunlight" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBZdgDNR0MoIlilFAIzUYLCS5sO2c4M-jhEImTsf1X6qvaduWbJWpDus6sJPBTD1vHWq3GdhBNRk5xo8vzhfqhI8IwIVlfNwCxUS2wjPgC_9lJd3OjH5VXyhZRrrn1HxzIhcXFGTrBP4aoQFmDV3hEuFNBRx1pzmowxTgW_53RpnAPHLzP9u5jZoyYIyxwqHUx6IdmTnbeUf7wOQIGPbGBYYymicYaDnJvb4cWn8Dp9ZfCjo2yeda33dGBK_NH9WD1t0VDBKR9gVtc"/>
+<div class="absolute inset-0 bg-gradient-to-t from-[#1d1c17]/80 to-transparent flex flex-col justify-end p-6">
+<span class="text-[10px] font-bold uppercase tracking-widest text-primary-fixed-dim">High Authority</span>
+<h4 class="text-white text-2xl font-bold">Marketing Mike</h4>
+</div>
+</div>
+<div class="md:w-2/3 p-8 flex flex-col">
+<div class="flex flex-wrap gap-2 mb-6">
+<span class="bg-surface-container-low px-3 py-1 text-[10px] font-bold text-tertiary rounded-full uppercase tracking-tighter">SaaS Agency Owner</span>
+<span class="bg-surface-container-low px-3 py-1 text-[10px] font-bold text-tertiary rounded-full uppercase tracking-tighter">Budget: $10k+/mo</span>
+</div>
+<div class="space-y-6">
+<div>
+<p class="text-[10px] font-bold uppercase tracking-widest text-[#904900] mb-2">The Core Motivation</p>
+<p class="text-sm text-on-surface leading-relaxed">Wants to scale his agency without increasing headcount by leveraging sophisticated AI automation.</p>
+</div>
+<div>
+<p class="text-[10px] font-bold uppercase tracking-widest text-[#904900] mb-2">Pain Points</p>
+<ul class="text-xs text-tertiary space-y-2">
+<li class="flex items-start"><span class="material-symbols-outlined text-[14px] mr-2 mt-0.5" data-icon="close">close</span> Struggling with fragmented content workflows.</li>
+<li class="flex items-start"><span class="material-symbols-outlined text-[14px] mr-2 mt-0.5" data-icon="close">close</span> Difficulty proving ROI on "creative" social spend.</li>
+</ul>
+</div>
+<div class="pt-4 border-t border-outline-variant/10">
+<p class="text-[10px] font-bold uppercase tracking-widest text-[#904900] mb-3">Online Hangouts</p>
+<div class="flex gap-4">
+<span class="material-symbols-outlined text-[#735735]" data-icon="share" title="LinkedIn">share</span>
+<span class="material-symbols-outlined text-[#735735]" data-icon="forum" title="Reddit /r/marketing">forum</span>
+<span class="material-symbols-outlined text-[#735735]" data-icon="alternate_email" title="X (Twitter)">alternate_email</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Persona Card 2 -->
+<div class="bg-surface-container-lowest rounded-xl shadow-sm hover:shadow-xl transition-all duration-500 overflow-hidden flex flex-col md:flex-row border border-outline-variant/10">
+<div class="md:w-1/3 h-64 md:h-auto relative">
+<img class="w-full h-full object-cover" data-alt="professional woman in late thirties working on a tablet in a minimalist cafe with warm wooden accents and soft lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAtJ4_I3ex3KY4D3r4G4rcJ0YK7UPxuiNV52RuWrfkqn6kRRTqgiySeOeZwtbhKyPR2ndUSxhtPp9LQBrVnt079VoNNlqJxkzfXgLg561ziiq-0XObtoSfzmqfRZWpq0vq0pqjxASJo_TTJpe-o-l9z-68RphzbYG7zqC9TdZklYOdQLArrmBaK3j2TYofZGpVzJqawLA78pho5iVVybZnhKeXrdfX_4M47ybmHE7wDPVCB9cDOabYC1onFYK_rFdmEiQeQFmo27yY"/>
+<div class="absolute inset-0 bg-gradient-to-t from-[#1d1c17]/80 to-transparent flex flex-col justify-end p-6">
+<span class="text-[10px] font-bold uppercase tracking-widest text-primary-fixed-dim">Strategic Vision</span>
+<h4 class="text-white text-2xl font-bold">CEO Sarah</h4>
+</div>
+</div>
+<div class="md:w-2/3 p-8 flex flex-col">
+<div class="flex flex-wrap gap-2 mb-6">
+<span class="bg-surface-container-low px-3 py-1 text-[10px] font-bold text-tertiary rounded-full uppercase tracking-tighter">Series A Founder</span>
+<span class="bg-surface-container-low px-3 py-1 text-[10px] font-bold text-tertiary rounded-full uppercase tracking-tighter">Time-Poor</span>
+</div>
+<div class="space-y-6">
+<div>
+<p class="text-[10px] font-bold uppercase tracking-widest text-[#904900] mb-2">The Core Motivation</p>
+<p class="text-sm text-on-surface leading-relaxed">Looking for macro-insights and brand positioning strategies that differentiate her from legacy incumbents.</p>
+</div>
+<div>
+<p class="text-[10px] font-bold uppercase tracking-widest text-[#904900] mb-2">Pain Points</p>
+<ul class="text-xs text-tertiary space-y-2">
+<li class="flex items-start"><span class="material-symbols-outlined text-[14px] mr-2 mt-0.5" data-icon="close">close</span> Overwhelmed by generic AI tool noise.</li>
+<li class="flex items-start"><span class="material-symbols-outlined text-[14px] mr-2 mt-0.5" data-icon="close">close</span> Lacks high-level tactical roadmap for content.</li>
+</ul>
+</div>
+<div class="pt-4 border-t border-outline-variant/10">
+<p class="text-[10px] font-bold uppercase tracking-widest text-[#904900] mb-3">Online Hangouts</p>
+<div class="flex gap-4">
+<span class="material-symbols-outlined text-[#735735]" data-icon="newspaper" title="Substack">newspaper</span>
+<span class="material-symbols-outlined text-[#735735]" data-icon="groups_2" title="Industry Masterminds">groups_2</span>
+<span class="material-symbols-outlined text-[#735735]" data-icon="podcasts" title="Podcasts">podcasts</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Audience Archetypes Chart/Grid -->
+<section class="mt-20">
+<div class="flex items-center justify-between mb-8">
+<div>
+<h2 class="text-2xl font-bold">Archetype Clusters</h2>
+<p class="text-sm text-tertiary">Mapping cross-functional behavioral traits.</p>
+</div>
+<div class="flex items-center gap-2 bg-surface-container-low p-1 rounded-lg">
+<button class="px-4 py-1.5 text-xs font-bold bg-white shadow-sm rounded-md">Grid</button>
+<button class="px-4 py-1.5 text-xs font-bold text-tertiary">Visual Map</button>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<div class="border border-outline-variant/20 p-6 rounded-lg hover:bg-surface-container transition-colors">
+<div class="text-[10px] font-bold tracking-widest text-[#904900] mb-4">CLUSTER A</div>
+<h4 class="text-lg font-bold mb-2">The Data Purists</h4>
+<p class="text-xs text-tertiary mb-6">Users who value performance metrics above brand aesthetic.</p>
+<div class="flex justify-between items-end">
+<div class="text-2xl font-bold">28%</div>
+<span class="material-symbols-outlined text-[#904900]" data-icon="bar_chart">bar_chart</span>
+</div>
+</div>
+<div class="border border-outline-variant/20 p-6 rounded-lg hover:bg-surface-container transition-colors">
+<div class="text-[10px] font-bold tracking-widest text-[#904900] mb-4">CLUSTER B</div>
+<h4 class="text-lg font-bold mb-2">The Visualists</h4>
+<p class="text-xs text-tertiary mb-6">Prioritize brand identity and storytelling high-fidelity assets.</p>
+<div class="flex justify-between items-end">
+<div class="text-2xl font-bold">42%</div>
+<span class="material-symbols-outlined text-[#904900]" data-icon="palette">palette</span>
+</div>
+</div>
+<div class="border border-outline-variant/20 p-6 rounded-lg hover:bg-surface-container transition-colors">
+<div class="text-[10px] font-bold tracking-widest text-[#904900] mb-4">CLUSTER C</div>
+<h4 class="text-lg font-bold mb-2">The Efficientists</h4>
+<p class="text-xs text-tertiary mb-6">Focused purely on time-to-market and AI-drafting speed.</p>
+<div class="flex justify-between items-end">
+<div class="text-2xl font-bold">30%</div>
+<span class="material-symbols-outlined text-[#904900]" data-icon="bolt">bolt</span>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation Bar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full flex justify-around items-center px-4 pb-6 pt-2 bg-[#f8f3eb]/80 backdrop-blur-md rounded-t-[0.75rem] z-50 border-t border-[#dac2b3]/20 shadow-[0px_-4px_16px_rgba(29,28,23,0.04)]">
+<div class="flex flex-col items-center justify-center text-[#735735] p-2 hover:text-[#904900] transition-colors">
+<span class="material-symbols-outlined" data-icon="lightbulb">lightbulb</span>
+<span class="font-['Plus_Jakarta_Sans'] text-[10px] font-bold uppercase tracking-widest mt-1">Strategy</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#735735] p-2 hover:text-[#904900] transition-colors">
+<span class="material-symbols-outlined" data-icon="auto_awesome">auto_awesome</span>
+<span class="font-['Plus_Jakarta_Sans'] text-[10px] font-bold uppercase tracking-widest mt-1">Content</span>
+</div>
+<div class="flex flex-col items-center justify-center bg-gradient-to-br from-[#904900] to-[#b15f14] text-white rounded-xl p-2 scale-110 -translate-y-1 shadow-lg">
+<span class="material-symbols-outlined" data-icon="token">token</span>
+<span class="font-['Plus_Jakarta_Sans'] text-[10px] font-bold uppercase tracking-widest mt-1">MarkU</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#735735] p-2 hover:text-[#904900] transition-colors">
+<span class="material-symbols-outlined" data-icon="campaign">campaign</span>
+<span class="font-['Plus_Jakarta_Sans'] text-[10px] font-bold uppercase tracking-widest mt-1">Ads</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#735735] p-2 hover:text-[#904900] transition-colors">
+<span class="material-symbols-outlined" data-icon="query_stats">query_stats</span>
+<span class="font-['Plus_Jakarta_Sans'] text-[10px] font-bold uppercase tracking-widest mt-1">Analytic</span>
+</div>
+</nav>
+<!-- Floating Action Button - Contextual -->
+<button class="fixed bottom-24 right-8 w-14 h-14 bg-gradient-to-br from-[#904900] to-[#b15f14] text-white rounded-full shadow-[0px_12px_32px_rgba(29,28,23,0.06)] flex items-center justify-center hover:scale-110 active:scale-95 transition-all duration-300 z-40">
+<span class="material-symbols-outlined" data-icon="add">add</span>
+</button>
+</body></html>

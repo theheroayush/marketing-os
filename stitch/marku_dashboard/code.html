@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&amp;family=Manrope:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "tertiary-dim": "#40ceed",
+              "tertiary-fixed": "#53ddfc",
+              "on-tertiary-container": "#004b58",
+              "on-error": "#490013",
+              "on-secondary": "#33005b",
+              "on-secondary-fixed-variant": "#7511c3",
+              "secondary-fixed": "#e5c6ff",
+              "primary-container": "#9396ff",
+              "on-primary-fixed-variant": "#0e009d",
+              "on-primary": "#0f00a4",
+              "error": "#ff6e84",
+              "tertiary-fixed-dim": "#40ceed",
+              "error-container": "#a70138",
+              "on-primary-container": "#0a0081",
+              "outline": "#7a6f9b",
+              "outline-variant": "#4b426a",
+              "primary-dim": "#6063ee",
+              "on-primary-fixed": "#000000",
+              "tertiary-container": "#53ddfc",
+              "surface-bright": "#30215d",
+              "error-dim": "#d73357",
+              "surface": "#10062d",
+              "surface-container-highest": "#291c53",
+              "secondary-fixed-dim": "#dbb4ff",
+              "on-background": "#eae1ff",
+              "surface-tint": "#a3a6ff",
+              "on-error-container": "#ffb2b9",
+              "on-secondary-container": "#e9cdff",
+              "primary-fixed": "#9396ff",
+              "secondary": "#c180ff",
+              "surface-container": "#1c113f",
+              "on-tertiary": "#005464",
+              "surface-container-high": "#231649",
+              "surface-dim": "#10062d",
+              "surface-variant": "#291c53",
+              "primary-fixed-dim": "#8387ff",
+              "tertiary": "#8ce7ff",
+              "secondary-dim": "#9c48ea",
+              "inverse-primary": "#494bd7",
+              "on-secondary-fixed": "#4f0089",
+              "surface-container-low": "#160b36",
+              "inverse-surface": "#fdf7ff",
+              "background": "#10062d",
+              "surface-container-lowest": "#000000",
+              "on-surface-variant": "#b0a4d3",
+              "inverse-on-surface": "#594f78",
+              "secondary-container": "#6f00be",
+              "primary": "#a3a6ff",
+              "on-tertiary-fixed": "#003640",
+              "on-tertiary-fixed-variant": "#005564",
+              "on-surface": "#eae1ff"
+            },
+            fontFamily: {
+              "headline": ["Plus Jakarta Sans"],
+              "body": ["Manrope"],
+              "label": ["Manrope"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Manrope', sans-serif; }
+        .font-plus-jakarta { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface selection:bg-primary/30 min-h-screen pb-24">
+<!-- TopAppBar -->
+<header class="sticky top-0 w-full z-50 bg-surface dark:bg-[#10062d]/80 backdrop-blur-xl shadow-[0_8px_32px_0_rgba(234,225,255,0.08)]">
+<div class="flex items-center justify-between px-6 py-4 w-full">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full overflow-hidden border-2 border-primary/20 scale-95 active:scale-90 transition-transform">
+<img alt="User profile" class="w-full h-full object-cover" data-alt="Close-up portrait of a professional woman with a confident expression, soft cinematic lighting, modern office background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB6xtVzIDhmqtbUz9EjKwIA2sm0WW6sRNOQyJRWwG9M9B2em12dvIQ6I1VybZsBMvRD0D9RBFINFS2E535FnYEXwdTH-kQDGZbYR3YDBOmaZoyzws9i4T4oPBi68FEA9JIexZMy7MhJmPkxF8dIoqAzEKYYCowGjcgosG_2NcC1iwcpCCnaJab4vr2Y0Hevk9EFjBqFU55aEB2eyq-djQn083Asxwe-ctATVQMcFMdZCCJRZjkKo40VkoFeb8jK8GgpCFZQQNpbz1s"/>
+</div>
+</div>
+<h1 class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-br from-[#a3a6ff] to-[#9396ff] font-plus-jakarta tracking-tight">MarkU</h1>
+<div class="flex items-center gap-4">
+<button class="text-indigo-400 dark:text-[#a3a6ff] hover:opacity-80 transition-opacity scale-95 active:scale-90 transition-transform">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+</div>
+</div>
+</header>
+<main class="px-6 mt-8 space-y-10">
+<!-- AI Insights Card (Hero) -->
+<section>
+<div class="relative overflow-hidden rounded-[2rem] bg-secondary-container p-1 shadow-2xl">
+<div class="absolute inset-0 bg-gradient-to-br from-primary/20 to-secondary/20"></div>
+<div class="relative bg-surface-container rounded-[1.9rem] p-8 flex flex-col gap-6">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-tertiary" data-icon="auto_awesome" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+<span class="text-xs font-bold uppercase tracking-widest text-tertiary font-plus-jakarta">AI Strategy Insight</span>
+</div>
+<div class="space-y-3">
+<h2 class="text-2xl font-extrabold font-plus-jakarta leading-tight">Your 'Summer Glow' campaign is trending in Tokyo.</h2>
+<p class="text-on-surface-variant body-md leading-relaxed">AI suggests increasing ad spend by <span class="text-primary font-bold">15%</span> on Instagram Reels to capture an estimated <span class="text-tertiary font-bold">4.2k</span> new leads this weekend.</p>
+</div>
+<button class="w-full py-4 bg-gradient-to-br from-primary to-primary-container text-on-primary font-bold rounded-full shadow-lg shadow-primary/20 scale-95 active:scale-90 transition-all">
+                        Apply Strategy Now
+                    </button>
+</div>
+</div>
+</section>
+<!-- Quick Action Hub -->
+<section class="space-y-4">
+<h3 class="text-on-surface font-plus-jakarta text-title-lg font-bold">Quick Actions</h3>
+<div class="grid grid-cols-3 gap-4">
+<div class="flex flex-col items-center gap-2 group">
+<button class="w-full aspect-square bg-surface-container-high rounded-3xl flex items-center justify-center text-primary group-active:scale-90 transition-transform">
+<span class="material-symbols-outlined text-3xl" data-icon="add_circle">add_circle</span>
+</button>
+<span class="text-[10px] font-bold uppercase tracking-tighter text-on-surface-variant font-plus-jakarta">Create Post</span>
+</div>
+<div class="flex flex-col items-center gap-2 group">
+<button class="w-full aspect-square bg-surface-container-high rounded-3xl flex items-center justify-center text-secondary group-active:scale-90 transition-transform">
+<span class="material-symbols-outlined text-3xl" data-icon="psychology">psychology</span>
+</button>
+<span class="text-[10px] font-bold uppercase tracking-tighter text-on-surface-variant font-plus-jakarta">New Strategy</span>
+</div>
+<div class="flex flex-col items-center gap-2 group">
+<button class="w-full aspect-square bg-surface-container-high rounded-3xl flex items-center justify-center text-tertiary group-active:scale-90 transition-transform">
+<span class="material-symbols-outlined text-3xl" data-icon="query_stats">query_stats</span>
+</button>
+<span class="text-[10px] font-bold uppercase tracking-tighter text-on-surface-variant font-plus-jakarta">Performance</span>
+</div>
+</div>
+</section>
+<!-- Campaign Summary Cards (Bento Style) -->
+<section class="space-y-6 pb-12">
+<div class="flex items-center justify-between">
+<h3 class="text-on-surface font-plus-jakarta text-title-lg font-bold">Active Campaigns</h3>
+<button class="text-primary font-bold text-sm">View All</button>
+</div>
+<div class="grid grid-cols-1 gap-6">
+<!-- Campaign Card 1 -->
+<div class="bg-surface-container-low rounded-[2rem] p-6 space-y-6">
+<div class="flex justify-between items-start">
+<div class="space-y-1">
+<h4 class="text-xl font-bold font-plus-jakarta">Project Nebula</h4>
+<p class="text-xs text-on-surface-variant font-medium">B2B SaaS Growth • Q3</p>
+</div>
+<span class="px-3 py-1 bg-primary/10 text-primary text-[10px] font-bold uppercase tracking-widest rounded-full">Active</span>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div class="bg-surface-container p-4 rounded-2xl">
+<span class="text-[10px] text-on-surface-variant font-bold uppercase tracking-widest block mb-1">Reach</span>
+<span class="text-xl font-extrabold font-plus-jakarta">12.8k</span>
+<div class="flex items-center gap-1 text-tertiary text-[10px] font-bold mt-1">
+<span class="material-symbols-outlined text-xs" data-icon="trending_up">trending_up</span>
+                                14%
+                            </div>
+</div>
+<div class="bg-surface-container p-4 rounded-2xl">
+<span class="text-[10px] text-on-surface-variant font-bold uppercase tracking-widest block mb-1">Engagement</span>
+<span class="text-xl font-extrabold font-plus-jakarta">3.2k</span>
+<div class="flex items-center gap-1 text-tertiary text-[10px] font-bold mt-1">
+<span class="material-symbols-outlined text-xs" data-icon="trending_up">trending_up</span>
+                                8%
+                            </div>
+</div>
+</div>
+<div class="w-full h-1.5 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full w-2/3 bg-gradient-to-r from-primary to-secondary"></div>
+</div>
+</div>
+<!-- Campaign Card 2 -->
+<div class="bg-surface-container-low rounded-[2rem] p-6 space-y-6">
+<div class="flex justify-between items-start">
+<div class="space-y-1">
+<h4 class="text-xl font-bold font-plus-jakarta">Aura Launch</h4>
+<p class="text-xs text-on-surface-variant font-medium">Lifestyle E-commerce</p>
+</div>
+<span class="px-3 py-1 bg-tertiary/10 text-tertiary text-[10px] font-bold uppercase tracking-widest rounded-full">Optimizing</span>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div class="bg-surface-container p-4 rounded-2xl">
+<span class="text-[10px] text-on-surface-variant font-bold uppercase tracking-widest block mb-1">Reach</span>
+<span class="text-xl font-extrabold font-plus-jakarta">45.1k</span>
+<div class="flex items-center gap-1 text-tertiary text-[10px] font-bold mt-1">
+<span class="material-symbols-outlined text-xs" data-icon="trending_up">trending_up</span>
+                                22%
+                            </div>
+</div>
+<div class="bg-surface-container p-4 rounded-2xl">
+<span class="text-[10px] text-on-surface-variant font-bold uppercase tracking-widest block mb-1">CTR</span>
+<span class="text-xl font-extrabold font-plus-jakarta">4.8%</span>
+<div class="flex items-center gap-1 text-error text-[10px] font-bold mt-1">
+<span class="material-symbols-outlined text-xs" data-icon="trending_down">trending_down</span>
+                                2%
+                            </div>
+</div>
+</div>
+<div class="w-full h-1.5 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full w-1/2 bg-gradient-to-r from-tertiary to-primary"></div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 rounded-t-3xl bg-surface dark:bg-[#10062d]/90 backdrop-blur-2xl shadow-[0_-8px_32px_0_rgba(234,225,255,0.05)] flex justify-around items-center px-4 pb-6 pt-3">
+<!-- Home (Active) -->
+<a class="flex flex-col items-center justify-center bg-[#1c113f] text-[#a3a6ff] rounded-full px-5 py-2 tap-highlight-none active:scale-95 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="home" style="font-variation-settings: 'FILL' 1;">home</span>
+<span class="font-plus-jakarta text-[10px] font-semibold uppercase tracking-widest mt-1">Home</span>
+</a>
+<!-- Campaigns -->
+<a class="flex flex-col items-center justify-center text-[#eae1ff]/50 px-5 py-2 hover:text-[#a3a6ff] transition-colors tap-highlight-none active:scale-95 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="rocket_launch">rocket_launch</span>
+<span class="font-plus-jakarta text-[10px] font-semibold uppercase tracking-widest mt-1">Campaigns</span>
+</a>
+<!-- Content -->
+<a class="flex flex-col items-center justify-center text-[#eae1ff]/50 px-5 py-2 hover:text-[#a3a6ff] transition-colors tap-highlight-none active:scale-95 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="edit_note">edit_note</span>
+<span class="font-plus-jakarta text-[10px] font-semibold uppercase tracking-widest mt-1">Content</span>
+</a>
+<!-- Analytics -->
+<a class="flex flex-col items-center justify-center text-[#eae1ff]/50 px-5 py-2 hover:text-[#a3a6ff] transition-colors tap-highlight-none active:scale-95 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="insights">insights</span>
+<span class="font-plus-jakarta text-[10px] font-semibold uppercase tracking-widest mt-1">Analytics</span>
+</a>
+</nav>
+</body></html>

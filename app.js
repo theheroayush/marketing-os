@@ -1,0 +1,706 @@
+// MarkU Marketing Skills App - Main Application Logic
+(function(){
+  window.app = window.app || {};
+  const $ = s => document.querySelector(s);
+  const $$ = s => document.querySelectorAll(s);
+  app.$ = $;
+  app.$$ = $$;
+
+  // Current state
+  let currentView = 'dashboard';
+  let catFilter = 'All';
+  let searchQ = '';
+  
+  // Storage Helper
+  const Storage = {
+    getSessions: () => JSON.parse(localStorage.getItem('marku_sessions') || '[]'),
+    saveSession: (session) => {
+      const sessions = Storage.getSessions();
+      const idx = sessions.findIndex(s => s.id === session.id);
+      if (idx > -1) sessions[idx] = session;
+      else sessions.unshift(session);
+      localStorage.setItem('marku_sessions', JSON.stringify(sessions.slice(0, 50)));
+    },
+    deleteSession: (id) => {
+      const sessions = Storage.getSessions().filter(s => s.id !== id);
+      localStorage.setItem('marku_sessions', JSON.stringify(sessions));
+      if (currentView === 'history') app.renderHistoryView();
+    },
+    getProfiles: () => JSON.parse(localStorage.getItem('marku_profiles') || '[{"id":"default","name":"Default Profile","content":""}]'),
+    saveProfiles: (profiles) => localStorage.setItem('marku_profiles', JSON.stringify(profiles)),
+    getActiveProfileId: () => localStorage.getItem('marku_active_profile') || 'default',
+    setActiveProfileId: (id) => localStorage.setItem('marku_active_profile', id),
+    getProductCtx: () => {
+      const ps = JSON.parse(localStorage.getItem('marku_profiles') || '[{"id":"default","name":"Default Profile","content":""}]');
+      const aid = localStorage.getItem('marku_active_profile') || 'default';
+      const p = ps.find(x => x.id === aid);
+      return p ? p.content : '';
+    },
+    saveProductCtx: (ctx) => {
+      let p = profiles.find(x => x.id === Storage.getActiveProfileId());
+      if (p) {
+        p.content = ctx;
+        if (p.name === 'Default Profile' || p.name.startsWith('Profile ')) {
+           const lines = (ctx||'').split('\n').filter(l => l.trim().length > 0);
+           if (lines.length > 0) p.name = lines[0].substring(0, 25).replace(/[^a-zA-Z0-9 ]/g, '').trim() + '...';
+        }
+      }
+      Storage.saveProfiles(profiles);
+    },
+    getStats: () => {
+      const sessions = Storage.getSessions();
+      const uniqueSkills = new Set(sessions.map(s => s.skillId)).size;
+      const totalMessages = sessions.reduce((sum, s) => sum + s.messages.length, 0);
+      return { uniqueSkills, totalMessages, sessionsCount: sessions.length };
+    }
+  };
+
+  // Chat state
+  let activeSkill = null;
+  let activeSessionId = null;
+  let messages = [];
+  let isGenerating = false;
+
+  // Simple Markdown to HTML parser
+  function parseMd(text) {
+    if (!text) return '';
+    let html = text
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+      .replace(/`(.*?)`/g, '<code style="background:var(--border);padding:2px 4px;border-radius:4px;color:var(--accent);font-size:0.85em;">$1</code>');
+    return html.replace(/\n/g, '<br>');
+  }
+
+  // ---- ROUTER ----
+  function navigate(view, data) {
+    currentView = view;
+    $$('.view').forEach(v => v.classList.remove('active'));
+    $$('.nav-item').forEach(n => n.classList.remove('active'));
+    $$('.sidebar-item').forEach(n => n.classList.remove('active'));
+
+    if (view === 'skill-tool') {
+      const el = $('#view-skill-tool');
+      if(el) el.classList.add('active');
+      setActiveNav('skills');
+      
+      if (data && data !== activeSessionId) {
+        startChatSession(data);
+      } else {
+        renderChatView(); // Re-render existing session
+      }
+    } else {
+      const el = $(`#view-${view}`);
+      if(el) el.classList.add('active');
+      setActiveNav(view);
+      
+      if (view === 'skills') renderSkillsHub();
+      else if (view === 'dashboard') renderDashboard();
+      else if (view === 'content') renderContentView();
+      else if (view === 'campaigns') renderCampaignsView();
+      else if (view === 'analytics') renderAnalyticsView();
+      else if (view === 'history') renderHistoryView();
+    }
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+  function setActiveNav(view) {
+    $$('.nav-item').forEach(n => {
+      n.classList.toggle('active', n.dataset.view === view);
+    });
+    $$('.sidebar-item').forEach(n => {
+      n.classList.toggle('active', n.dataset.view === view);
+    });
+  }
+
+  // ---- DASHBOARD VIEW ----
+  function renderDashboard() {
+    const el = $('#view-dashboard');
+    if (!el) return;
+
+    const activeProfileId = Storage.getActiveProfileId();
+    const profiles = Storage.getProfiles();
+
+    const profileSwitcherHTML = `
+      <div style="background:var(--bg-elevated); padding:16px; border-radius:var(--radius-sm); margin-bottom: 24px; display:flex; gap:12px; align-items:center; border:1px solid var(--border);">
+        <span class="material-symbols-outlined" style="color:var(--primary);">business_center</span>
+        <div style="flex:1;">
+          <div style="font-size:0.75rem; color:var(--text-muted); margin-bottom:4px; font-weight:700; text-transform:uppercase; letter-spacing:0.05em;">Active Product Profile</div>
+          <select id="profile-select" style="width:100%; background:var(--bg-input); color:var(--text); border:1px solid var(--border); padding:8px 12px; border-radius:8px; font-family:inherit; font-size:0.95rem;" onchange="app.switchProfile(this.value)">
+             ${profiles.map(p => `<option value="${p.id}" ${p.id === activeProfileId ? 'selected' : ''}>${p.name}</option>`).join('')}
+          </select>
+        </div>
+        <button onclick="app.newProfile()" style="background:var(--primary); color:#fff; border:none; padding:10px 16px; border-radius:8px; cursor:pointer; font-family:inherit; font-weight:600; font-size:0.9rem; transition:all .2s;">+ New</button>
+      </div>
+    `;
+    
+    // Pick first 3 skills as popular
+    const popSkills = window.SKILLS.slice(0, 3);
+    const sessions = Storage.getSessions();
+
+    el.innerHTML = `
+      <h1 class="view-title">Dashboard</h1>
+      ${profileSwitcherHTML}
+      <div class="hero-card mb-16">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
+          <span class="material-symbols-outlined" style="color:var(--accent);font-variation-settings:'FILL' 1">auto_awesome</span>
+          <span class="section-title" style="margin:0;color:var(--accent)">AI Strategy Insight</span>
+        </div>
+        <h2 style="font-size:1.3rem;font-weight:800;line-height:1.3;margin-bottom:8px">Welcome back, Marketer.</h2>
+        <p style="color:var(--text-dim);font-size:0.85rem;line-height:1.5;margin-bottom:16px">You have ${sessions.length} active consultations. Need a new campaign idea for Q2?</p>
+        <button class="btn btn-primary btn-full" onclick="app.navigate('skills')">Launch New Skill</button>
+      </div>
+
+      <div class="section-title">Quick Actions</div>
+      <div class="grid-3 mb-16">
+        <button class="card card-sm" style="text-align:center;cursor:pointer" onclick="app.navigate('skills')">
+          <span class="material-symbols-outlined" style="font-size:28px;color:var(--primary);display:block;margin-bottom:6px">auto_awesome</span>
+          <span style="font-size:0.7rem;font-weight:700;color:var(--text-dim)">Skills Hub</span>
+        </button>
+        <button class="card card-sm" style="text-align:center;cursor:pointer" onclick="app.navigate('content')">
+          <span class="material-symbols-outlined" style="font-size:28px;color:var(--secondary);display:block;margin-bottom:6px">edit_note</span>
+          <span style="font-size:0.7rem;font-weight:700;color:var(--text-dim)">Create Post</span>
+        </button>
+        <button class="card card-sm" style="text-align:center;cursor:pointer" onclick="app.navigate('history')">
+          <span class="material-symbols-outlined" style="font-size:28px;color:var(--accent);display:block;margin-bottom:6px">history</span>
+          <span style="font-size:0.7rem;font-weight:700;color:var(--text-dim)">History</span>
+        </button>
+      </div>
+
+      <div style="display:flex;justify-content:space-between;align-items:center" class="mb-8">
+        <h3 class="section-heading" style="margin:0">Recent AI Sessions</h3>
+        <button class="btn btn-ghost btn-sm" onclick="app.navigate('history')">View All</button>
+      </div>
+      
+      <div class="flex-col gap-12 mb-24">
+        ${sessions.length > 0 ? sessions.slice(0, 2).map(s => `
+          <div class="card card-sm" onclick="app.resumeSession('${s.id}')" style="cursor:pointer">
+            <div style="display:flex;align-items:center;gap:10px">
+              <span style="font-size:20px">${s.skillEmoji}</span>
+              <div style="flex:1">
+                <div style="font-weight:700;font-size:0.9rem">${s.skillName}</div>
+                <div style="font-size:0.75rem;color:var(--text-muted)">${new Date(s.ts).toLocaleDateString()} • ${s.messages.length} messages</div>
+              </div>
+              <span class="material-symbols-outlined" style="font-size:18px;color:var(--text-muted)">chevron_right</span>
+            </div>
+          </div>
+        `).join('') : '<p style="font-size:0.8rem;color:var(--text-muted);text-align:center;padding:10px">No recent sessions.</p>'}
+      </div>
+
+      <div class="mt-24">
+        <div class="section-title">Popular Skills</div>
+        <div class="flex-col">
+          ${popSkills.map(s => renderQuickSkill(s.id, s.name, s.tagline, s.emoji, window.CATS[s.cat]?.color || '#f472b6')).join('')}
+        </div>
+      </div>
+    `;
+  }
+
+  function renderQuickSkill(id,name,desc,emoji,color) {
+    return `<div class="skill-list-item" onclick="app.openSkill('${id}')">
+      <div class="skill-icon" style="background:${color}15;color:${color};display:flex;align-items:center;justify-content:center;font-size:20px;">${emoji}</div>
+      <div><h5>${name}</h5><p style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:200px;">${desc}</p></div>
+    </div>`;
+  }
+
+  // ---- SKILLS HUB VIEW WITH SEARCH ----
+  function renderSkillsHub() {
+    const el = $('#view-skills');
+    if (!el) return;
+    
+    const cats = ['All', ...Object.keys(window.CATS)];
+    
+    const filtered = window.SKILLS.filter(s => {
+      const matchCat = catFilter === 'All' || s.cat === catFilter;
+      const q = searchQ.toLowerCase();
+      const matchQ = !q || s.name.toLowerCase().includes(q) || s.tagline.toLowerCase().includes(q) || s.desc.toLowerCase().includes(q);
+      return matchCat && matchQ;
+    });
+
+    el.innerHTML = `
+      <h2 class="section-heading" style="font-size:1.4rem">Skills Hub</h2>
+      <p style="color:var(--text-dim);font-size:0.85rem;margin-bottom:20px">${window.SKILLS.length} marketing skills at your fingertips.</p>
+      
+      <!-- Search Box -->
+      <div style="background:var(--card-bg);border:1px solid var(--border);border-radius:12px;padding:10px 14px;display:flex;align-items:center;gap:8px;margin-bottom:16px;">
+        <span class="material-symbols-outlined" style="color:var(--text-muted);font-size:18px">search</span>
+        <input type="text" id="skills-search" placeholder="Search skills..." value="${searchQ}" 
+               style="flex:1;background:transparent;border:none;color:var(--text);font-size:0.95rem;outline:none;" 
+               onkeyup="app.handleSearch(event)">
+        ${searchQ ? `<button onclick="app.clearSearch()" style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:18px;">&times;</button>` : ''}
+      </div>
+
+      <!-- Categories Scroll -->
+      <div style="display:flex;gap:8px;overflow-x:auto;padding-bottom:12px;margin-bottom:8px;scrollbar-width:none;-webkit-overflow-scrolling:touch;">
+        ${cats.map(c => {
+          const catInfo = window.CATS[c];
+          const isActive = catFilter === c;
+          const bg = isActive ? 'var(--text)' : 'var(--card-bg)';
+          const color = isActive ? 'var(--bg)' : 'var(--text-dim)';
+          const border = isActive ? 'transparent' : 'var(--border)';
+          return `<button onclick="app.setCategoryFilter('${c}')" 
+            style="background:${bg};color:${color};border:1px solid ${border};border-radius:20px;padding:6px 14px;font-size:0.8rem;white-space:nowrap;font-weight:600;display:flex;align-items:center;gap:6px;cursor:pointer;">
+            ${c !== 'All' ? catInfo.icon + ' ' : ''}${c}
+          </button>`;
+        }).join('')}
+      </div>
+
+      <div class="grid-2 gap-16">
+        ${filtered.length > 0 ? filtered.map(s => {
+          const c = window.CATS[s.cat];
+          return `
+            <div class="card" onclick="app.openSkill('${s.id}')" style="cursor:pointer;display:flex;flex-direction:column;gap:8px;transition:0.2s;">
+              <div style="display:flex;justify-content:space-between;align-items:start;">
+                <div style="width:36px;height:36px;border-radius:10px;background:${c.bg || '#333'};display:flex;align-items:center;justify-content:center;font-size:18px;">
+                  ${s.emoji}
+                </div>
+                <span style="font-size:0.65rem;font-weight:700;border-radius:4px;padding:2px 6px;color:${c.color};background:${c.bg || '#333'}">
+                  ${s.cat}
+                </span>
+              </div>
+              <h4 style="font-size:0.95rem;margin-top:4px;">${s.name}</h4>
+              <p style="font-size:0.75rem;color:var(--text-muted);line-height:1.4">${s.tagline}</p>
+              <div style="margin-top:auto;font-size:0.75rem;color:${c.color};font-weight:700;">Start &rarr;</div>
+            </div>
+          `;
+        }).join('') : `<p style="grid-column:1/-1;text-align:center;color:var(--text-muted);padding:40px 0;">No skills found.</p>`}
+      </div>
+    `;
+  }
+
+  window.app = window.app || {};
+  app.handleSearch = function(e) {
+    searchQ = e.target.value;
+    renderSkillsHub();
+    // Keep focus
+    setTimeout(() => {
+      const input = document.getElementById('skills-search');
+      if (input) {
+        input.focus();
+        // Move cursor to end
+        input.selectionStart = input.selectionEnd = input.value.length;
+      }
+    }, 0);
+  };
+  app.clearSearch = function() {
+    searchQ = '';
+    renderSkillsHub();
+  };
+  app.setCategoryFilter = function(cat) {
+    catFilter = cat;
+    renderSkillsHub();
+  };
+
+  // ---- CHAT / SKILL INTERFACE ----
+  function startChatSession(skillId) {
+    activeSkill = window.SKILLS.find(s => s.id === skillId);
+    if (!activeSkill) return;
+
+    activeSessionId = `${skillId}-${Date.now()}`;
+    const productCtx = Storage.getProductCtx();
+    const ctxNote = (productCtx && skillId !== 'product-context') 
+      ? `\n\n*I see your product context is saved! I'll use it so you don't have to repeat yourself.*`
+      : "";
+
+    // Use proper opener message
+    const openMsg = {
+      role: 'assistant',
+      content: `<strong style="font-size:1.1em">${activeSkill.name}</strong> — ${activeSkill.tagline}${ctxNote}\n\n${window.getSkillOpener(activeSkill.id)}`
+    };
+    messages = [openMsg];
+    renderChatView();
+  }
+
+  function resumeSession(sessionId) {
+    const session = Storage.getSessions().find(s => s.id === sessionId);
+    if (!session) return;
+    
+    activeSkill = window.SKILLS.find(s => s.id === session.skillId);
+    activeSessionId = session.id;
+    messages = session.messages;
+    
+    navigate('skill-tool', session.skillId);
+    renderChatView();
+  }
+
+  function renderChatView() {
+    const el = $('#view-skill-tool');
+    if (!el || !activeSkill) return;
+    
+    const catInfo = window.CATS[activeSkill.cat];
+    const accentColor = catInfo?.color || 'var(--accent)';
+
+    el.innerHTML = `
+      <div class="skill-header" style="position:sticky;top:60px;background:var(--bg);z-index:10;padding-bottom:10px;border-bottom:1px solid ${accentColor}44;margin-bottom:16px;">
+        <button class="back-btn" onclick="app.navigate('history')"><span class="material-symbols-outlined">history</span></button>
+        <div style="flex:1;text-align:center;">
+          <h2 style="font-size:1rem;font-weight:800;display:flex;align-items:center;justify-content:center;gap:6px;">
+            <span style="font-size:1.2rem">${activeSkill.emoji}</span> ${activeSkill.name}
+          </h2>
+          <p style="font-size:0.7rem;color:${accentColor};margin-top:2px;">${catInfo.icon} ${activeSkill.cat}</p>
+        </div>
+        <div style="display:flex;gap:8px;">
+          <button class="icon-btn" onclick="window.print()" title="Export PDF"><span class="material-symbols-outlined">picture_as_pdf</span></button>
+          <button class="icon-btn" onclick="app.openSkill('${activeSkill.id}')" title="New Session" style="color:var(--text-dim)"><span class="material-symbols-outlined">restart_alt</span></button>
+          <button class="icon-btn" onclick="app.triggerSetupApiKey()" title="Setup API Key" style="color:var(--text-dim)"><span class="material-symbols-outlined">key</span></button>
+        </div>
+      </div>
+
+      <div id="chat-messages" style="display:flex;flex-direction:column;gap:16px;padding-bottom:200px;min-height:60vh;">
+        ${messages.map(m => `
+          <div style="display:flex;justify-content:${m.role==='user'?'flex-end':'flex-start'};width:100%;">
+            ${m.role === 'assistant' ? `
+              <div style="display:flex;gap:10px;max-width:90%;">
+                <div style="width:28px;height:28px;border-radius:8px;background:${catInfo.bg||'#333'};display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;font-size:14px;">${activeSkill.emoji}</div>
+                <div style="background:var(--card-bg);border:1px solid var(--border);border-radius:4px 12px 12px 12px;padding:12px;font-size:0.9rem;line-height:1.6;color:var(--text);">
+                  ${parseMd(m.content)}
+                </div>
+              </div>
+            ` : `
+              <div style="background:${accentColor};color:#fff;border-radius:12px 12px 4px 12px;padding:10px 14px;font-size:0.9rem;line-height:1.5;max-width:85%;">
+                ${parseMd(m.content)}
+              </div>
+            `}
+          </div>
+        `).join('')}
+        
+        ${isGenerating ? `
+          <div style="display:flex;justify-content:flex-start;width:100%;">
+            <div style="display:flex;gap:10px;max-width:90%;">
+              <div style="width:28px;height:28px;border-radius:8px;background:${catInfo.bg||'#333'};display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;font-size:14px;">${activeSkill.emoji}</div>
+              <div style="background:var(--card-bg);border:1px solid var(--border);border-radius:4px 12px 12px 12px;padding:12px;display:flex;gap:4px;align-items:center;">
+                <span class="animate-pulse" style="width:6px;height:6px;background:${accentColor};border-radius:50%;display:inline-block;"></span>
+                <span class="animate-pulse" style="width:6px;height:6px;background:${accentColor};border-radius:50%;display:inline-block;animation-delay:0.2s"></span>
+                <span class="animate-pulse" style="width:6px;height:6px;background:${accentColor};border-radius:50%;display:inline-block;animation-delay:0.4s"></span>
+              </div>
+            </div>
+          </div>
+        ` : ''}
+      </div>
+
+      <!-- Chat Input Area (Adjusted for bottom nav on mobile) -->
+      <div class="chat-input-wrapper">
+        <form onsubmit="app.sendChatMessage(event)" style="position:relative;max-width:600px;margin:0 auto;display:flex;gap:8px;align-items:flex-end;">
+          <textarea id="chat-input" placeholder="Type your answer... (Press Enter to send)" 
+                    style="flex:1;background:var(--card-bg);border:1px solid var(--border);border-radius:12px;padding:12px 45px 12px 14px;color:var(--text);font-family:inherit;font-size:0.95rem;resize:none;max-height:120px;min-height:44px;"
+                    oninput="this.style.height='';this.style.height=Math.min(this.scrollHeight, 120)+'px';"
+                    onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();app.sendChatMessage(event);}"></textarea>
+          <button type="submit" disabled style="position:absolute;right:8px;bottom:6px;width:32px;height:32px;border-radius:8px;border:none;background:${accentColor};color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0.5;transition:0.2s;" id="chat-send-btn">
+            <span class="material-symbols-outlined" style="font-size:18px;">arrow_upward</span>
+          </button>
+        </form>
+      </div>
+    `;
+
+    // Handle button state based on input
+    setTimeout(() => {
+      const input = $('#chat-input');
+      const btn = $('#chat-send-btn');
+      if (input && btn) {
+        input.focus();
+        input.addEventListener('input', () => {
+          btn.disabled = input.value.trim().length === 0 || isGenerating;
+          btn.style.opacity = btn.disabled ? '0.5' : '1';
+        });
+      }
+      window.scrollTo(0, document.body.scrollHeight);
+    }, 50);
+  }
+
+  app.triggerSetupApiKey = function() {
+    const key = prompt("Enter your Anthropic API Key (sk-ant-...):", localStorage.getItem('anthropic_key') || '');
+    if (key !== null) {
+      localStorage.setItem('anthropic_key', key.trim());
+      alert(key.trim() ? "API key saved locally!" : "API key cleared.");
+    }
+  };
+
+  app.sendChatMessage = async function(e) {
+    if (e) e.preventDefault();
+    const inputEl = $('#chat-input');
+    const text = inputEl.value.trim();
+    if (!text || isGenerating) return;
+
+    // Add user message
+    messages.push({ role: 'user', content: text });
+    inputEl.value = '';
+    inputEl.style.height = '44px';
+    isGenerating = true;
+    renderChatView();
+
+    const apiKey = localStorage.getItem('anthropic_key');
+
+    if (!apiKey) {
+      // Mock Response if no API key
+      setTimeout(() => {
+        messages.push({ 
+          role: 'assistant', 
+          content: 'I see you haven\'t configured an Anthropic API Key.\n\nTo get real responses based on the algorithms from the repo, please tap the key icon at the top right to save your API Key, then try again.\n\n*(This is a mock response because no key was found).*'
+        });
+        isGenerating = false;
+        renderChatView();
+      }, 1000);
+      return;
+    }
+
+    try {
+      // Build API messages payload
+      const apiMessages = messages.slice(1).map(m => ({
+        role: m.role,
+        content: m.content
+      }));
+
+      // Build system prompt with optional product context injection
+      let systemPrompt = activeSkill.system;
+      const productCtx = Storage.getProductCtx();
+      if (productCtx && activeSkill.id !== 'product-context') {
+        systemPrompt = `PRODUCT CONTEXT (use this — don't ask about it):\n${productCtx}\n\n---\n\n${systemPrompt}`;
+      }
+
+      // Call Anthropic API directly
+      const res = await fetch("https://api.anthropic.com/v1/messages", {
+        method: "POST",
+        headers: { 
+          "Content-Type": "application/json",
+          "x-api-key": apiKey,
+          "anthropic-version": "2023-06-01",
+          "anthropic-dangerous-direct-browser-access": "true"
+        },
+        body: JSON.stringify({
+          model: "claude-3-5-sonnet-20240620",
+          max_tokens: 1000,
+          system: systemPrompt,
+          messages: apiMessages,
+        }),
+      });
+      
+      const data = await res.json();
+      if (data.error) throw new Error(data.error.message || 'API Error');
+      
+      const reply = data.content?.[0]?.text || "No response received.";
+      messages.push({ role: "assistant", content: reply });
+
+      // Save session
+      Storage.saveSession({
+        id: activeSessionId,
+        skillId: activeSkill.id,
+        skillName: activeSkill.name,
+        skillEmoji: activeSkill.emoji,
+        skillCat: activeSkill.cat,
+        messages: messages,
+        ts: Date.now()
+      });
+
+      // If this is product context, extract it
+      if (activeSkill.id === 'product-context' && messages.length > 4) {
+        Storage.saveProductCtx(messages.map(m => `${m.role}: ${m.content}`).join("\n\n").slice(0, 3000));
+      }
+
+    } catch (err) {
+      messages.push({ role: "assistant", content: `⚠️ **Error:** ${err.message}\n\nPlease verify your API key and connection.` });
+    } finally {
+      isGenerating = false;
+      renderChatView();
+    }
+  };
+
+  // ---- SIMPLE VIEWS ----
+  function renderContentView() {
+    const el = $('#view-content');
+    if (!el) return;
+    el.innerHTML = `
+      <h2 class="section-heading" style="font-size:1.4rem">Content</h2>
+      <p style="color:var(--text-dim);font-size:0.85rem;margin-bottom:20px">Create and manage marketing content.</p>
+      <div class="grid-2 gap-16 mb-16">
+        ${renderQuickSkill('copywriting','Copywriting','Write copy that actually converts','✏️','#6B4FA0')}
+        ${renderQuickSkill('social-content','Social Content','Posts that stop the scroll','📱','#C2421A')}
+      </div>
+      <div class="flex-col">
+        ${renderQuickSkill('email-sequence','Email Sequence','Automated flows that nurture','📧','#1A7AC2')}
+        ${renderQuickSkill('cold-email','Cold Email','Outreach that gets replies','✉️','#1A7AC2')}
+      </div>
+    `;
+  }
+
+  function renderCampaignsView() {
+    const el = $('#view-campaigns');
+    if (!el) return;
+    el.innerHTML = `
+      <h2 class="section-heading" style="font-size:1.4rem">Campaigns</h2>
+      <p style="color:var(--text-dim);font-size:0.85rem;margin-bottom:20px">Manage ad campaigns and creative assets.</p>
+      <div class="flex-col gap-16 mb-16">
+        ${renderQuickSkill('paid-ads','Paid Ads Strategy','Campaigns that acquire customers profitably','💰','#B87A1A')}
+        ${renderQuickSkill('ad-creative','Ad Creative','Ad copy that gets clicks','🎨','#B87A1A')}
+        ${renderQuickSkill('ab-test','A/B Test Setup','Design experiments that produce real answers','⚗️','#C25B1A')}
+      </div>
+    `;
+  }
+
+  function renderAnalyticsView() {
+    const el = $('#view-analytics');
+    if (!el) return;
+    const stats = Storage.getStats();
+    el.innerHTML = `
+      <h2 class="section-heading" style="font-size:1.4rem">Analytics</h2>
+      <p style="color:var(--text-dim);font-size:0.85rem;margin-bottom:20px">Track performance across all channels.</p>
+      <div class="grid-2 gap-16 mb-16">
+        <div class="stat-card"><span class="stat-label">AI Sessions</span><span class="stat-val">${stats.sessionsCount}</span><span class="stat-trend trend-up"><span class="material-symbols-outlined" style="font-size:12px">trending_up</span>Live</span></div>
+        <div class="stat-card"><span class="stat-label">Skills Used</span><span class="stat-val">${stats.uniqueSkills}</span><span class="stat-trend trend-up"><span class="material-symbols-outlined" style="font-size:12px">trending_up</span>Active</span></div>
+      </div>
+      <div class="flex-col">
+        ${renderQuickSkill('analytics','Analytics Setup','Measure what matters, ignore what doesn\'t','📊','#1A8C5E')}
+        ${renderQuickSkill('revops','Revenue Operations','Fix leaks between marketing and sales','🔧','#1A7A4F')}
+      </div>
+    `;
+  }
+
+  function renderHistoryView() {
+    const el = $('#view-history');
+    if (!el) return;
+    const sessions = Storage.getSessions();
+    const productCtx = Storage.getProductCtx();
+
+    el.innerHTML = `
+      <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:20px">
+        <div>
+          <h2 class="section-heading" style="font-size:1.4rem; margin-bottom:4px;">History</h2>
+          <p style="color:var(--text-dim);font-size:0.85rem;margin:0">Your past AI marketing consultations.</p>
+        </div>
+        <button onclick="app.exportData()" class="btn btn-primary btn-sm" style="display:flex;align-items:center;gap:6px;padding:6px 12px;background:var(--border);color:var(--text);border-color:transparent;">
+          <span class="material-symbols-outlined" style="font-size:16px">download</span> <span style="font-size:0.85rem">Backup</span>
+        </button>
+      </div>
+      
+      ${productCtx ? `
+        <div class="card mb-24" style="background:var(--green-bg);border-color:var(--green)">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+            <span class="material-symbols-outlined" style="color:var(--green)">check_circle</span>
+            <span style="font-weight:700;color:var(--green)">Product Context Active</span>
+          </div>
+          <p style="font-size:0.8rem;color:var(--text-dim);line-height:1.4">Every new skill session will use your saved context automatically.</p>
+          <button class="btn btn-ghost btn-sm mt-8" onclick="app.openSkill('product-context')" style="padding-left:0;color:var(--green)">Update Context &rarr;</button>
+        </div>
+      ` : `
+        <div class="card mb-24" style="background:var(--card-bg);border-style:dashed">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+            <span class="material-symbols-outlined" style="color:var(--accent)">info</span>
+            <span style="font-weight:700;color:var(--text)">Missing Product Context</span>
+          </div>
+          <p style="font-size:0.8rem;color:var(--text-dim);line-height:1.4">Build your product context to avoid repeating details to the AI.</p>
+          <button class="btn btn-primary btn-sm mt-8" onclick="app.openSkill('product-context')">Setup Context</button>
+        </div>
+      `}
+
+      <div class="flex-col gap-12">
+        ${sessions.length > 0 ? sessions.map(s => `
+          <div class="card" style="position:relative">
+            <div onclick="app.resumeSession('${s.id}')" style="cursor:pointer">
+              <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:8px">
+                <div style="display:flex;align-items:center;gap:10px">
+                  <div style="width:32px;height:32px;border-radius:8px;background:var(--border);display:flex;align-items:center;justify-content:center;font-size:18px">${s.skillEmoji}</div>
+                  <div>
+                    <h4 style="font-size:1rem;margin:0">${s.skillName}</h4>
+                    <span style="font-size:0.7rem;color:var(--text-muted)">${new Date(s.ts).toLocaleString()}</span>
+                  </div>
+                </div>
+              </div>
+              <p style="font-size:0.8rem;color:var(--text-dim);margin-bottom:8px;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;">
+                ${s.messages[s.messages.length - 1].content.replace(/<[^>]*>/g, '').slice(0, 120)}...
+              </p>
+            </div>
+            <button onclick="app.deleteSession('${s.id}')" style="position:absolute;top:10px;right:10px;background:none;border:none;color:var(--red);cursor:pointer;" title="Delete">
+              <span class="material-symbols-outlined" style="font-size:18px">delete</span>
+            </button>
+          </div>
+        `).join('') : '<div style="text-align:center;padding:40px;color:var(--text-muted)">No history yet. Start a skill in the Skills Hub!</div>'}
+      </div>
+    `;
+  }
+
+  // ---- INIT ----
+  function init() {
+    // Check if SKILLS exists, otherwise app fails
+    if (!window.SKILLS) {
+      console.error("SKILLS data missing.");
+      return;
+    }
+
+    const hash = window.location.hash.slice(1) || 'dashboard';
+    navigate(hash);
+
+    // Initialize Theme
+    if (localStorage.getItem('marku_theme') === 'light') {
+      document.body.classList.add('light-theme');
+    }
+
+    window.addEventListener('hashchange', () => {
+      const h = window.location.hash.slice(1) || 'dashboard';
+      if (!h.startsWith('skill-tool')) {
+        navigate(h);
+      }
+    });
+  }
+
+  window.app.navigate = navigate;
+  window.app.openSkill = (id) => { window.location.hash = 'skill-tool'; navigate('skill-tool', id); };
+  window.app.resumeSession = resumeSession;
+  window.app.deleteSession = (id) => { if(confirm('Delete this session?')){ Storage.deleteSession(id); } };
+  
+  window.app.toggleTheme = () => {
+    document.body.classList.toggle('light-theme');
+    const isLight = document.body.classList.contains('light-theme');
+    localStorage.setItem('marku_theme', isLight ? 'light' : 'dark');
+  };
+
+  window.app.switchProfile = (id) => {
+    Storage.setActiveProfileId(id);
+    if (currentView === 'dashboard') app.renderDashboard();
+  };
+
+  window.app.newProfile = () => {
+    const name = prompt("Enter a name for the new Product Profile:", "Client X");
+    if (name && name.trim()) {
+      const profiles = Storage.getProfiles();
+      const newId = 'p_' + Date.now();
+      profiles.push({ id: newId, name: name.trim(), content: '' });
+      Storage.saveProfiles(profiles);
+      Storage.setActiveProfileId(newId);
+      app.renderDashboard();
+    }
+  };
+
+  window.app.focusSearch = () => {
+    app.navigate('skills');
+    setTimeout(() => {
+      const input = document.querySelector('#skills-search');
+      if (input) {
+        input.focus();
+        input.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }, 150);
+  };
+  
+  // Export Data to Local Device
+
+  window.app.exportData = function() {
+    const data = {
+      sessions: Storage.getSessions(),
+      productCtx: Storage.getProductCtx(),
+      exportDate: new Date().toISOString()
+    };
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `marku_backup_${new Date().toISOString().split('T')[0]}.json`;
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(() => {
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }, 0);
+  };
+
+  if(document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', init); }
+  else { init(); }
+})();

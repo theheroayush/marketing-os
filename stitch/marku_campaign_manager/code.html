@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>MarkU Campaign Manager</title>
+<!-- Fonts & Icons -->
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "surface-tint": "#934b00",
+              "surface-container-highest": "#e7e2da",
+              "error": "#ba1a1a",
+              "on-secondary": "#ffffff",
+              "on-primary": "#ffffff",
+              "primary-container": "#b15f14",
+              "surface-variant": "#e7e2da",
+              "outline-variant": "#dac2b3",
+              "tertiary-fixed": "#ffddb7",
+              "inverse-surface": "#32302b",
+              "on-surface": "#1d1c17",
+              "surface-bright": "#fef9f1",
+              "surface-dim": "#ded9d2",
+              "on-primary-fixed-variant": "#703800",
+              "on-secondary-fixed-variant": "#504537",
+              "secondary-fixed-dim": "#d4c4b2",
+              "on-tertiary-fixed": "#2a1700",
+              "on-primary-fixed": "#301400",
+              "inverse-primary": "#ffb782",
+              "tertiary-container": "#8d6f4b",
+              "surface-container-high": "#ece8e0",
+              "secondary-fixed": "#f1e0cd",
+              "error-container": "#ffdad6",
+              "on-tertiary-fixed-variant": "#5b4222",
+              "on-surface-variant": "#544338",
+              "tertiary": "#735735",
+              "surface": "#fef9f1",
+              "secondary": "#695c4e",
+              "outline": "#877366",
+              "on-error-container": "#93000a",
+              "background": "#fef9f1",
+              "on-tertiary-container": "#fffbff",
+              "tertiary-fixed-dim": "#e5c096",
+              "surface-container": "#f2ede5",
+              "on-secondary-container": "#6f6253",
+              "on-primary-container": "#fffbff",
+              "primary-fixed-dim": "#ffb782",
+              "on-secondary-fixed": "#231a0f",
+              "inverse-on-surface": "#f5f0e8",
+              "secondary-container": "#f1e0cd",
+              "primary": "#904900",
+              "surface-container-lowest": "#ffffff",
+              "surface-container-low": "#f8f3eb",
+              "primary-fixed": "#ffdcc5",
+              "on-tertiary": "#ffffff",
+              "on-error": "#ffffff",
+              "on-background": "#1d1c17"
+            },
+            fontFamily: {
+              "headline": ["Plus Jakarta Sans"],
+              "body": ["Plus Jakarta Sans"],
+              "label": ["Plus Jakarta Sans"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .glass-nav {
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+        /* Custom ghost border for depth without lines */
+        .ghost-border {
+            box-shadow: 0 0 0 1px rgba(218, 194, 179, 0.2);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface min-h-screen pb-24">
+<!-- TopAppBar -->
+<nav class="fixed top-0 w-full z-50 bg-[#fef9f1]/80 backdrop-blur-md flex justify-between items-center px-8 h-16 w-full">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-surface-container overflow-hidden">
+<img alt="Consultant Profile" class="w-full h-full object-cover" data-alt="professional portrait of a creative consultant with a warm expression in a sunlit modern studio setting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCIJ6HAzBBF4kfm-SPDK3bE0XLvwtPSUMz9LQ7ji3SjjuUcHN22pS6jLmDzefAUx9G93Q2a4VHksuV2dF1plvlkMoAOrYzC6rV2caFfCVuPkbgmuFCe05lAmh5FZSSri9lPSxPkSLg-DhZ_SAuYEBpJH03UzM8gAPxb5LESSMcjQWlVWx66a74m7A23z1HngV_39ZqHa9QPmESdnqnGB69Ii2qMC5vJAZdtTtCzGgMFEBe2TOhf5ur-bHGSfZ7fcLOImy-yywRsczw"/>
+</div>
+<span class="text-xl font-bold text-[#904900] tracking-[-0.02em] font-headline">MarkU</span>
+</div>
+<div class="flex items-center gap-6">
+<div class="hidden md:flex gap-8 items-center">
+<a class="text-[#735735] opacity-70 hover:text-[#904900] transition-all font-medium" href="#">Dashboard</a>
+<a class="text-[#735735] opacity-70 hover:text-[#904900] transition-all font-medium" href="#">Strategy</a>
+<a class="text-[#904900] font-semibold" href="#">Campaigns</a>
+<a class="text-[#735735] opacity-70 hover:text-[#904900] transition-all font-medium" href="#">Analytics</a>
+</div>
+<button class="p-2 rounded-full hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined text-primary">notifications</span>
+</button>
+</div>
+</nav>
+<main class="pt-24 px-6 max-w-7xl mx-auto">
+<!-- Hero Summary Section -->
+<header class="mb-10 grid grid-cols-1 md:grid-cols-2 gap-8 items-end">
+<div>
+<p class="text-[0.75rem] uppercase tracking-[0.05em] font-medium text-tertiary mb-2">Portfolio Overview</p>
+<h1 class="text-3xl font-extrabold tracking-tight text-on-surface">Campaign Manager</h1>
+<p class="text-on-surface-variant mt-2 max-w-md">Orchestrate your brand's presence across digital channels with high-fidelity tracking and AI insights.</p>
+</div>
+<div class="flex gap-4 md:justify-end">
+<div class="bg-surface-container-low p-4 rounded-xl flex-1 max-w-[160px] ghost-border">
+<span class="text-primary text-2xl font-bold">3</span>
+<p class="text-xs font-label uppercase tracking-widest text-tertiary mt-1">Active</p>
+</div>
+<div class="bg-surface-container-low p-4 rounded-xl flex-1 max-w-[160px] ghost-border">
+<span class="text-on-surface text-2xl font-bold">2</span>
+<p class="text-xs font-label uppercase tracking-widest text-tertiary mt-1">Drafts</p>
+</div>
+</div>
+</header>
+<!-- Search & Filter Controls -->
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-8">
+<div class="flex p-1 bg-surface-container rounded-full w-full md:w-auto overflow-hidden">
+<button class="px-6 py-2 rounded-full text-sm font-semibold bg-surface-container-lowest text-primary shadow-sm">All</button>
+<button class="px-6 py-2 rounded-full text-sm font-medium text-tertiary hover:bg-surface-container-high transition-colors">Active</button>
+<button class="px-6 py-2 rounded-full text-sm font-medium text-tertiary hover:bg-surface-container-high transition-colors">Scheduled</button>
+<button class="px-6 py-2 rounded-full text-sm font-medium text-tertiary hover:bg-surface-container-high transition-colors">Completed</button>
+</div>
+<div class="relative w-full md:w-72">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-sm">search</span>
+<input class="w-full bg-surface-container-low border-none rounded-xl pl-10 pr-4 py-2.5 text-sm ghost-border focus:ring-1 focus:ring-primary transition-all" placeholder="Search initiatives..." type="text"/>
+</div>
+</div>
+<!-- Campaign Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+<!-- Campaign Card 1 -->
+<div class="bg-surface-container-lowest p-6 rounded-xl ghost-border hover:shadow-[0px_12px_32px_rgba(29,28,23,0.06)] transition-all group">
+<div class="flex justify-between items-start mb-6">
+<div class="flex items-center gap-2 px-3 py-1 bg-[#e1f3e8] text-[#1e4620] rounded-full">
+<span class="w-1.5 h-1.5 rounded-full bg-[#2e7d32] animate-pulse"></span>
+<span class="text-[10px] font-bold uppercase tracking-wider">Active</span>
+</div>
+<button class="text-outline hover:text-primary transition-colors">
+<span class="material-symbols-outlined">more_horiz</span>
+</button>
+</div>
+<h3 class="text-xl font-bold text-on-surface mb-1 group-hover:text-primary transition-colors">Project Nebula</h3>
+<p class="text-sm text-tertiary mb-6">Meta Ads · Performance Scaling</p>
+<div class="flex items-end justify-between gap-4 mb-6">
+<div>
+<p class="text-[10px] font-label uppercase text-outline mb-1">Spent / Budget</p>
+<p class="text-lg font-bold text-on-surface">$12,450 <span class="text-sm font-normal text-tertiary">/ $20k</span></p>
+</div>
+<div class="flex-1 h-12 flex items-end gap-1">
+<div class="w-2 bg-primary/20 rounded-t-sm h-[40%]"></div>
+<div class="w-2 bg-primary/20 rounded-t-sm h-[60%]"></div>
+<div class="w-2 bg-primary/20 rounded-t-sm h-[45%]"></div>
+<div class="w-2 bg-primary/20 rounded-t-sm h-[80%]"></div>
+<div class="w-2 bg-primary/20 rounded-t-sm h-[65%]"></div>
+<div class="w-2 bg-primary rounded-t-sm h-[95%]"></div>
+<div class="w-2 bg-primary rounded-t-sm h-[90%]"></div>
+</div>
+</div>
+<button class="w-full py-3 bg-surface-container-low text-on-surface text-sm font-semibold rounded-lg hover:bg-surface-container-high transition-all flex items-center justify-center gap-2">
+                    View Insights <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+<!-- Campaign Card 2 -->
+<div class="bg-surface-container-lowest p-6 rounded-xl ghost-border hover:shadow-[0px_12px_32px_rgba(29,28,23,0.06)] transition-all group">
+<div class="flex justify-between items-start mb-6">
+<div class="flex items-center gap-2 px-3 py-1 bg-[#e1f3e8] text-[#1e4620] rounded-full">
+<span class="w-1.5 h-1.5 rounded-full bg-[#2e7d32] animate-pulse"></span>
+<span class="text-[10px] font-bold uppercase tracking-wider">Active</span>
+</div>
+<button class="text-outline hover:text-primary transition-colors">
+<span class="material-symbols-outlined">more_horiz</span>
+</button>
+</div>
+<h3 class="text-xl font-bold text-on-surface mb-1 group-hover:text-primary transition-colors">Aura Launch</h3>
+<p class="text-sm text-tertiary mb-6">Email Nurture · Customer Retention</p>
+<div class="flex items-end justify-between gap-4 mb-6">
+<div>
+<p class="text-[10px] font-label uppercase text-outline mb-1">Spent / Budget</p>
+<p class="text-lg font-bold text-on-surface">$3,120 <span class="text-sm font-normal text-tertiary">/ $5k</span></p>
+</div>
+<div class="flex-1 h-12 flex items-end gap-1">
+<div class="w-2 bg-primary/20 rounded-t-sm h-[20%]"></div>
+<div class="w-2 bg-primary/20 rounded-t-sm h-[30%]"></div>
+<div class="w-2 bg-primary rounded-t-sm h-[70%]"></div>
+<div class="w-2 bg-primary/20 rounded-t-sm h-[50%]"></div>
+<div class="w-2 bg-primary rounded-t-sm h-[85%]"></div>
+<div class="w-2 bg-primary rounded-t-sm h-[100%]"></div>
+<div class="w-2 bg-primary rounded-t-sm h-[75%]"></div>
+</div>
+</div>
+<button class="w-full py-3 bg-surface-container-low text-on-surface text-sm font-semibold rounded-lg hover:bg-surface-container-high transition-all flex items-center justify-center gap-2">
+                    View Insights <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+<!-- Campaign Card 3 -->
+<div class="bg-surface-container-lowest p-6 rounded-xl ghost-border hover:shadow-[0px_12px_32px_rgba(29,28,23,0.06)] transition-all group">
+<div class="flex justify-between items-start mb-6">
+<div class="flex items-center gap-2 px-3 py-1 bg-[#fef3c7] text-[#92400e] rounded-full">
+<span class="material-symbols-outlined text-[12px]">pause</span>
+<span class="text-[10px] font-bold uppercase tracking-wider">Paused</span>
+</div>
+<button class="text-outline hover:text-primary transition-colors">
+<span class="material-symbols-outlined">more_horiz</span>
+</button>
+</div>
+<h3 class="text-xl font-bold text-on-surface mb-1 group-hover:text-primary transition-colors">Summer Glow</h3>
+<p class="text-sm text-tertiary mb-6">TikTok Influencers · Awareness</p>
+<div class="flex items-end justify-between gap-4 mb-6 opacity-60">
+<div>
+<p class="text-[10px] font-label uppercase text-outline mb-1">Spent / Budget</p>
+<p class="text-lg font-bold text-on-surface">$8,900 <span class="text-sm font-normal text-tertiary">/ $15k</span></p>
+</div>
+<div class="flex-1 h-12 flex items-end gap-1">
+<div class="w-2 bg-tertiary/20 rounded-t-sm h-[30%]"></div>
+<div class="w-2 bg-tertiary/20 rounded-t-sm h-[25%]"></div>
+<div class="w-2 bg-tertiary/20 rounded-t-sm h-[20%]"></div>
+<div class="w-2 bg-tertiary/20 rounded-t-sm h-[35%]"></div>
+<div class="w-2 bg-tertiary/20 rounded-t-sm h-[30%]"></div>
+<div class="w-2 bg-tertiary/20 rounded-t-sm h-[25%]"></div>
+<div class="w-2 bg-tertiary/20 rounded-t-sm h-[30%]"></div>
+</div>
+</div>
+<button class="w-full py-3 bg-primary text-white text-sm font-semibold rounded-lg hover:bg-primary-container transition-all flex items-center justify-center gap-2 shadow-sm">
+                    Resume Campaign <span class="material-symbols-outlined text-sm">play_arrow</span>
+</button>
+</div>
+<!-- New Campaign Empty State / Call to Action -->
+<div class="border-2 border-dashed border-outline-variant/40 rounded-xl p-6 flex flex-col items-center justify-center text-center group cursor-pointer hover:bg-surface-container-low transition-all">
+<div class="w-12 h-12 rounded-full bg-surface-container-high flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-primary">add</span>
+</div>
+<h3 class="text-lg font-bold text-on-surface">Launch Initiative</h3>
+<p class="text-sm text-tertiary mt-1">Start a new campaign from your strategy board</p>
+</div>
+</div>
+</main>
+<!-- Floating Action Button (Only for relevant screens like this) -->
+<button class="fixed bottom-24 right-8 w-14 h-14 rounded-full bg-gradient-to-br from-[#904900] to-[#b15f14] text-white shadow-[0px_12px_32px_rgba(144,73,0,0.3)] flex items-center justify-center hover:scale-105 active:scale-95 transition-all md:hidden z-50">
+<span class="material-symbols-outlined">rocket_launch</span>
+</button>
+<!-- BottomNavBar (Mobile Only) -->
+<footer class="md:hidden fixed bottom-0 left-0 w-full flex justify-around items-center px-4 pb-6 pt-3 bg-[#f8f3eb]/80 backdrop-blur-md rounded-t-xl shadow-[0px_-12px_32px_rgba(29,28,23,0.06)] border-t border-[#dac2b3]/20 z-50">
+<div class="flex flex-col items-center justify-center text-[#735735] opacity-80 px-3 py-1.5 transition-all hover:text-[#904900]">
+<span class="material-symbols-outlined mb-1">dashboard</span>
+<span class="font-['Plus_Jakarta_Sans'] text-[10px] uppercase tracking-[0.05em] font-medium">Dashboard</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#735735] opacity-80 px-3 py-1.5 transition-all hover:text-[#904900]">
+<span class="material-symbols-outlined mb-1">tactic</span>
+<span class="font-['Plus_Jakarta_Sans'] text-[10px] uppercase tracking-[0.05em] font-medium">Strategy</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#735735] opacity-80 px-3 py-1.5 transition-all hover:text-[#904900]">
+<span class="material-symbols-outlined mb-1">edit_note</span>
+<span class="font-['Plus_Jakarta_Sans'] text-[10px] uppercase tracking-[0.05em] font-medium">Create</span>
+</div>
+<div class="flex flex-col items-center justify-center bg-gradient-to-br from-[#904900] to-[#b15f14] text-white rounded-lg px-3 py-1.5">
+<span class="material-symbols-outlined mb-1">rocket_launch</span>
+<span class="font-['Plus_Jakarta_Sans'] text-[10px] uppercase tracking-[0.05em] font-medium">Campaigns</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#735735] opacity-80 px-3 py-1.5 transition-all hover:text-[#904900]">
+<span class="material-symbols-outlined mb-1">insert_chart</span>
+<span class="font-['Plus_Jakarta_Sans'] text-[10px] uppercase tracking-[0.05em] font-medium">Analytics</span>
+</div>
+</footer>
+</body></html>

@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "surface-tint": "#934b00",
+              "surface-container-highest": "#e7e2da",
+              "error": "#ba1a1a",
+              "on-secondary": "#ffffff",
+              "on-primary": "#ffffff",
+              "primary-container": "#b15f14",
+              "surface-variant": "#e7e2da",
+              "outline-variant": "#dac2b3",
+              "tertiary-fixed": "#ffddb7",
+              "inverse-surface": "#32302b",
+              "on-surface": "#1d1c17",
+              "surface-bright": "#fef9f1",
+              "surface-dim": "#ded9d2",
+              "on-primary-fixed-variant": "#703800",
+              "on-secondary-fixed-variant": "#504537",
+              "secondary-fixed-dim": "#d4c4b2",
+              "on-tertiary-fixed": "#2a1700",
+              "on-primary-fixed": "#301400",
+              "inverse-primary": "#ffb782",
+              "tertiary-container": "#8d6f4b",
+              "surface-container-high": "#ece8e0",
+              "secondary-fixed": "#f1e0cd",
+              "error-container": "#ffdad6",
+              "on-tertiary-fixed-variant": "#5b4222",
+              "on-surface-variant": "#544338",
+              "tertiary": "#735735",
+              "surface": "#fef9f1",
+              "secondary": "#695c4e",
+              "outline": "#877366",
+              "on-error-container": "#93000a",
+              "background": "#fef9f1",
+              "on-tertiary-container": "#fffbff",
+              "tertiary-fixed-dim": "#e5c096",
+              "surface-container": "#f2ede5",
+              "on-secondary-container": "#6f6253",
+              "on-primary-container": "#fffbff",
+              "primary-fixed-dim": "#ffb782",
+              "on-secondary-fixed": "#231a0f",
+              "inverse-on-surface": "#f5f0e8",
+              "secondary-container": "#f1e0cd",
+              "primary": "#904900",
+              "surface-container-lowest": "#ffffff",
+              "surface-container-low": "#f8f3eb",
+              "primary-fixed": "#ffdcc5",
+              "on-tertiary": "#ffffff",
+              "on-error": "#ffffff",
+              "on-background": "#1d1c17"
+            },
+            fontFamily: {
+              "headline": ["Plus Jakarta Sans"],
+              "body": ["Plus Jakarta Sans"],
+              "label": ["Plus Jakarta Sans"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      }
+      body {
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        background-color: #fef9f1;
+        color: #1d1c17;
+      }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-[#fef9f1]/80 backdrop-blur-md flex justify-between items-center px-8 h-16 w-full">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Close-up portrait of a professional marketing consultant with a warm smile in a brightly lit modern office space" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCA0_oDmE36D1amqCC4CesJ7awfTMuAwfQ1dSR_u0gQk35Y0r4wNH9gnJ50UlJ71eEXFttAiw9k9NTHCDMAST7IeDbbjWhbVTHrEBdEdFZeXR9n6x6Em6ip9fz7mhkUxrcUJTUVJ0dQeSk2oc4omj6D4TcdQAeuIU-iNEUcOjPLdOPIo8Wttt-2wH70SNcs8t4Q9YMEQMpi8JDeLUgWsX__OBMhpTC1uugC-4D_qRxhrWGTvrcabbAyv8vqXk3C1B1zJSPwzztnJIE"/>
+</div>
+<span class="text-xl font-bold text-[#904900] tracking-[-0.02em] font-headline">MarkU</span>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 text-[#735735] opacity-70 hover:bg-[#f8f3eb]/50 transition-colors rounded-full active:scale-95 duration-200">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+</div>
+</header>
+<main class="pt-24 pb-32 px-6 max-w-4xl mx-auto space-y-10">
+<!-- AI Creative Assistant Card -->
+<section class="relative overflow-hidden rounded-xl bg-surface-container-lowest p-8 border border-outline-variant/10">
+<div class="absolute top-0 right-0 -mt-8 -mr-8 w-48 h-48 bg-primary/5 rounded-full blur-3xl"></div>
+<div class="relative z-10 flex flex-col md:flex-row gap-6 items-start">
+<div class="w-12 h-12 flex-shrink-0 bg-primary-fixed text-primary rounded-xl flex items-center justify-center">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+</div>
+<div class="space-y-2">
+<h1 class="text-2xl font-extrabold tracking-tight text-on-surface">AI Creative Assistant</h1>
+<p class="text-lg text-on-surface-variant font-medium leading-relaxed">
+                        What should we create today? I'm ready to draft social posts, ad copy, or email sequences.
+                    </p>
+</div>
+</div>
+</section>
+<!-- Creation Form -->
+<section class="space-y-8 bg-surface-container-low rounded-xl p-8 border border-outline-variant/10">
+<!-- Content Type Selection -->
+<div class="space-y-4">
+<span class="text-[0.75rem] uppercase tracking-[0.05em] font-semibold text-tertiary">Select Content Type</span>
+<div class="flex flex-wrap gap-3">
+<button class="px-5 py-2.5 rounded-full bg-primary text-white font-semibold text-sm transition-all shadow-sm">Social Post</button>
+<button class="px-5 py-2.5 rounded-full border border-outline-variant/20 text-on-surface font-medium text-sm hover:bg-surface-container-highest transition-all">Ad Copy</button>
+<button class="px-5 py-2.5 rounded-full border border-outline-variant/20 text-on-surface font-medium text-sm hover:bg-surface-container-highest transition-all">Email</button>
+<button class="px-5 py-2.5 rounded-full border border-outline-variant/20 text-on-surface font-medium text-sm hover:bg-surface-container-highest transition-all">Blog Post</button>
+</div>
+</div>
+<!-- Context Input -->
+<div class="space-y-4">
+<label class="text-[0.75rem] uppercase tracking-[0.05em] font-semibold text-tertiary">Product/Topic context</label>
+<div class="relative">
+<textarea class="w-full bg-surface-container-lowest border border-outline-variant/20 rounded-xl p-4 text-on-surface focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all min-h-[120px] resize-none" placeholder="Tell me about your product or campaign...">Summer Glow Skincare Launch</textarea>
+</div>
+</div>
+<!-- Tone of Voice & CTA Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-end">
+<div class="space-y-4">
+<label class="text-[0.75rem] uppercase tracking-[0.05em] font-semibold text-tertiary">Tone of Voice</label>
+<div class="relative">
+<select class="w-full bg-surface-container-lowest border border-outline-variant/20 rounded-xl px-4 py-3 text-on-surface appearance-none focus:ring-2 focus:ring-primary/20 focus:border-primary">
+<option>Professional</option>
+<option>Witty</option>
+<option>Persuasive</option>
+<option>Bold</option>
+</select>
+<span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-outline">expand_more</span>
+</div>
+</div>
+<button class="w-full h-[52px] rounded-xl bg-gradient-to-br from-[#904900] to-[#b15f14] text-white font-bold flex items-center justify-center gap-2 shadow-[0px_12px_32px_rgba(29,28,23,0.12)] hover:scale-[1.02] active:scale-95 transition-all">
+<span class="material-symbols-outlined">auto_fix_high</span>
+                    Generate with AI
+                </button>
+</div>
+</section>
+<!-- Recent Generations -->
+<section class="space-y-6">
+<div class="flex justify-between items-center">
+<h2 class="text-xl font-bold tracking-tight text-on-surface">Recent Generations</h2>
+<button class="text-primary font-semibold text-sm hover:underline decoration-2 underline-offset-4">View All</button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<!-- Card 1 -->
+<div class="p-5 rounded-xl bg-surface-container-lowest border border-outline-variant/10 hover:border-primary/30 transition-all cursor-pointer group">
+<div class="flex justify-between items-start mb-3">
+<div class="p-2 rounded-lg bg-surface-container-high text-tertiary">
+<span class="material-symbols-outlined text-sm">retweet</span>
+</div>
+<span class="text-[10px] uppercase tracking-wider font-bold text-outline">2m ago</span>
+</div>
+<h3 class="font-bold text-on-surface group-hover:text-primary transition-colors">Instagram Hook - Variation 1</h3>
+<p class="text-sm text-on-surface-variant mt-2 line-clamp-2 leading-relaxed">"Stop scrolling! Is your skin ready for the golden hour? Introducing our Summer Glow..."</p>
+<div class="mt-4 flex gap-2">
+<button class="p-1.5 text-outline hover:text-primary transition-colors"><span class="material-symbols-outlined text-lg">content_copy</span></button>
+<button class="p-1.5 text-outline hover:text-primary transition-colors"><span class="material-symbols-outlined text-lg">share</span></button>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="p-5 rounded-xl bg-surface-container-lowest border border-outline-variant/10 hover:border-primary/30 transition-all cursor-pointer group">
+<div class="flex justify-between items-start mb-3">
+<div class="p-2 rounded-lg bg-surface-container-high text-tertiary">
+<span class="material-symbols-outlined text-sm">ads_click</span>
+</div>
+<span class="text-[10px] uppercase tracking-wider font-bold text-outline">1h ago</span>
+</div>
+<h3 class="font-bold text-on-surface group-hover:text-primary transition-colors">Facebook Ad - Benefit focused</h3>
+<p class="text-sm text-on-surface-variant mt-2 line-clamp-2 leading-relaxed">"Hydration that lasts. Say goodbye to dull summer skin with our clinically proven formula..."</p>
+<div class="mt-4 flex gap-2">
+<button class="p-1.5 text-outline hover:text-primary transition-colors"><span class="material-symbols-outlined text-lg">content_copy</span></button>
+<button class="p-1.5 text-outline hover:text-primary transition-colors"><span class="material-symbols-outlined text-lg">share</span></button>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 pb-6 pt-3 bg-[#f8f3eb]/80 backdrop-blur-md z-50 rounded-t-xl border-t border-[#dac2b3]/20 shadow-[0px_-12px_32px_rgba(29,28,23,0.06)]">
+<a class="flex flex-col items-center justify-center text-[#735735] opacity-80 px-3 py-1.5 hover:text-[#904900] transition-all" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-['Plus_Jakarta_Sans'] text-[10px] uppercase tracking-[0.05em] font-medium mt-1">Dashboard</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#735735] opacity-80 px-3 py-1.5 hover:text-[#904900] transition-all" href="#">
+<span class="material-symbols-outlined">tactic</span>
+<span class="font-['Plus_Jakarta_Sans'] text-[10px] uppercase tracking-[0.05em] font-medium mt-1">Strategy</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-gradient-to-br from-[#904900] to-[#b15f14] text-white rounded-lg px-3 py-1.5 active:transform scale-90 duration-300" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">edit_note</span>
+<span class="font-['Plus_Jakarta_Sans'] text-[10px] uppercase tracking-[0.05em] font-medium mt-1">Create</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#735735] opacity-80 px-3 py-1.5 hover:text-[#904900] transition-all" href="#">
+<span class="material-symbols-outlined">rocket_launch</span>
+<span class="font-['Plus_Jakarta_Sans'] text-[10px] uppercase tracking-[0.05em] font-medium mt-1">Campaigns</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#735735] opacity-80 px-3 py-1.5 hover:text-[#904900] transition-all" href="#">
+<span class="material-symbols-outlined">insert_chart</span>
+<span class="font-['Plus_Jakarta_Sans'] text-[10px] uppercase tracking-[0.05em] font-medium mt-1">Analytics</span>
+</a>
+</nav>
+</body></html>
