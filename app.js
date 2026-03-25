@@ -1,6 +1,7 @@
 // MarkU Marketing Skills App - Main Application Logic
 (function(){
   window.app = window.app || {};
+  const app = window.app;
   const $ = s => document.querySelector(s);
   const $$ = s => document.querySelectorAll(s);
   app.$ = $;
@@ -35,13 +36,16 @@
       localStorage.setItem('marku_sessions', JSON.stringify(sessions));
       if (currentView === 'history') app.renderHistoryView();
     },
-    getProfiles: () => JSON.parse(localStorage.getItem('marku_profiles') || '[{"id":"default","name":"Default Profile","content":""}]'),
+    getProfiles: () => {
+      let ps = JSON.parse(localStorage.getItem('marku_profiles') || '[{"id":"default","name":"Default Profile","content":"","team":[]}]');
+      return ps.map(p => ({ ...p, team: p.team || [] }));
+    },
     saveProfiles: (profiles) => localStorage.setItem('marku_profiles', JSON.stringify(profiles)),
     getActiveProfileId: () => localStorage.getItem('marku_active_profile') || 'default',
     setActiveProfileId: (id) => localStorage.setItem('marku_active_profile', id),
     getProductCtx: () => {
-      const ps = JSON.parse(localStorage.getItem('marku_profiles') || '[{"id":"default","name":"Default Profile","content":""}]');
-      const aid = localStorage.getItem('marku_active_profile') || 'default';
+      const ps = Storage.getProfiles();
+      const aid = Storage.getActiveProfileId();
       const p = ps.find(x => x.id === aid);
       return p ? p.content : '';
     },
@@ -124,21 +128,112 @@
     });
   }
 
+  app.showModal = function(config) {
+    const container = $('#modal-container');
+    if (!container) return;
+    
+    container.innerHTML = `
+      <div class="modal-backdrop" onclick="app.closeModal()"></div>
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="modal-title">${config.title || 'Modal'}</h2>
+          <button class="modal-close" onclick="app.closeModal()">
+            <span class="material-symbols-outlined">close</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          ${config.body || ''}
+        </div>
+        <div class="modal-footer" style="margin-top:24px; display:flex; justify-content:flex-end; gap:12px;">
+          ${config.footer || ''}
+        </div>
+      </div>
+    `;
+    container.classList.add('active');
+  };
+
+  app.closeModal = function() {
+    const container = $('#modal-container');
+    if (container) container.classList.remove('active');
+  };
+
   app.newProfile = function() {
-    const name = prompt("Enter a name for the new project profile:");
-    if (!name || !name.trim()) return;
+    app.showModal({
+      title: 'Create Project Team',
+      body: `
+        <div class="form-group">
+          <label class="form-label">Project Name</label>
+          <input type="text" id="modal-project-name" class="form-input" placeholder="e.g. Acme Marketing SEO">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Add Team Member (Email)</label>
+          <div style="display:flex; gap:8px;">
+            <input type="email" id="modal-team-email" class="form-input" placeholder="colleague@example.com">
+            <button onclick="app.addTeamMemberToModal()" class="btn btn-primary" style="padding:0 12px;"><span class="material-symbols-outlined">add</span></button>
+          </div>
+          <div id="modal-team-list" class="team-list"></div>
+        </div>
+      `,
+      footer: `
+        <button onclick="app.closeModal()" class="btn btn-ghost">Cancel</button>
+        <button onclick="app.saveNewProfileFromModal()" class="btn btn-primary">Create Project</button>
+      `
+    });
+    window.modalTeam = [];
+  };
+
+  app.addTeamMemberToModal = function() {
+    const emailInput = $('#modal-team-email');
+    const email = emailInput.value.trim();
+    if (!email || !email.includes('@')) return app.notify('Valid email required');
+    if (window.modalTeam.includes(email)) return app.notify('Already added');
+    
+    window.modalTeam.push(email);
+    emailInput.value = '';
+    app.renderModalTeamList();
+  };
+
+  app.renderModalTeamList = function() {
+    const list = $('#modal-team-list');
+    if (!list) return;
+    list.innerHTML = window.modalTeam.map((email, idx) => `
+      <div class="team-member">
+        <span>${email}</span>
+        <button onclick="app.removeFromModalTeam(${idx})" class="remove-member">
+          <span class="material-symbols-outlined">delete</span>
+        </button>
+      </div>
+    `).join('');
+  };
+
+  app.removeFromModalTeam = function(idx) {
+    window.modalTeam.splice(idx, 1);
+    app.renderModalTeamList();
+  };
+
+  app.saveNewProfileFromModal = function() {
+    const nameInput = $('#modal-project-name');
+    const name = nameInput.value.trim();
+    if (!name) return app.notify('Project name required');
+    
     const profiles = Storage.getProfiles();
     const newId = 'prof_' + Date.now();
-    profiles.push({ id: newId, name: name.trim(), content: '' });
+    profiles.push({ id: newId, name, content: '', team: [...window.modalTeam] });
     Storage.saveProfiles(profiles);
     Storage.setActiveProfileId(newId);
+    app.closeModal();
+    app.notify(`Created Project: ${name}`);
     renderDashboard();
     if (currentView === 'settings') renderSettingsView();
   };
 
   app.switchProfile = function(id) {
+    console.log("Switching profile to:", id);
     if (!id) return;
     Storage.setActiveProfileId(id);
+    const profiles = Storage.getProfiles();
+    const prof = profiles.find(p => p.id === id);
+    if(prof) app.notify(`Switched to: ${prof.name}`);
     renderDashboard();
     if (currentView === 'settings') renderSettingsView();
   };
@@ -747,13 +842,6 @@
   window.app.openSkill = (id) => { window.location.hash = 'skill-tool'; navigate('skill-tool', id); };
   window.app.resumeSession = resumeSession;
   window.app.deleteSession = (id) => { if(confirm('Delete this session?')){ Storage.deleteSession(id); } };
-  
-  window.app.toggleTheme = () => {
-    document.body.classList.toggle('light-theme');
-    const isLight = document.body.classList.contains('light-theme');
-    localStorage.setItem('marku_theme', isLight ? 'light' : 'dark');
-  };
-
   window.app.notify = (msg) => {
     let container = document.querySelector('.toast-container');
     if (!container) {
@@ -788,6 +876,8 @@
     
     const activeProfileId = Storage.getActiveProfileId();
     const profiles = Storage.getProfiles();
+    const activeProfile = profiles.find(p => p.id === activeProfileId) || {};
+    const team = activeProfile.team || [];
 
     el.innerHTML = `
       <h1 class="view-title">Settings & Resources</h1>
@@ -799,7 +889,7 @@
         </h3>
         <p style="color:var(--text-dim); font-size:0.85rem; margin-bottom:16px;">Manage your active projects and teams. Product context is saved per project.</p>
         
-        <div style="display:flex; gap:12px; flex-wrap:wrap;">
+        <div style="display:flex; gap:12px; flex-wrap:wrap; margin-bottom:20px;">
           <div style="flex:1; min-width:200px;">
             <select id="settings-profile-select" style="width:100%; background:var(--bg-input); color:var(--text); border:1px solid var(--border); padding:10px 14px; border-radius:8px; font-family:inherit; font-size:0.95rem;" onchange="app.switchProfile(this.value)">
                ${profiles.map(p => `<option value="${p.id}" ${p.id === activeProfileId ? 'selected' : ''}>${p.name}</option>`).join('')}
@@ -807,7 +897,75 @@
           </div>
           <button onclick="app.newProfile()" class="btn btn-primary" style="padding:10px 20px;">+ New Project</button>
         </div>
+
+        <div class="team-section" style="border-top:1px solid var(--border); padding-top:20px;">
+          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:12px;">
+            <h4 style="font-size:0.9rem; font-weight:700;">Active Team Members</h4>
+            <button onclick="app.editCurrentProject()" class="btn btn-ghost btn-sm" style="font-size:0.7rem;">Manage Team</button>
+          </div>
+          <div style="display:flex; flex-wrap:wrap; gap:8px;">
+            ${team.length > 0 ? team.map(email => `
+              <div class="chip chip-accent" style="text-transform:none; padding:6px 12px; font-size:0.75rem;">
+                <span class="material-symbols-outlined" style="font-size:14px;">person</span> ${email}
+              </div>
+            `).join('') : '<p style="color:var(--text-muted); font-size:0.8rem;">No team members added yet.</p>'}
+          </div>
+        </div>
       </div>
+    `;
+  }
+
+  app.editCurrentProject = function() {
+    const activeProfileId = Storage.getActiveProfileId();
+    const profiles = Storage.getProfiles();
+    const p = profiles.find(x => x.id === activeProfileId);
+    if (!p) return;
+
+    window.modalTeam = [...(p.team || [])];
+    
+    app.showModal({
+      title: 'Manage Project Team',
+      body: `
+        <div class="form-group">
+          <label class="form-label">Project Name</label>
+          <input type="text" id="modal-project-name" class="form-input" value="${p.name}">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Add Team Member (Email)</label>
+          <div style="display:flex; gap:8px;">
+            <input type="email" id="modal-team-email" class="form-input" placeholder="colleague@example.com">
+            <button onclick="app.addTeamMemberToModal()" class="btn btn-primary" style="padding:0 12px;"><span class="material-symbols-outlined">add</span></button>
+          </div>
+          <div id="modal-team-list" class="team-list"></div>
+        </div>
+      `,
+      footer: `
+        <button onclick="app.closeModal()" class="btn btn-ghost">Cancel</button>
+        <button onclick="app.updateProjectFromModal()" class="btn btn-primary">Save Changes</button>
+      `
+    });
+    app.renderModalTeamList();
+  };
+
+  app.updateProjectFromModal = function() {
+    const nameInput = $('#modal-project-name');
+    const name = nameInput.value.trim();
+    if (!name) return app.notify('Project name required');
+    
+    const activeProfileId = Storage.getActiveProfileId();
+    const profiles = Storage.getProfiles();
+    const idx = profiles.findIndex(x => x.id === activeProfileId);
+    
+    if (idx > -1) {
+      profiles[idx].name = name;
+      profiles[idx].team = [...window.modalTeam];
+      Storage.saveProfiles(profiles);
+      app.closeModal();
+      app.notify(`Project updated: ${name}`);
+      renderDashboard();
+      if (currentView === 'settings') renderSettingsView();
+    }
+  };
 
       <!-- Theme Customization -->
       <div class="card mb-24" style="background:var(--bg-elevated); border:1px solid var(--border);">

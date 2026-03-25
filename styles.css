@@ -430,3 +430,43 @@ input, textarea, select, button {
     padding-bottom: calc(var(--nav-height) + env(safe-area-inset-bottom) + 16px);
   }
 }
+/* Modal System */
+#modal-container {
+  position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+  z-index: 2000; display: none;
+  align-items: center; justify-content: center;
+  padding: 20px;
+}
+#modal-container.active { display: flex; }
+
+.modal-backdrop {
+  position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.6); backdrop-filter: blur(8px);
+}
+.modal-content {
+  position: relative; z-index: 10;
+  background: var(--bg-card); border: 1px solid var(--border);
+  width: 100%; max-width: 500px; border-radius: 24px;
+  padding: 32px; box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+  animation: modal-in 0.3s ease-out;
+}
+@keyframes modal-in {
+  from { transform: scale(0.95); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.modal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; }
+.modal-title { font-size: 1.5rem; font-weight: 800; letter-spacing: -0.02em; }
+.modal-close { 
+  background: none; border: none; color: var(--text-dim); cursor: pointer; 
+  width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;
+}
+.modal-close:hover { color: var(--primary); }
+
+.team-list { margin-top: 12px; display: flex; flex-direction: column; gap: 8px; }
+.team-member {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 8px 12px; background: var(--bg-input); border-radius: 10px;
+  border: 1px solid var(--border); font-size: 0.9rem;
+}
+.remove-member { color: var(--error); background: none; border: none; cursor: pointer; font-size: 18px; }
