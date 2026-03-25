@@ -905,12 +905,54 @@
           </div>
           <div style="display:flex; flex-wrap:wrap; gap:8px;">
             ${team.length > 0 ? team.map(email => `
-              <div class="chip chip-accent" style="text-transform:none; padding:6px 12px; font-size:0.75rem;">
+              <div class="chip chip-accent" style="text-transform:none; padding:6px 14px; font-size:0.75rem;">
                 <span class="material-symbols-outlined" style="font-size:14px;">person</span> ${email}
               </div>
             `).join('') : '<p style="color:var(--text-muted); font-size:0.8rem;">No team members added yet.</p>'}
           </div>
         </div>
+      </div>
+
+      <!-- Theme Customization -->
+      <div class="card mb-24" style="background:var(--bg-elevated); border:1px solid var(--border);">
+        <h3 class="section-heading" style="margin-top:0; font-size:1.1rem; display:flex; align-items:center; gap:8px;">
+          <span class="material-symbols-outlined" style="color:var(--primary);">contrast</span> Appearance
+        </h3>
+        <p style="color:var(--text-dim); font-size:0.85rem; margin-bottom:16px;">Customize the look and feel of your workspace.</p>
+        
+        <button onclick="app.toggleTheme()" class="btn btn-primary" style="padding:10px 20px; display:flex; gap:8px; align-items:center;">
+          <span class="material-symbols-outlined">contrast</span> Toggle Theme
+        </button>
+      </div>
+
+      <!-- General User Guide -->
+      <div class="card mb-24" style="background:var(--bg-elevated); border:1px solid var(--border);">
+        <h3 class="section-heading" style="margin-top:0; font-size:1.1rem; display:flex; align-items:center; gap:8px;">
+          <span class="material-symbols-outlined" style="color:var(--secondary);">menu_book</span> User Guide
+        </h3>
+        <div style="color:var(--text-dim); font-size:0.9rem; line-height:1.6; margin-top:10px;">
+          <p style="margin-bottom:10px;"><strong>Welcome to MarkU, your AI Marketing OS.</strong> Here is how to get the most out of it:</p>
+          <ul style="padding-left:20px; margin-bottom:10px;">
+            <li style="margin-bottom:6px;"><strong>1. Create a Project Team:</strong> Use the dropdown above to create a dedicated profile for each client or project. Context is saved per project!</li>
+            <li style="margin-bottom:6px;"><strong>2. Setup Product Context:</strong> Go to the Skills Hub and use the <em>Product Context</em> skill first. Tell the AI about your product, and it will remember for all future skills.</li>
+            <li style="margin-bottom:6px;"><strong>3. Use the Skills Hub:</strong> Looking for SEO help? Need a mock landing page? Select the relevant skill from the Skills Hub and answer the AI's questions.</li>
+            <li style="margin-bottom:6px;"><strong>4. Export Your Work:</strong> Inside any skill chat, click the PDF icon at the top to export your fully formatted marketing strategy.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Support / Contact -->
+      <div class="card" style="background:var(--bg-elevated); border:1px solid var(--border);">
+        <h3 class="section-heading" style="margin-top:0; font-size:1.1rem; display:flex; align-items:center; gap:8px;">
+          <span class="material-symbols-outlined" style="color:var(--accent);">support_agent</span> Feedback & Support
+        </h3>
+        <p style="color:var(--text-dim); font-size:0.85rem; margin-bottom:16px;">We are continuously improving MarkU. Let us know what integrations, skills, or features you want to see next! Directly email us at <strong>activohietz@gmail.com</strong>.</p>
+        
+        <form action="mailto:activohietz@gmail.com" method="GET" style="display:flex; flex-direction:column; gap:12px;">
+          <input type="hidden" name="subject" value="MarkU Feedback & Support">
+          <textarea name="body" placeholder="Describe your issue or feature request here..." style="width:100%; min-height:100px; background:var(--bg-input); border:1px solid var(--border); border-radius:8px; padding:12px; color:var(--text); font-family:inherit; resize:vertical;"></textarea>
+          <button type="submit" class="btn btn-primary" style="align-self:flex-start;">Submit Ticket via Email</button>
+        </form>
       </div>
     `;
   }
@@ -966,50 +1008,6 @@
       if (currentView === 'settings') renderSettingsView();
     }
   };
-
-      <!-- Theme Customization -->
-      <div class="card mb-24" style="background:var(--bg-elevated); border:1px solid var(--border);">
-        <h3 class="section-heading" style="margin-top:0; font-size:1.1rem; display:flex; align-items:center; gap:8px;">
-          <span class="material-symbols-outlined" style="color:var(--primary);">contrast</span> Appearance
-        </h3>
-        <p style="color:var(--text-dim); font-size:0.85rem; margin-bottom:16px;">Customize the look and feel of your workspace.</p>
-        
-        <button onclick="app.toggleTheme()" class="btn btn-primary" style="padding:10px 20px; display:flex; gap:8px; align-items:center;">
-          <span class="material-symbols-outlined">contrast</span> Toggle Theme
-        </button>
-      </div>
-
-      <!-- General User Guide -->
-      <div class="card mb-24" style="background:var(--bg-elevated); border:1px solid var(--border);">
-        <h3 class="section-heading" style="margin-top:0; font-size:1.1rem; display:flex; align-items:center; gap:8px;">
-          <span class="material-symbols-outlined" style="color:var(--secondary);">menu_book</span> User Guide
-        </h3>
-        <div style="color:var(--text-dim); font-size:0.9rem; line-height:1.6; margin-top:10px;">
-          <p style="margin-bottom:10px;"><strong>Welcome to MarkU, your AI Marketing OS.</strong> Here is how to get the most out of it:</p>
-          <ul style="padding-left:20px; margin-bottom:10px;">
-            <li style="margin-bottom:6px;"><strong>1. Create a Project Team:</strong> Use the dropdown above to create a dedicated profile for each client or project. Context is saved per project!</li>
-            <li style="margin-bottom:6px;"><strong>2. Setup Product Context:</strong> Go to the Skills Hub and use the <em>Product Context</em> skill first. Tell the AI about your product, and it will remember for all future skills.</li>
-            <li style="margin-bottom:6px;"><strong>3. Use the Skills Hub:</strong> Looking for SEO help? Need a mock landing page? Select the relevant skill from the Skills Hub and answer the AI's questions.</li>
-            <li style="margin-bottom:6px;"><strong>4. Export Your Work:</strong> Inside any skill chat, click the PDF icon at the top to export your fully formatted marketing strategy.</li>
-          </ul>
-        </div>
-      </div>
-
-      <!-- Support / Contact -->
-      <div class="card" style="background:var(--bg-elevated); border:1px solid var(--border);">
-        <h3 class="section-heading" style="margin-top:0; font-size:1.1rem; display:flex; align-items:center; gap:8px;">
-          <span class="material-symbols-outlined" style="color:var(--accent);">support_agent</span> Feedback & Support
-        </h3>
-        <p style="color:var(--text-dim); font-size:0.85rem; margin-bottom:16px;">We are continuously improving MarkU. Let us know what integrations, skills, or features you want to see next! Directly email us at <strong>activohietz@gmail.com</strong>.</p>
-        
-        <form action="mailto:activohietz@gmail.com" method="GET" style="display:flex; flex-direction:column; gap:12px;">
-          <input type="hidden" name="subject" value="MarkU Feedback & Support">
-          <textarea name="body" placeholder="Describe your issue or feature request here..." style="width:100%; min-height:100px; background:var(--bg-input); border:1px solid var(--border); border-radius:8px; padding:12px; color:var(--text); font-family:inherit; resize:vertical;"></textarea>
-          <button type="submit" class="btn btn-primary" style="align-self:flex-start;">Submit Ticket via Email</button>
-        </form>
-      </div>
-    `;
-  }
 
   // Export Data to Local Device
 
