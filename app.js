@@ -144,7 +144,7 @@
         <div class="modal-body">
           ${config.body || ''}
         </div>
-        <div class="modal-footer" style="margin-top:24px; display:flex; justify-content:flex-end; gap:12px;">
+        <div class="modal-footer">
           ${config.footer || ''}
         </div>
       </div>

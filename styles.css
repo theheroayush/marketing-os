@@ -80,22 +80,18 @@ body {
   backdrop-filter:blur(20px) saturate(1.5);
   border-bottom:1px solid var(--border);
 }
-.app-header .logo {
-  font-size:1.35rem; font-weight:800;
-  background:linear-gradient(135deg,var(--primary),var(--accent));
-  -webkit-background-clip:text; 
-  background-clip:text;
-  -webkit-text-fill-color:transparent;
-  letter-spacing:-0.02em;
-}
-.app-header .header-actions { display:flex; gap:8px; align-items:center; }
+.app-header .logo { display: flex; align-items: center; gap: 10px; }
+.header-logo-img { height: 32px; width: auto; border-radius: 6px; }
+.sidebar-logo-img { height: 40px; width: auto; border-radius: 8px; margin-bottom: 20px; }
+
 .icon-btn {
-  width:40px; height:40px; border-radius:50%; border:none;
+  width:44px; height:44px; border-radius:12px; border:none;
   background:var(--bg-card); color:var(--text-dim);
   display:flex; align-items:center; justify-content:center;
   cursor:pointer; transition:all .2s;
-  font-size:20px;
+  font-size:22px;
 }
+.icon-btn:active { transform: scale(0.95); }
 .icon-btn:hover { background:var(--bg-elevated); color:var(--primary); }
 
 /* Bottom Nav */
@@ -110,13 +106,13 @@ body {
 }
 .nav-item {
   display:flex; flex-direction:column; align-items:center; gap:2px;
-  padding:6px 12px; border-radius:var(--radius-sm);
+  padding:6px 8px; border-radius:var(--radius-sm);
   text-decoration:none; color:var(--text-muted);
   transition:all .2s; cursor:pointer; border:none; background:none;
-  min-width:56px;
+  min-width:48px;
 }
-.nav-item .material-symbols-outlined { font-size:24px; transition:all .2s; }
-.nav-item span:last-child { font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; }
+.nav-item .material-symbols-outlined { font-size:22px; transition:all .2s; }
+.nav-item span:last-child { font-size:8px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; }
 .nav-item.active {
   color:var(--primary);
   background:var(--primary-glow);
@@ -446,8 +442,8 @@ input, textarea, select, button {
 .modal-content {
   position: relative; z-index: 10;
   background: var(--bg-card); border: 1px solid var(--border);
-  width: 100%; max-width: 500px; border-radius: 24px;
-  padding: 32px; box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+  width: 100%; max-width: 500px; border-radius: 20px;
+  padding: 24px; box-shadow: 0 20px 50px rgba(0,0,0,0.5);
   animation: modal-in 0.3s ease-out;
 }
 @keyframes modal-in {
@@ -455,8 +451,13 @@ input, textarea, select, button {
   to { transform: scale(1); opacity: 1; }
 }
 
-.modal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; }
-.modal-title { font-size: 1.5rem; font-weight: 800; letter-spacing: -0.02em; }
+.modal-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 20px; gap: 12px; }
+.modal-title { font-size: 1.25rem; font-weight: 800; letter-spacing: -0.02em; line-height: 1.2; }
+
+@media (min-width: 600px) {
+  .modal-content { padding: 32px; border-radius: 24px; }
+  .modal-title { font-size: 1.5rem; }
+}
 .modal-close { 
   background: none; border: none; color: var(--text-dim); cursor: pointer; 
   width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;
@@ -469,4 +470,32 @@ input, textarea, select, button {
   padding: 8px 12px; background: var(--bg-input); border-radius: 10px;
   border: 1px solid var(--border); font-size: 0.9rem;
 }
-.remove-member { color: var(--error); background: none; border: none; cursor: pointer; font-size: 18px; }
+.modal-footer {
+  margin-top: 24px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 400px) {
+  .modal-footer {
+    flex-direction: column-reverse;
+  }
+  .modal-footer .btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+.btn {
+  display: flex; align-items: center; gap: 8px;
+  padding: 10px 18px; border-radius: 12px; border: none;
+  font-family: inherit; font-size: 0.95rem; font-weight: 700;
+  cursor: pointer; transition: all 0.2s;
+}
+.btn-primary { background: var(--primary); color: #fff; }
+.btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 12px var(--primary-glow); }
+.btn-ghost { background: var(--bg-elevated); color: var(--text-dim); }
+.btn-ghost:hover { background: var(--bg-card-hover); color: var(--text); }
+.btn-sm { padding: 6px 12px; font-size: 0.8rem; border-radius: 8px; }
