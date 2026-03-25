@@ -143,7 +143,13 @@
     if (currentView === 'settings') renderSettingsView();
   };
 
-  // ---- DASHBOARD VIEW ----
+  app.toggleTheme = function() {
+    document.body.classList.toggle('light-theme');
+    const isLight = document.body.classList.contains('light-theme');
+    localStorage.setItem('marku_theme', isLight ? 'light' : 'dark');
+  };
+
+  // ---- INIT ----
   function renderDashboard() {
     const el = $('#view-dashboard');
     if (!el) return;
@@ -803,6 +809,18 @@
         </div>
       </div>
 
+      <!-- Theme Customization -->
+      <div class="card mb-24" style="background:var(--bg-elevated); border:1px solid var(--border);">
+        <h3 class="section-heading" style="margin-top:0; font-size:1.1rem; display:flex; align-items:center; gap:8px;">
+          <span class="material-symbols-outlined" style="color:var(--primary);">contrast</span> Appearance
+        </h3>
+        <p style="color:var(--text-dim); font-size:0.85rem; margin-bottom:16px;">Customize the look and feel of your workspace.</p>
+        
+        <button onclick="app.toggleTheme()" class="btn btn-primary" style="padding:10px 20px; display:flex; gap:8px; align-items:center;">
+          <span class="material-symbols-outlined">contrast</span> Toggle Theme
+        </button>
+      </div>
+
       <!-- General User Guide -->
       <div class="card mb-24" style="background:var(--bg-elevated); border:1px solid var(--border);">
         <h3 class="section-heading" style="margin-top:0; font-size:1.1rem; display:flex; align-items:center; gap:8px;">
@@ -855,6 +873,10 @@
       URL.revokeObjectURL(url);
     }, 0);
   };
+
+  if (localStorage.getItem('marku_theme') === 'light') {
+    document.body.classList.add('light-theme');
+  }
 
   if(document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', init); }
   else { init(); }

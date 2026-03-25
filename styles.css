@@ -416,3 +416,17 @@ select option { background:var(--bg-card); color:var(--text); }
 /* Animations */
 @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.5} }
 .animate-pulse { animation:pulse 2s infinite; }
+
+/* iOS Compatibility & Mobile Tweaks */
+input, textarea, select, button {
+  font-size: 16px; /* Prevents auto-zoom on iOS */
+  max-width: 100%;
+}
+.view {
+  padding-bottom: 90px;
+}
+@supports (padding-bottom: env(safe-area-inset-bottom)) {
+  body {
+    padding-bottom: calc(var(--nav-height) + env(safe-area-inset-bottom) + 16px);
+  }
+}

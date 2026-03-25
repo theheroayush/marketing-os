@@ -1579,6 +1579,7 @@ ANALYSIS FRAMEWORK:
 4. CHANNEL EFFICIENCY: Which channels are 'feeding' the funnel vs. just 'closing' it.
 
 START by asking: "What are your top 3 marketing channels right now, and which one *feels* like it's driving the most revenue (even if your dashboard says otherwise)?"`
+  },
   {
     id:"mock-landing-page", cat:"CRO", name:"Mock Landing Page", emoji:"🎨",
     tagline:"Generate high-converting landing page wireframes & copy",
