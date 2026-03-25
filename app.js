@@ -10,6 +10,15 @@
   let currentView = 'dashboard';
   let catFilter = 'All';
   let searchQ = '';
+
+  const footerHTML = `
+    <div style="padding: 40px 20px 20px; text-align: center; color: var(--text-muted); font-size: 0.75rem; margin-top: 20px;">
+      <a href="mailto:activohietz@gmail.com" style="color:var(--text-dim); text-decoration:none; display:flex; align-items:center; justify-content:center; gap:6px; margin-bottom:8px; font-weight:600;">
+        <span class="material-symbols-outlined" style="font-size:16px;">support_agent</span> Support Ticket
+      </a>
+      &copy; 2026 MarkU
+    </div>
+  `;
   
   // Storage Helper
   const Storage = {
@@ -37,6 +46,7 @@
       return p ? p.content : '';
     },
     saveProductCtx: (ctx) => {
+      const profiles = Storage.getProfiles();
       let p = profiles.find(x => x.id === Storage.getActiveProfileId());
       if (p) {
         p.content = ctx;
@@ -100,6 +110,7 @@
       else if (view === 'campaigns') renderCampaignsView();
       else if (view === 'analytics') renderAnalyticsView();
       else if (view === 'history') renderHistoryView();
+      else if (view === 'settings') renderSettingsView();
     }
     window.scrollTo({top:0, behavior:'smooth'});
   }
@@ -113,6 +124,25 @@
     });
   }
 
+  app.newProfile = function() {
+    const name = prompt("Enter a name for the new project profile:");
+    if (!name || !name.trim()) return;
+    const profiles = Storage.getProfiles();
+    const newId = 'prof_' + Date.now();
+    profiles.push({ id: newId, name: name.trim(), content: '' });
+    Storage.saveProfiles(profiles);
+    Storage.setActiveProfileId(newId);
+    renderDashboard();
+    if (currentView === 'settings') renderSettingsView();
+  };
+
+  app.switchProfile = function(id) {
+    if (!id) return;
+    Storage.setActiveProfileId(id);
+    renderDashboard();
+    if (currentView === 'settings') renderSettingsView();
+  };
+
   // ---- DASHBOARD VIEW ----
   function renderDashboard() {
     const el = $('#view-dashboard');
@@ -125,12 +155,12 @@
       <div style="background:var(--bg-elevated); padding:16px; border-radius:var(--radius-sm); margin-bottom: 24px; display:flex; gap:12px; align-items:center; border:1px solid var(--border);">
         <span class="material-symbols-outlined" style="color:var(--primary);">business_center</span>
         <div style="flex:1;">
-          <div style="font-size:0.75rem; color:var(--text-muted); margin-bottom:4px; font-weight:700; text-transform:uppercase; letter-spacing:0.05em;">Active Product Profile</div>
+          <div style="font-size:0.75rem; color:var(--text-muted); margin-bottom:4px; font-weight:700; text-transform:uppercase; letter-spacing:0.05em;">Active Project Team</div>
           <select id="profile-select" style="width:100%; background:var(--bg-input); color:var(--text); border:1px solid var(--border); padding:8px 12px; border-radius:8px; font-family:inherit; font-size:0.95rem;" onchange="app.switchProfile(this.value)">
              ${profiles.map(p => `<option value="${p.id}" ${p.id === activeProfileId ? 'selected' : ''}>${p.name}</option>`).join('')}
           </select>
         </div>
-        <button onclick="app.newProfile()" style="background:var(--primary); color:#fff; border:none; padding:10px 16px; border-radius:8px; cursor:pointer; font-family:inherit; font-weight:600; font-size:0.9rem; transition:all .2s;">+ New</button>
+        <button onclick="app.newProfile()" style="background:var(--primary); color:#fff; border:none; padding:10px 16px; border-radius:8px; cursor:pointer; font-family:inherit; font-weight:600; font-size:0.9rem; transition:all .2s;" title="Create New Project Team">+ New</button>
       </div>
     `;
     
@@ -193,6 +223,7 @@
           ${popSkills.map(s => renderQuickSkill(s.id, s.name, s.tagline, s.emoji, window.CATS[s.cat]?.color || '#f472b6')).join('')}
         </div>
       </div>
+      ${footerHTML}
     `;
   }
 
@@ -305,7 +336,7 @@
     // Use proper opener message
     const openMsg = {
       role: 'assistant',
-      content: `<strong style="font-size:1.1em">${activeSkill.name}</strong> — ${activeSkill.tagline}${ctxNote}\n\n${window.getSkillOpener(activeSkill.id)}`
+      content: `**${activeSkill.name}** — ${activeSkill.tagline}${ctxNote}\n\n${window.getSkillOpener(activeSkill.id)}`
     };
     messages = [openMsg];
     renderChatView();
@@ -340,7 +371,7 @@
           <p style="font-size:0.7rem;color:${accentColor};margin-top:2px;">${catInfo.icon} ${activeSkill.cat}</p>
         </div>
         <div style="display:flex;gap:8px;">
-          <button class="icon-btn" onclick="window.print()" title="Export PDF"><span class="material-symbols-outlined">picture_as_pdf</span></button>
+          <button class="icon-btn" onclick="app.exportPDF()" title="Export Customized PDF"><span class="material-symbols-outlined">picture_as_pdf</span></button>
           <button class="icon-btn" onclick="app.openSkill('${activeSkill.id}')" title="New Session" style="color:var(--text-dim)"><span class="material-symbols-outlined">restart_alt</span></button>
           <button class="icon-btn" onclick="app.triggerSetupApiKey()" title="Setup API Key" style="color:var(--text-dim)"><span class="material-symbols-outlined">key</span></button>
         </div>
@@ -381,6 +412,10 @@
       <!-- Chat Input Area (Adjusted for bottom nav on mobile) -->
       <div class="chat-input-wrapper">
         <form onsubmit="app.sendChatMessage(event)" style="position:relative;max-width:600px;margin:0 auto;display:flex;gap:8px;align-items:flex-end;">
+          <input type="file" id="local-file-upload" style="display:none" onchange="app.handleFileUpload(event)" accept="image/*,.txt,.md,.csv,.json">
+          <button type="button" onclick="document.getElementById('local-file-upload').click()" style="width:44px;height:44px;border-radius:12px;border:1px solid var(--border);background:var(--card-bg);color:var(--text-muted);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:0.2s;flex-shrink:0;" title="Attach Local File">
+            <span class="material-symbols-outlined" style="font-size:22px;transform:rotate(45deg);">attach_file</span>
+          </button>
           <textarea id="chat-input" placeholder="Type your answer... (Press Enter to send)" 
                     style="flex:1;background:var(--card-bg);border:1px solid var(--border);border-radius:12px;padding:12px 45px 12px 14px;color:var(--text);font-family:inherit;font-size:0.95rem;resize:none;max-height:120px;min-height:44px;"
                     oninput="this.style.height='';this.style.height=Math.min(this.scrollHeight, 120)+'px';"
@@ -412,6 +447,36 @@
     if (key !== null) {
       localStorage.setItem('anthropic_key', key.trim());
       alert(key.trim() ? "API key saved locally!" : "API key cleared.");
+    }
+  };
+
+  app.handleFileUpload = function(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    
+    app.notify("Reading local file...");
+    const reader = new FileReader();
+    
+    reader.onload = function(event) {
+      const content = event.target.result;
+      const fileType = file.type.startsWith('image/') ? 'Image' : 'Document';
+      let messageContent = `[Attached Local ${fileType}: ${file.name}]\n`;
+      
+      if (fileType === 'Document') {
+        messageContent += `\n\`\`\`\n${content.slice(0, 2000)}${content.length > 2000 ? '\n...[truncated]' : ''}\n\`\`\``;
+      } else {
+        messageContent += `\n*(Image data loaded locally via FileReader)*`;
+      }
+
+      messages.push({ role: 'user', content: messageContent });
+      app.notify("Attachment added to context.");
+      renderChatView();
+    };
+
+    if (file.type.startsWith('image/')) {
+      reader.readAsDataURL(file);
+    } else {
+      reader.readAsText(file);
     }
   };
 
@@ -491,9 +556,9 @@
         ts: Date.now()
       });
 
-      // If this is product context, extract it
       if (activeSkill.id === 'product-context' && messages.length > 4) {
         Storage.saveProductCtx(messages.map(m => `${m.role}: ${m.content}`).join("\n\n").slice(0, 3000));
+        app.notify("Product context synced!");
       }
 
     } catch (err) {
@@ -551,6 +616,7 @@
         ${renderQuickSkill('analytics','Analytics Setup','Measure what matters, ignore what doesn\'t','📊','#1A8C5E')}
         ${renderQuickSkill('revops','Revenue Operations','Fix leaks between marketing and sales','🔧','#1A7A4F')}
       </div>
+      ${footerHTML}
     `;
   }
 
@@ -614,6 +680,7 @@
           </div>
         `).join('') : '<div style="text-align:center;padding:40px;color:var(--text-muted)">No history yet. Start a skill in the Skills Hub!</div>'}
       </div>
+      ${footerHTML}
     `;
   }
 
@@ -641,6 +708,35 @@
     });
   }
 
+  window.app.exportPDF = () => {
+    app.notify('Preparing custom document...');
+    const profiles = Storage.getProfiles();
+    const activeProfile = profiles.find(p => p.id === Storage.getActiveProfileId());
+    const projectName = activeProfile ? activeProfile.name : "MarkU Report";
+    
+    let header = document.getElementById('print-header');
+    if (!header) {
+      header = document.createElement('div');
+      header.id = 'print-header';
+      header.className = 'print-only';
+      document.body.prepend(header);
+    }
+    
+    header.innerHTML = `
+      <div style="border-bottom:2px solid #000; padding-bottom:10px; margin-bottom:20px; text-align:left;">
+        <h1 style="margin:0; font-size:28px; font-weight:800;">MarkU AI Report</h1>
+        <div style="display:flex; justify-content:space-between; margin-top:10px; font-size:14px; color:#444; font-weight:600;">
+          <span>Project Team: <strong>${projectName}</strong></span>
+          <span>Date: ${new Date().toLocaleDateString()}</span>
+        </div>
+      </div>
+    `;
+    
+    setTimeout(() => {
+      window.print();
+    }, 150);
+  };
+
   window.app.navigate = navigate;
   window.app.openSkill = (id) => { window.location.hash = 'skill-tool'; navigate('skill-tool', id); };
   window.app.resumeSession = resumeSession;
@@ -652,21 +748,21 @@
     localStorage.setItem('marku_theme', isLight ? 'light' : 'dark');
   };
 
-  window.app.switchProfile = (id) => {
-    Storage.setActiveProfileId(id);
-    if (currentView === 'dashboard') app.renderDashboard();
-  };
-
-  window.app.newProfile = () => {
-    const name = prompt("Enter a name for the new Product Profile:", "Client X");
-    if (name && name.trim()) {
-      const profiles = Storage.getProfiles();
-      const newId = 'p_' + Date.now();
-      profiles.push({ id: newId, name: name.trim(), content: '' });
-      Storage.saveProfiles(profiles);
-      Storage.setActiveProfileId(newId);
-      app.renderDashboard();
+  window.app.notify = (msg) => {
+    let container = document.querySelector('.toast-container');
+    if (!container) {
+      container = document.createElement('div');
+      container.className = 'toast-container';
+      document.body.appendChild(container);
     }
+    const toast = document.createElement('div');
+    toast.className = 'toast';
+    toast.textContent = msg;
+    container.appendChild(toast);
+    setTimeout(() => {
+      toast.classList.add('out');
+      setTimeout(() => toast.remove(), 300);
+    }, 3000);
   };
 
   window.app.focusSearch = () => {
@@ -680,6 +776,65 @@
     }, 150);
   };
   
+  function renderSettingsView() {
+    const el = $('#view-settings');
+    if (!el) return;
+    
+    const activeProfileId = Storage.getActiveProfileId();
+    const profiles = Storage.getProfiles();
+
+    el.innerHTML = `
+      <h1 class="view-title">Settings & Resources</h1>
+      
+      <!-- Profile Management -->
+      <div class="card mb-24" style="background:var(--bg-elevated); border:1px solid var(--border);">
+        <h3 class="section-heading" style="margin-top:0; font-size:1.1rem; display:flex; align-items:center; gap:8px;">
+          <span class="material-symbols-outlined" style="color:var(--primary);">business_center</span> Project Teams
+        </h3>
+        <p style="color:var(--text-dim); font-size:0.85rem; margin-bottom:16px;">Manage your active projects and teams. Product context is saved per project.</p>
+        
+        <div style="display:flex; gap:12px; flex-wrap:wrap;">
+          <div style="flex:1; min-width:200px;">
+            <select id="settings-profile-select" style="width:100%; background:var(--bg-input); color:var(--text); border:1px solid var(--border); padding:10px 14px; border-radius:8px; font-family:inherit; font-size:0.95rem;" onchange="app.switchProfile(this.value)">
+               ${profiles.map(p => `<option value="${p.id}" ${p.id === activeProfileId ? 'selected' : ''}>${p.name}</option>`).join('')}
+            </select>
+          </div>
+          <button onclick="app.newProfile()" class="btn btn-primary" style="padding:10px 20px;">+ New Project</button>
+        </div>
+      </div>
+
+      <!-- General User Guide -->
+      <div class="card mb-24" style="background:var(--bg-elevated); border:1px solid var(--border);">
+        <h3 class="section-heading" style="margin-top:0; font-size:1.1rem; display:flex; align-items:center; gap:8px;">
+          <span class="material-symbols-outlined" style="color:var(--secondary);">menu_book</span> User Guide
+        </h3>
+        <div style="color:var(--text-dim); font-size:0.9rem; line-height:1.6; margin-top:10px;">
+          <p style="margin-bottom:10px;"><strong>Welcome to MarkU, your AI Marketing OS.</strong> Here is how to get the most out of it:</p>
+          <ul style="padding-left:20px; margin-bottom:10px;">
+            <li style="margin-bottom:6px;"><strong>1. Create a Project Team:</strong> Use the dropdown above to create a dedicated profile for each client or project. Context is saved per project!</li>
+            <li style="margin-bottom:6px;"><strong>2. Setup Product Context:</strong> Go to the Skills Hub and use the <em>Product Context</em> skill first. Tell the AI about your product, and it will remember for all future skills.</li>
+            <li style="margin-bottom:6px;"><strong>3. Use the Skills Hub:</strong> Looking for SEO help? Need a mock landing page? Select the relevant skill from the Skills Hub and answer the AI's questions.</li>
+            <li style="margin-bottom:6px;"><strong>4. Export Your Work:</strong> Inside any skill chat, click the PDF icon at the top to export your fully formatted marketing strategy.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Support / Contact -->
+      <div class="card" style="background:var(--bg-elevated); border:1px solid var(--border);">
+        <h3 class="section-heading" style="margin-top:0; font-size:1.1rem; display:flex; align-items:center; gap:8px;">
+          <span class="material-symbols-outlined" style="color:var(--accent);">support_agent</span> Feedback & Support
+        </h3>
+        <p style="color:var(--text-dim); font-size:0.85rem; margin-bottom:16px;">We are continuously improving MarkU. Let us know what integrations, skills, or features you want to see next! Directly email us at <strong>activohietz@gmail.com</strong>.</p>
+        
+        <form action="mailto:activohietz@gmail.com" method="GET" style="display:flex; flex-direction:column; gap:12px;">
+          <input type="hidden" name="subject" value="MarkU Feedback & Support">
+          <textarea name="body" placeholder="Describe your issue or feature request here..." style="width:100%; min-height:100px; background:var(--bg-input); border:1px solid var(--border); border-radius:8px; padding:12px; color:var(--text); font-family:inherit; resize:vertical;"></textarea>
+          <button type="submit" class="btn btn-primary" style="align-self:flex-start;">Submit Ticket via Email</button>
+        </form>
+      </div>
+    `;
+  }
+
   // Export Data to Local Device
 
   window.app.exportData = function() {

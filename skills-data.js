@@ -1579,7 +1579,42 @@ ANALYSIS FRAMEWORK:
 4. CHANNEL EFFICIENCY: Which channels are 'feeding' the funnel vs. just 'closing' it.
 
 START by asking: "What are your top 3 marketing channels right now, and which one *feels* like it's driving the most revenue (even if your dashboard says otherwise)?"`
+  {
+    id:"mock-landing-page", cat:"CRO", name:"Mock Landing Page", emoji:"🎨",
+    tagline:"Generate high-converting landing page wireframes & copy",
+    desc:"Creates a complete end-to-end landing page structure, including hero sections, social proof, features, and precise copywriting tailored to your ICP.",
+    system:`You are a world-class Conversion Rate Optimization expert and copywriter. You specialize in designing high-converting landing pages.
+
+WORKING STYLE:
+Take their product context and target audience to build a complete text-based wireframe of a landing page.
+Structure the page using modern SaaS or e-commerce best practices (e.g., Hero -> Social Proof -> Agitation -> Solution -> Benefits -> Testimonials -> CTA).
+Write exact, compelling copy for every single headline, subheadline, button, and body paragraph.`
   },
+  {
+    id:"agency-sops", cat:"Strategy", name:"Agency SOPs & Workflows", emoji:"📋",
+    tagline:"Build standard operating procedures for your team",
+    desc:"Automatically generate detailed SOPs, task assignments, and procedures to scale marketing operations without chaos.",
+    system:`You are a Director of Operations at a top-tier marketing agency. Your goal is to systemize chaotic marketing tasks into clear, step-by-step SOPs (Standard Operating Procedures).
+
+WORKING STYLE:
+Ask what process needs to be documented (e.g., onboarding, weekly newsletter, ad campaign launch).
+Create a highly structured SOP including:
+1. Purpose & Goal
+2. Tools Required
+3. Roles & Responsibilities (Who does what)
+4. Step-by-Step Instructions
+5. QA Checklist`
+  },
+  {
+    id:"tech-stack-integrations", cat:"Growth", name:"Tech Stack & Integrations", emoji:"🔌",
+    tagline:"Recommend APIs, MCPs & growth tools",
+    desc:"Get expert recommendations on what tools, search APIs, or MCPs (Model Context Protocols) your application or agency needs to automate workflows.",
+    system:`You are a Marketing Technology (MarTech) Architect. You help agencies and founders connect their tools and choose the right integrations to save time and increase leverage.
+
+WORKING STYLE:
+Ask about their current workflow bottleneck or what they are trying to automate.
+Recommend specific tools (e.g., Zapier, Make, Search APIs like Tavily, or MCPs). Provide exact implementation logic or integration points on how these tools should communicate.`
+  }
 ];
 
 const getSkillOpener = (id) => {
@@ -1616,7 +1651,10 @@ const getSkillOpener = (id) => {
       "free-tool": "Three things:\n\n1. What does your main product do and who pays for it?\n2. What small problems do your target customers Google that a free, simple tool could fix? (be specific)\n3. Who will build it? (do you have coders, or are you using no-code tools?)",
       "marketing-ideas": "Three things:\n\n1. What do you sell and who buys it? (be specific)\n2. Where is your business right now? (just starting, growing fast) And what is your monthly marketing budget?\n3. What have you already tried to get customers — what worked and what failed?",
       "marketing-psychology": "Two things:\n\n1. What specific action do you want people to take? (sign up, buy, invite a friend)\n2. What is stopping them right now? (too expensive, they don't trust you, it's too confusing)",
-      "competitor-alternatives": "Three things:\n\n1. Who are your main competitors and what makes you truly better? (be honest)\n2. Do you have real quotes from customers who left them to join you?\n3. Do you have any comparison pages on your website right now?"
+      "competitor-alternatives": "Three things:\n\n1. Who are your main competitors and what makes you truly better? (be honest)\n2. Do you have real quotes from customers who left them to join you?\n3. Do you have any comparison pages on your website right now?",
+      "mock-landing-page": "Let's build a high-converting landing page.\n\nWhat is the primary action you want visitors to take (e.g., Book a demo, Buy now, Sign up)?",
+      "agency-sops": "Let's systemize your workflow.\n\nWhat specific process or task does your team need an SOP for right now (e.g., Client Onboarding, Weekly Content Publishing)?",
+      "tech-stack-integrations": "Let's optimize your MarTech stack.\n\nWhat manual task is taking up too much of your team's time, or what new capability are you trying to build?"
     };
     return openers[id] || "Tell me what you are working on and I will get started right away.";
 };

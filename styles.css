@@ -353,6 +353,38 @@ select option { background:var(--bg-card); color:var(--text); }
   -webkit-text-fill-color:transparent;
   padding:8px 12px; margin-bottom:24px;
 }
+
+/* Toast Notification */
+.toast-container {
+  position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%);
+  z-index: 1000; pointer-events: none;
+  display: flex; flex-direction: column; gap: 8px; align-items: center;
+}
+.toast {
+  background: rgba(0,0,0,0.85); color: #fff;
+  padding: 10px 20px; border-radius: 99px;
+  font-size: 0.85rem; font-weight: 600;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  animation: toast-in 0.3s ease-out forwards;
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,0.1);
+  white-space: nowrap;
+}
+.light-theme .toast {
+  background: rgba(225,198,153,0.95); color: #1A1A10;
+  border: 1px solid rgba(0,0,0,0.1);
+}
+@keyframes toast-in {
+  0% { transform: translateY(20px); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+.toast.out {
+  animation: toast-out 0.3s ease-in forwards;
+}
+@keyframes toast-out {
+  0% { transform: translateY(0); opacity: 1; }
+  100% { transform: translateY(-20px); opacity: 0; }
+}
 .sidebar-item {
   display:flex; align-items:center; gap:10px;
   padding:10px 14px; border-radius:var(--radius-sm);
@@ -364,9 +396,12 @@ select option { background:var(--bg-card); color:var(--text); }
 .sidebar-item.active { background:var(--primary-glow); color:var(--primary); }
 .sidebar-item .material-symbols-outlined { font-size:20px; }
 
+.print-only { display: none !important; }
+
 /* Print & Native PDF Export Styles */
 @media print {
   @page { margin: 1.5cm; }
+  .print-only { display: block !important; }
   body { background: #fff !important; color: #000 !important; padding: 0 !important; }
   .app-header, .bottom-nav, .desktop-sidebar, .chat-input-wrapper, .header-actions {
     display: none !important;

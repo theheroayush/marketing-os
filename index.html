@@ -16,11 +16,11 @@
   <!-- Desktop Sidebar -->
   <aside class="desktop-sidebar">
     <div class="sidebar-logo"><img src="logo.jpg" alt="MarkU Logo" class="sidebar-logo-img"></div>
-    <button class="sidebar-item active" data-view="dashboard" onclick="app.navigate('dashboard')">
+    <button class="sidebar-item" data-view="dashboard" onclick="app.navigate('dashboard')">
       <span class="material-symbols-outlined">home</span> Dashboard
     </button>
-    <button class="sidebar-item" onclick="app.toggleTheme()">
-      <span class="material-symbols-outlined">contrast</span> Toggle Theme
+    <button class="sidebar-item" data-view="settings" onclick="app.navigate('settings')">
+      <span class="material-symbols-outlined">settings</span> Settings
     </button>
     <button class="sidebar-item" data-view="skills" onclick="app.navigate('skills')">
       <span class="material-symbols-outlined">auto_awesome</span> Skills Hub
@@ -37,6 +37,12 @@
     <button class="sidebar-item" data-view="history" onclick="app.navigate('history')">
       <span class="material-symbols-outlined">history</span> History
     </button>
+    <div style="margin-top:auto; padding: 20px 14px; font-size: 0.75rem; color: var(--text-muted); text-align: center;">
+      <a href="mailto:activohietz@gmail.com" style="color:var(--text-dim); text-decoration:none; display:flex; align-items:center; justify-content:center; gap:6px; margin-bottom:8px; font-weight:600;">
+        <span class="material-symbols-outlined" style="font-size:16px;">support_agent</span> Support Ticket
+      </a>
+      &copy; 2026 MarkU
+    </div>
   </aside>
 
   <!-- Header (Mobile) -->
@@ -44,7 +50,6 @@
     <div class="logo"><img src="logo.jpg" alt="MarkU Logo" class="header-logo-img"></div>
     <div class="header-actions">
       <button class="icon-btn" onclick="app.focusSearch()"><span class="material-symbols-outlined">search</span></button>
-      <button class="icon-btn" onclick="app.toggleTheme()"><span class="material-symbols-outlined">contrast</span></button>
       <button class="icon-btn"><span class="material-symbols-outlined">notifications</span></button>
     </div>
   </header>
@@ -58,6 +63,7 @@
   <section id="view-campaigns" class="view"></section>
   <section id="view-analytics" class="view"></section>
   <section id="view-history" class="view"></section>
+  <section id="view-settings" class="view"></section>
 
   <!-- Bottom Navigation (Mobile) -->
   <nav class="bottom-nav">
@@ -80,6 +86,10 @@
     <button class="nav-item" data-view="history" onclick="app.navigate('history')">
       <span class="material-symbols-outlined">history</span>
       <span>History</span>
+    </button>
+    <button class="nav-item" data-view="settings" onclick="app.navigate('settings')">
+      <span class="material-symbols-outlined">settings</span>
+      <span>Settings</span>
     </button>
   </nav>
 
