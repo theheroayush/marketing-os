@@ -5,8 +5,8 @@
   "main": "app.js",
   "scripts": {
     "start": "npx serve .",
-    "build": "powershell -Command \"Copy-Item -Path index.html, app.js, styles.css, skills-data.js, manifest.json, sw.js, logo.jpg -Destination dist/ -Force; Copy-Item -Path assets -Destination dist/ -Recurse -Force\"",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "powershell -Command \"Copy-Item -Path index.html, app.js, markdown.js, styles.css, skills-data.js, manifest.json, sw.js, logo.jpg -Destination dist/ -Force; Copy-Item -Path assets -Destination dist/ -Recurse -Force\"",
+    "test": "node tests/markdown.test.js"
   },
   "keywords": [],
   "author": "",
