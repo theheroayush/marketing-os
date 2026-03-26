@@ -20,7 +20,7 @@
       &copy; 2026 MarkU
     </div>
   `;
-  
+
   // Capgo Live Updates Integration
   const triggerHaptic = async (style = "LIGHT") => {
     if (window.Capacitor && window.Capacitor.isPluginAvailable("Haptics")) {
@@ -449,7 +449,7 @@
         <h3 class="section-heading" style="margin:0">Recent AI Sessions</h3>
         <button class="btn btn-ghost btn-sm" onclick="app.navigate('history')">View All</button>
       </div>
-      
+
       <div class="flex-col gap-12 mb-24 px-6">
         ${sessions.length > 0 ? sessions.slice(0, 2).map(s => `
           <div class="card card-sm" onclick="app.resumeSession('${s.id}')" style="cursor:pointer">
@@ -470,9 +470,9 @@
   function renderSkillsHub() {
     const el = $('#view-skills');
     if (!el) return;
-    
+
     const cats = ['All', ...Object.keys(window.CATS)];
-    
+
     const filtered = window.SKILLS.filter(s => {
       const matchCat = catFilter === 'All' || s.cat === catFilter;
       const q = searchQ.toLowerCase();
@@ -483,12 +483,12 @@
     el.innerHTML = `
       <h2 class="section-heading" style="font-size:1.4rem">Skills Hub</h2>
       <p style="color:var(--text-dim);font-size:0.85rem;margin-bottom:20px">${window.SKILLS.length} marketing skills at your fingertips.</p>
-      
+
       <!-- Search Box -->
       <div style="background:var(--card-bg);border:1px solid var(--border);border-radius:12px;padding:10px 14px;display:flex;align-items:center;gap:8px;margin-bottom:16px;">
         <span class="material-symbols-outlined" style="color:var(--text-muted);font-size:18px">search</span>
-        <input type="text" id="skills-search" placeholder="Search skills..." value="${searchQ}" 
-               style="flex:1;background:transparent;border:none;color:var(--text);font-size:0.95rem;outline:none;" 
+        <input type="text" id="skills-search" placeholder="Search skills..." value="${searchQ}"
+               style="flex:1;background:transparent;border:none;color:var(--text);font-size:0.95rem;outline:none;"
                onkeyup="app.handleSearch(event)">
         ${searchQ ? `<button onclick="app.clearSearch()" style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:18px;">&times;</button>` : ''}
       </div>
@@ -501,7 +501,7 @@
           const bg = isActive ? 'var(--text)' : 'var(--card-bg)';
           const color = isActive ? 'var(--bg)' : 'var(--text-dim)';
           const border = isActive ? 'transparent' : 'var(--border)';
-          return `<button onclick="app.setCategoryFilter('${c}')" 
+          return `<button onclick="app.setCategoryFilter('${c}')"
             style="background:${bg};color:${color};border:1px solid ${border};border-radius:20px;padding:6px 14px;font-size:0.8rem;white-space:nowrap;font-weight:600;display:flex;align-items:center;gap:6px;cursor:pointer;">
             ${c !== 'All' ? catInfo.icon + ' ' : ''}${c}
           </button>`;
@@ -561,7 +561,7 @@
 
     activeSessionId = `${skillId}-${Date.now()}`;
     const productCtx = Storage.getProductCtx();
-    const ctxNote = (productCtx && skillId !== 'product-context') 
+    const ctxNote = (productCtx && skillId !== 'product-context')
       ? `\n\n*I see your product context is saved! I'll use it so you don't have to repeat yourself.*`
       : "";
 
@@ -577,11 +577,11 @@
   function resumeSession(sessionId) {
     const session = Storage.getSessions().find(s => s.id === sessionId);
     if (!session) return;
-    
+
     activeSkill = window.SKILLS.find(s => s.id === session.skillId);
     activeSessionId = session.id;
     messages = session.messages;
-    
+
     navigate('skill-tool', session.skillId);
     renderChatView();
   }
@@ -589,7 +589,7 @@
   function renderChatView() {
     const el = $('#view-skill-tool');
     if (!el || !activeSkill) return;
-    
+
     const catInfo = window.CATS[activeSkill.cat];
     const accentColor = catInfo?.color || 'var(--accent)';
 
@@ -626,7 +626,7 @@
             `}
           </div>
         `).join('')}
-        
+
         ${isGenerating ? `
           <div style="display:flex;justify-content:flex-start;width:100%;">
             <div style="display:flex;gap:10px;max-width:90%;">
@@ -648,7 +648,7 @@
           <button type="button" onclick="document.getElementById('local-file-upload').click()" style="width:44px;height:44px;border-radius:12px;border:1px solid var(--border);background:var(--card-bg);color:var(--text-muted);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:0.2s;flex-shrink:0;" title="Attach Local File">
             <span class="material-symbols-outlined" style="font-size:22px;transform:rotate(45deg);">attach_file</span>
           </button>
-          <textarea id="chat-input" placeholder="Type your answer... (Press Enter to send)" 
+          <textarea id="chat-input" placeholder="Type your answer... (Press Enter to send)"
                     style="flex:1;background:var(--card-bg);border:1px solid var(--border);border-radius:12px;padding:12px 45px 12px 14px;color:var(--text);font-family:inherit;font-size:0.95rem;resize:none;max-height:120px;min-height:44px;"
                     oninput="this.style.height='';this.style.height=Math.min(this.scrollHeight, 120)+'px';"
                     onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();app.sendChatMessage(event);}"></textarea>
@@ -685,17 +685,17 @@
   app.handleFileUpload = function(e) {
     const file = e.target.files[0];
     if (!file) return;
-    
+
     app.notify("Reading local file...");
     const reader = new FileReader();
-    
+
     reader.onload = function(event) {
       const content = event.target.result;
       const fileType = file.type.startsWith('image/') ? 'Image' : 'Document';
       let messageContent = `[Attached Local ${fileType}: ${file.name}]\n`;
-      
+
       if (fileType === 'Document') {
-        messageContent += `\n\`\`\`\n${content.slice(0, 2000)}${content.length > 2000 ? '\n...[truncated]' : ''}\n\`\`\``;
+        messageContent += `\n```\n${content.slice(0, 2000)}${content.length > 2000 ? '\n...[truncated]' : ''}\n````;
       } else {
         messageContent += `\n*(Image data loaded locally via FileReader)*`;
       }
@@ -730,8 +730,8 @@
     if (!apiKey) {
       // Mock Response if no API key
       setTimeout(() => {
-        messages.push({ 
-          role: 'assistant', 
+        messages.push({
+          role: 'assistant',
           content: 'I see you haven\'t configured an Anthropic API Key.\n\nTo get real responses based on the algorithms from the repo, please tap the key icon at the top right to save your API Key, then try again.\n\n*(This is a mock response because no key was found).*'
         });
         isGenerating = false;
@@ -757,7 +757,7 @@
       // Call Anthropic API directly
       const res = await fetch("https://api.anthropic.com/v1/messages", {
         method: "POST",
-        headers: { 
+        headers: {
           "Content-Type": "application/json",
           "x-api-key": apiKey,
           "anthropic-version": "2023-06-01",
@@ -770,10 +770,10 @@
           messages: apiMessages,
         }),
       });
-      
+
       const data = await res.json();
       if (data.error) throw new Error(data.error.message || 'API Error');
-      
+
       const reply = data.content?.[0]?.text || "No response received.";
       messages.push({ role: "assistant", content: reply });
 
@@ -868,7 +868,7 @@
           <span class="material-symbols-outlined" style="font-size:16px">download</span> <span style="font-size:0.85rem">Backup</span>
         </button>
       </div>
-      
+
       ${productCtx ? `
         <div class="card mb-24" style="background:var(--green-bg);border-color:var(--green)">
           <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
@@ -945,7 +945,7 @@
     const profiles = Storage.getProfiles();
     const activeProfile = profiles.find(p => p.id === Storage.getActiveProfileId());
     const projectName = activeProfile ? activeProfile.name : "MarkU Report";
-    
+
     let header = document.getElementById('print-header');
     if (!header) {
       header = document.createElement('div');
@@ -953,7 +953,7 @@
       header.className = 'print-only';
       document.body.prepend(header);
     }
-    
+
     header.innerHTML = `
       <div style="border-bottom:2px solid #000; padding-bottom:10px; margin-bottom:20px; text-align:left;">
         <h1 style="margin:0; font-size:28px; font-weight:800;">MarkU AI Report</h1>
@@ -963,7 +963,7 @@
         </div>
       </div>
     `;
-    
+
     setTimeout(() => {
       window.print();
     }, 150);
@@ -1000,11 +1000,11 @@
       }
     }, 150);
   };
-  
+
   function renderSettingsView() {
     const el = $('#view-settings');
     if (!el) return;
-    
+
     const activeProfileId = Storage.getActiveProfileId();
     const profiles = Storage.getProfiles();
     const activeProfile = profiles.find(p => p.id === activeProfileId) || {};
@@ -1012,14 +1012,14 @@
 
     el.innerHTML = `
       <h1 class="view-title">Settings & Resources</h1>
-      
+
       <!-- Profile Management -->
       <div class="card mb-24" style="background:var(--bg-elevated); border:1px solid var(--border);">
         <h3 class="section-heading" style="margin-top:0; font-size:1.1rem; display:flex; align-items:center; gap:8px;">
           <span class="material-symbols-outlined" style="color:var(--primary);">business_center</span> Project Teams
         </h3>
         <p style="color:var(--text-dim); font-size:0.85rem; margin-bottom:16px;">Manage your active projects and teams. Product context is saved per project.</p>
-        
+
         <div style="display:flex; gap:12px; flex-wrap:wrap; margin-bottom:20px;">
           <div style="flex:1; min-width:200px;">
             <select id="settings-profile-select" style="width:100%; background:var(--bg-input); color:var(--text); border:1px solid var(--border); padding:10px 14px; border-radius:8px; font-family:inherit; font-size:0.95rem;" onchange="app.switchProfile(this.value)">
@@ -1050,7 +1050,7 @@
           <span class="material-symbols-outlined" style="color:var(--primary);">contrast</span> Appearance
         </h3>
         <p style="color:var(--text-dim); font-size:0.85rem; margin-bottom:16px;">Customize the look and feel of your workspace.</p>
-        
+
         <button onclick="app.toggleTheme()" class="btn btn-primary" style="padding:10px 20px; display:flex; gap:8px; align-items:center;">
           <span class="material-symbols-outlined">contrast</span> Toggle Theme
         </button>
@@ -1078,7 +1078,7 @@
           <span class="material-symbols-outlined" style="color:var(--accent);">support_agent</span> Feedback & Support
         </h3>
         <p style="color:var(--text-dim); font-size:0.85rem; margin-bottom:16px;">We are continuously improving MarkU. Let us know what integrations, skills, or features you want to see next! Directly email us at <strong>activohietz@gmail.com</strong>.</p>
-        
+
         <form action="mailto:activohietz@gmail.com" method="GET" style="display:flex; flex-direction:column; gap:12px;">
           <input type="hidden" name="subject" value="MarkU Feedback & Support">
           <textarea name="body" placeholder="Describe your issue or feature request here..." style="width:100%; min-height:100px; background:var(--bg-input); border:1px solid var(--border); border-radius:8px; padding:12px; color:var(--text); font-family:inherit; resize:vertical;"></textarea>
@@ -1095,7 +1095,7 @@
     if (!p) return;
 
     window.modalTeam = [...(p.team || [])];
-    
+
     app.showModal({
       title: 'Manage Project Team',
       body: `
@@ -1124,11 +1124,11 @@
     const nameInput = $('#modal-project-name');
     const name = nameInput.value.trim();
     if (!name) return app.notify('Project name required');
-    
+
     const activeProfileId = Storage.getActiveProfileId();
     const profiles = Storage.getProfiles();
     const idx = profiles.findIndex(x => x.id === activeProfileId);
-    
+
     if (idx > -1) {
       profiles[idx].name = name;
       profiles[idx].team = [...window.modalTeam];
@@ -1167,7 +1167,7 @@
     if (!el) return;
     el.innerHTML = `
       <h1 class="view-title">Experience & Support</h1>
-      
+
       <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:20px; margin-bottom:24px;">
         <!-- Card 1: Direct Support -->
         <div class="card" style="display:flex; flex-direction:column; gap:16px;">
@@ -1180,7 +1180,7 @@
               <p style="margin:0; color:var(--text-muted); font-size:0.75rem;">Response time: &lt; 24 hours</p>
             </div>
           </div>
-          
+
           <p style="font-size:0.85rem; line-height:1.6; color:var(--text-dim); margin:0;">
             Found a bug? Requesting a custom Marketing Skill? Our core team is ready to assist you.
           </p>
@@ -1269,7 +1269,7 @@
           </button>
         </div>
       </div>
-      
+
       ${footerHTML}
     `;
   }
@@ -1282,7 +1282,7 @@
     app.notify('Redirecting to email client...');
     const body = encodeURIComponent(`Subject: ${subject}\n\nMessage:\n${msg}\n\n---\nSent via MarkU Marketing OS`);
     window.location.href = `mailto:activohietz@gmail.com?subject=MarkU [${subject}]&body=${body}`;
-    
+
     $('#support-message').value = '';
   };
 
@@ -1291,15 +1291,15 @@
     document.body.classList.add('light-theme');
   }
 
-  if(document.readyState === 'loading') { 
+  if(document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => {
       init();
       // Auto-check for updates on start (after 3s to not block init)
       setTimeout(() => checkForUpdates(false), 3000);
-    }); 
+    });
   }
-  else { 
-    init(); 
+  else {
+    init();
     setTimeout(() => checkForUpdates(false), 3000);
   }
 })();
