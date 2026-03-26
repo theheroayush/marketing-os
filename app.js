@@ -29,6 +29,13 @@
     }
   };
   app.triggerHaptic = triggerHaptic;
+  const notifyReady = async () => {
+    if (window.Capacitor && window.Capacitor.isPluginAvailable("CapacitorUpdater")) {
+      try { await window.Capacitor.Plugins.CapacitorUpdater.notifyAppReady(); } catch(e) {}
+    }
+  };
+  notifyReady();
+
   const checkForUpdates = async (isManual = false) => {
     if (!window.Capacitor || !window.Capacitor.isPluginAvailable('CapacitorUpdater')) {
       if (isManual) app.notify('Native environment not detected');
