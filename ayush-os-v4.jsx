@@ -1559,23 +1559,23 @@ function useStorage() {
     try {
       const raw = window.__AYUSH_SESSIONS__;
       return raw ? JSON.parse(raw) : [];
-    } catch { return []; }
+    } catch (err) { console.error("Failed to parse sessions:", err); return []; }
   });
   const [productCtx, setProductCtx] = useState(() => {
-    try { return window.__AYUSH_CTX__ || null; } catch { return null; }
+    try { return window.__AYUSH_CTX__ || null; } catch (err) { console.error("Failed to load product context:", err); return null; }
   });
 
   const saveSession = useCallback((s) => {
     setSessions(prev => {
       const next = [s, ...prev.filter(p => p.id !== s.id)].slice(0, 20);
-      try { window.__AYUSH_SESSIONS__ = JSON.stringify(next); } catch {}
+      try { window.__AYUSH_SESSIONS__ = JSON.stringify(next); } catch (err) { console.error("Failed to update window state:", err); }
       return next;
     });
   }, []);
 
   const updateCtx = useCallback((ctx) => {
     setProductCtx(ctx);
-    try { window.__AYUSH_CTX__ = ctx; } catch {}
+    try { window.__AYUSH_CTX__ = ctx; } catch (err) { console.error("Failed to update window state:", err); }
   }, []);
 
   return { sessions, saveSession, productCtx, updateCtx };
