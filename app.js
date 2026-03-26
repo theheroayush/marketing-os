@@ -21,7 +21,38 @@
     </div>
   `;
   
-  // Storage Helper
+  // Capgo Live Updates Integration
+  const checkForUpdates = async (isManual = false) => {
+    if (!window.Capacitor || !window.Capacitor.isPluginAvailable('CapacitorUpdater')) {
+      if (isManual) app.notify('Native environment not detected');
+      return;
+    }
+    
+    const { CapacitorUpdater } = window.Capacitor.Plugins;
+    
+    try {
+      if (isManual) app.notify('Checking for updates...');
+      const version = await CapacitorUpdater.getLatest();
+      
+      if (version.url) {
+        app.notify('New update found! Downloading...');
+        const res = await CapacitorUpdater.download({
+          url: version.url,
+          version: version.version
+        });
+        
+        if (confirm('A new update is ready. Reload now to apply?')) {
+          await CapacitorUpdater.set(res);
+        }
+      } else {
+        if (isManual) app.notify('System is up to date.');
+      }
+    } catch (err) {
+      console.error('Update failed:', err);
+      if (isManual) app.notify('Check failed. Connect to internet.');
+    }
+  };
+  app.checkForUpdates = checkForUpdates;
   const Storage = {
     getSessions: () => JSON.parse(localStorage.getItem('marku_sessions') || '[]'),
     saveSession: (session) => {
@@ -1108,11 +1139,11 @@
                 <div style="font-size:0.7rem; color:var(--text-muted);">Share strategies with users</div>
               </div>
             </div>
-            <div style="padding:12px; border-radius:10px; background:var(--bg); border:1px solid var(--border); display:flex; align-items:center; gap:12px; cursor:pointer;" onclick="app.notify('Status: All systems operational')">
+            <div style="padding:12px; border-radius:10px; background:var(--bg); border:1px solid var(--border); display:flex; align-items:center; gap:12px; cursor:pointer;" onclick="app.checkForUpdates(true)">
               <span class="material-symbols-outlined" style="color:var(--green); font-size:20px;">settings_heart</span>
               <div style="flex:1;">
                 <div style="font-size:0.85rem; font-weight:700;">System Status</div>
-                <div style="font-size:0.7rem; color:var(--text-muted);">Uptime and performance</div>
+                <div style="font-size:0.7rem; color:var(--text-muted);">Tap to check for updates</div>
               </div>
             </div>
           </div>
@@ -1166,6 +1197,15 @@
     document.body.classList.add('light-theme');
   }
 
-  if(document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', init); }
-  else { init(); }
+  if(document.readyState === 'loading') { 
+    document.addEventListener('DOMContentLoaded', () => {
+      init();
+      // Auto-check for updates on start (after 3s to not block init)
+      setTimeout(() => checkForUpdates(false), 3000);
+    }); 
+  }
+  else { 
+    init(); 
+    setTimeout(() => checkForUpdates(false), 3000);
+  }
 })();

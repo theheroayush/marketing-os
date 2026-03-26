@@ -1,5 +1,11 @@
 {
   "appId": "com.getcapacitor.myapp",
   "appName": "MarkU",
-  "webDir": "dist"
+  "webDir": "dist",
+  "plugins": {
+    "CapacitorUpdater": {
+      "autoUpdate": true,
+      "statsUrl": "https://api.capgo.app/stats"
+    }
+  }
 }
