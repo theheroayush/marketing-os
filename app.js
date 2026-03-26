@@ -14,9 +14,9 @@
 
   const footerHTML = `
     <div style="padding: 40px 20px 20px; text-align: center; color: var(--text-muted); font-size: 0.75rem; margin-top: 20px;">
-      <a href="mailto:activohietz@gmail.com" style="color:var(--text-dim); text-decoration:none; display:flex; align-items:center; justify-content:center; gap:6px; margin-bottom:8px; font-weight:600;">
-        <span class="material-symbols-outlined" style="font-size:16px;">support_agent</span> Support Ticket
-      </a>
+      <button onclick="app.navigate('support')" style="background:none; border:none; color:var(--text-dim); text-decoration:none; display:flex; align-items:center; justify-content:center; gap:6px; margin-bottom:8px; font-weight:600; cursor:pointer; width:100%;">
+        <span class="material-symbols-outlined" style="font-size:16px;">support_agent</span> Support & Feedback
+      </button>
       &copy; 2026 MarkU
     </div>
   `;
@@ -115,6 +115,7 @@
       else if (view === 'analytics') renderAnalyticsView();
       else if (view === 'history') renderHistoryView();
       else if (view === 'settings') renderSettingsView();
+      else if (view === 'support') renderSupportView();
     }
     window.scrollTo({top:0, behavior:'smooth'});
   }
@@ -253,15 +254,20 @@
     const profiles = Storage.getProfiles();
 
     const profileSwitcherHTML = `
-      <div style="background:var(--bg-elevated); padding:16px; border-radius:var(--radius-sm); margin-bottom: 24px; display:flex; gap:12px; align-items:center; border:1px solid var(--border);">
-        <span class="material-symbols-outlined" style="color:var(--primary);">business_center</span>
+      <div style="background:var(--bg-elevated); padding:18px; border-radius:var(--radius-sm); margin-bottom: 24px; display:flex; gap:16px; align-items:center; border:1px solid var(--border); box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+        <div style="width:42px; height:42px; border-radius:10px; background:var(--primary-bg); display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+          <span class="material-symbols-outlined" style="color:var(--primary); font-size:24px;">business_center</span>
+        </div>
         <div style="flex:1;">
-          <div style="font-size:0.75rem; color:var(--text-muted); margin-bottom:4px; font-weight:700; text-transform:uppercase; letter-spacing:0.05em;">Active Project Team</div>
-          <select id="profile-select" style="width:100%; background:var(--bg-input); color:var(--text); border:1px solid var(--border); padding:8px 12px; border-radius:8px; font-family:inherit; font-size:0.95rem;" onchange="app.switchProfile(this.value)">
+          <div style="font-size:0.75rem; color:var(--text-muted); margin-bottom:6px; font-weight:700; text-transform:uppercase; letter-spacing:0.08em;">Active Project Workspace</div>
+          <select id="profile-select" style="width:100%; background:var(--bg-input); color:var(--text); border:1px solid var(--border); padding:10px 12px; border-radius:10px; font-family:inherit; font-size:0.95rem; font-weight:600; appearance: none; cursor:pointer;" onchange="app.switchProfile(this.value)">
              ${profiles.map(p => `<option value="${p.id}" ${p.id === activeProfileId ? 'selected' : ''}>${p.name}</option>`).join('')}
           </select>
         </div>
-        <button onclick="app.newProfile()" style="background:var(--primary); color:#fff; border:none; padding:10px 16px; border-radius:8px; cursor:pointer; font-family:inherit; font-weight:600; font-size:0.9rem; transition:all .2s;" title="Create New Project Team">+ New</button>
+        <button onclick="app.newProfile()" class="btn btn-primary" style="padding:12px 18px; border-radius:10px; display:flex; align-items:center; gap:8px;" title="Create New Project Workspace">
+          <span class="material-symbols-outlined" style="font-size:20px;">add_circle</span>
+          <span style="font-weight:700;">New Project</span>
+        </button>
       </div>
     `;
     
@@ -1014,7 +1020,8 @@
   window.app.exportData = function() {
     const data = {
       sessions: Storage.getSessions(),
-      productCtx: Storage.getProductCtx(),
+      profiles: Storage.getProfiles(),
+      activeProfile: Storage.getActiveProfileId(),
       exportDate: new Date().toISOString()
     };
     const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
@@ -1029,6 +1036,131 @@
       URL.revokeObjectURL(url);
     }, 0);
   };
+
+  function renderSupportView() {
+    const el = $('#view-support');
+    if (!el) return;
+    el.innerHTML = `
+      <h1 class="view-title">Experience & Support</h1>
+      
+      <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:20px; margin-bottom:24px;">
+        <!-- Card 1: Direct Support -->
+        <div class="card" style="display:flex; flex-direction:column; gap:16px;">
+          <div style="display:flex; align-items:center; gap:16px;">
+            <div style="width:48px; height:48px; border-radius:14px; background:var(--primary-bg); display:flex; align-items:center; justify-content:center;">
+               <span class="material-symbols-outlined" style="color:var(--primary); font-size:28px;">support_agent</span>
+            </div>
+            <div>
+              <h3 style="margin:0; font-size:1.1rem; font-weight:800;">Concierge Support</h3>
+              <p style="margin:0; color:var(--text-muted); font-size:0.75rem;">Response time: &lt; 24 hours</p>
+            </div>
+          </div>
+          
+          <p style="font-size:0.85rem; line-height:1.6; color:var(--text-dim); margin:0;">
+            Found a bug? Requesting a custom Marketing Skill? Our core team is ready to assist you.
+          </p>
+
+          <div class="form-group" style="margin-bottom:0;">
+            <label class="form-label" style="font-size:0.7rem;">Topic</label>
+            <select id="support-subject" class="form-input" style="padding:10px;">
+              <option>General Feedback</option>
+              <option>Bug Report</option>
+              <option>Skill Request</option>
+              <option>Account Sync Issue</option>
+              <option>White-labeling Request</option>
+            </select>
+          </div>
+
+          <div class="form-group" style="margin-bottom:0;">
+            <label class="form-label" style="font-size:0.7rem;">Description</label>
+            <textarea id="support-message" class="form-input" style="min-height:100px; resize:vertical; padding:10px;" placeholder="How can we help you today?"></textarea>
+          </div>
+
+          <button onclick="app.submitSupportTicket()" class="btn btn-primary btn-full" style="padding:12px; font-weight:800; display:flex; align-items:center; justify-content:center; gap:8px;">
+            <span class="material-symbols-outlined" style="font-size:18px;">send</span> Submit Ticket
+          </button>
+        </div>
+
+        <!-- Card 2: Knowledge Base -->
+        <div class="card" style="display:flex; flex-direction:column; gap:16px; background:var(--bg-elevated);">
+          <div style="display:flex; align-items:center; gap:16px;">
+            <div style="width:48px; height:48px; border-radius:14px; background:var(--secondary-bg); display:flex; align-items:center; justify-content:center;">
+               <span class="material-symbols-outlined" style="color:var(--secondary); font-size:28px;">menu_book</span>
+            </div>
+            <div>
+              <h3 style="margin:0; font-size:1.1rem; font-weight:800;">Resources</h3>
+              <p style="margin:0; color:var(--text-muted); font-size:0.75rem;">Self-service documentation</p>
+            </div>
+          </div>
+
+          <div class="flex-col gap-10">
+            <div style="padding:12px; border-radius:10px; background:var(--bg); border:1px solid var(--border); display:flex; align-items:center; gap:12px; cursor:pointer;" onclick="app.navigate('settings')">
+              <span class="material-symbols-outlined" style="color:var(--accent); font-size:20px;">terminal</span>
+              <div style="flex:1;">
+                <div style="font-size:0.85rem; font-weight:700;">User Manual</div>
+                <div style="font-size:0.7rem; color:var(--text-muted);">Master the Marketing OS</div>
+              </div>
+            </div>
+            <div style="padding:12px; border-radius:10px; background:var(--bg); border:1px solid var(--border); display:flex; align-items:center; gap:12px; cursor:pointer;" onclick="app.notify('Redirecting to Community Discord...')">
+              <span class="material-symbols-outlined" style="color:#5865F2; font-size:20px;">groups</span>
+              <div style="flex:1;">
+                <div style="font-size:0.85rem; font-weight:700;">MarkU Community</div>
+                <div style="font-size:0.7rem; color:var(--text-muted);">Share strategies with users</div>
+              </div>
+            </div>
+            <div style="padding:12px; border-radius:10px; background:var(--bg); border:1px solid var(--border); display:flex; align-items:center; gap:12px; cursor:pointer;" onclick="app.notify('Status: All systems operational')">
+              <span class="material-symbols-outlined" style="color:var(--green); font-size:20px;">settings_heart</span>
+              <div style="flex:1;">
+                <div style="font-size:0.85rem; font-weight:700;">System Status</div>
+                <div style="font-size:0.7rem; color:var(--text-muted);">Uptime and performance</div>
+              </div>
+            </div>
+          </div>
+
+          <div style="margin-top:auto; padding-top:10px; border-top:1px solid var(--border);">
+            <p style="font-size:0.75rem; color:var(--text-dim); margin-bottom:8px;">Direct Developer Contact:</p>
+            <a href="mailto:activohietz@gmail.com" style="display:flex; align-items:center; gap:10px; text-decoration:none; color:var(--primary); font-weight:800; font-size:0.9rem;">
+              <span class="material-symbols-outlined" style="font-size:18px;">mail</span> activohietz@gmail.com
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="background:linear-gradient(135deg, var(--primary-bg), transparent); border:1px solid var(--primary-border);">
+        <h4 style="margin:0 0 10px 0; font-size:0.95rem; font-weight:800; color:var(--primary);">System Identity</h4>
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;">
+          <div>
+            <div style="font-size:0.75rem; color:var(--text-dim);">Application Version</div>
+            <div style="font-weight:700; font-size:0.9rem;">MarkU OS v4.2.1-stable</div>
+          </div>
+          <div>
+            <div style="font-size:0.75rem; color:var(--text-dim);">Environment</div>
+            <div style="font-weight:700; font-size:0.9rem; display:flex; align-items:center; gap:6px;">
+              <span style="width:8px; height:8px; border-radius:50%; background:var(--green);"></span> Native Ready
+            </div>
+          </div>
+          <button onclick="app.exportData()" class="btn btn-ghost btn-sm" style="border:1px solid var(--border); background:var(--bg);">
+            <span class="material-symbols-outlined" style="font-size:16px;">backup</span> Advanced Backup
+          </button>
+        </div>
+      </div>
+      
+      ${footerHTML}
+    `;
+  }
+
+  app.submitSupportTicket = function() {
+    const subject = $('#support-subject').value;
+    const msg = $('#support-message').value.trim();
+    if (!msg) return app.notify('Please enter a message');
+
+    app.notify('Redirecting to email client...');
+    const body = encodeURIComponent(`Subject: ${subject}\n\nMessage:\n${msg}\n\n---\nSent via MarkU Marketing OS`);
+    window.location.href = `mailto:activohietz@gmail.com?subject=MarkU [${subject}]&body=${body}`;
+    
+    $('#support-message').value = '';
+  };
+
 
   if (localStorage.getItem('marku_theme') === 'light') {
     document.body.classList.add('light-theme');

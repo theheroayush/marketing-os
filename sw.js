@@ -3,7 +3,10 @@ const urlsToCache = [
   './index.html',
   './styles.css',
   './app.js',
-  './skills-data.js'
+  './skills-data.js',
+  './logo.jpg',
+  './manifest.json',
+  './assets/icon.jpg'
 ];
 
 self.addEventListener('install', event => {
