@@ -22,6 +22,13 @@
   `;
   
   // Capgo Live Updates Integration
+  const triggerHaptic = async (style = "LIGHT") => {
+    if (window.Capacitor && window.Capacitor.isPluginAvailable("Haptics")) {
+      const { Haptics, ImpactStyle } = window.Capacitor.Plugins;
+      try { await Haptics.impact({ style: ImpactStyle[style] || ImpactStyle.Light }); } catch(e) {}
+    }
+  };
+  app.triggerHaptic = triggerHaptic;
   const checkForUpdates = async (isManual = false) => {
     if (!window.Capacitor || !window.Capacitor.isPluginAvailable('CapacitorUpdater')) {
       if (isManual) app.notify('Native environment not detected');
