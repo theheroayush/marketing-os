@@ -15,7 +15,10 @@
 
   <!-- Desktop Sidebar -->
   <aside class="desktop-sidebar">
-    <div class="sidebar-logo"><img src="logo.jpg" alt="MarkU Logo" class="sidebar-logo-img"></div>
+    <div class="sidebar-logo" onclick="app.navigate('dashboard')" style="cursor:pointer; display:flex; align-items:center; gap:10px;">
+      <img src="logo.jpg" alt="" class="sidebar-logo-img">
+      MarkU
+    </div>
     <button class="sidebar-item" data-view="dashboard" onclick="app.navigate('dashboard')">
       <span class="material-symbols-outlined">home</span> Dashboard
     </button>
@@ -47,7 +50,9 @@
 
   <!-- Header (Mobile) -->
   <header class="app-header">
-    <div class="logo"><img src="logo.jpg" alt="MarkU Logo" class="header-logo-img"></div>
+    <div class="logo" onclick="app.navigate('dashboard')" style="cursor:pointer;">
+      <img src="logo.jpg" alt="MarkU" class="header-logo-img">
+    </div>
     <div class="header-actions">
       <button class="icon-btn" onclick="app.focusSearch()"><span class="material-symbols-outlined">search</span></button>
       <button class="icon-btn"><span class="material-symbols-outlined">notifications</span></button>
