@@ -1,11 +1,11 @@
 {
   "name": "ai-agency-marketing",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "",
   "main": "app.js",
   "scripts": {
     "start": "npx serve .",
-    "build": "powershell -Command \"Copy-Item -Path index.html, app.js, styles.css, skills-data.js, manifest.json, sw.js, logo.jpg -Destination dist/ -Force; Copy-Item -Path assets -Destination dist/ -Recurse -Force\"",
+    "build": "mkdir -p dist && cp index.html app.js styles.css skills-data.js manifest.json sw.js logo.jpg dist/ && cp -r assets dist/",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -15,6 +15,7 @@
   "dependencies": {
     "@capacitor/android": "^8.2.0",
     "@capacitor/core": "^8.2.0",
+    "@capacitor/haptics": "^8.0.1",
     "@capgo/capacitor-updater": "^8.45.0"
   },
   "devDependencies": {
