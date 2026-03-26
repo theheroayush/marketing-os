@@ -1559,23 +1559,23 @@ function useStorage() {
     try {
       const raw = window.__AYUSH_SESSIONS__;
       return raw ? JSON.parse(raw) : [];
-    } catch { return []; }
+    } catch (e) { console.warn("Failed to parse __AYUSH_SESSIONS__:", e); return []; }
   });
   const [productCtx, setProductCtx] = useState(() => {
-    try { return window.__AYUSH_CTX__ || null; } catch { return null; }
+    try { return window.__AYUSH_CTX__ || null; } catch (e) { console.warn("Failed to get __AYUSH_CTX__:", e); return null; }
   });
 
   const saveSession = useCallback((s) => {
     setSessions(prev => {
       const next = [s, ...prev.filter(p => p.id !== s.id)].slice(0, 20);
-      try { window.__AYUSH_SESSIONS__ = JSON.stringify(next); } catch {}
+      try { window.__AYUSH_SESSIONS__ = JSON.stringify(next); } catch (e) { console.warn("Failed to stringify or set __AYUSH_SESSIONS__:", e); }
       return next;
     });
   }, []);
 
   const updateCtx = useCallback((ctx) => {
     setProductCtx(ctx);
-    try { window.__AYUSH_CTX__ = ctx; } catch {}
+    try { window.__AYUSH_CTX__ = ctx; } catch (e) { console.warn("Failed to set __AYUSH_CTX__:", e); }
   }, []);
 
   return { sessions, saveSession, productCtx, updateCtx };
