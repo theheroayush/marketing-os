@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, useCallback } from "react";
+import { useState, useRef, useEffect, useCallback, useMemo } from "react";
 
 /* ─── PALETTE ─────────────────────────────────────────────────────────────── */
 const P = {
@@ -1553,6 +1553,10 @@ End with: "Want me to: 1) Write the full copy for the highest-priority compariso
   },
 ];
 
+SKILLS.forEach(s => {
+  s._searchIndex = (s.name + ' ' + s.tagline + ' ' + s.desc).toLowerCase();
+});
+
 /* ─── STORAGE (in-memory, session-persistent) ────────────────────────────── */
 function useStorage() {
   const [sessions, setSessions] = useState(() => {
@@ -1661,11 +1665,14 @@ export default function AyushOS() {
   }, [input]);
 
   const cats = ["All", ...Object.keys(CATS)];
-  const filtered = SKILLS.filter(s => {
-    const mc = catFilter === "All" || s.cat === catFilter;
+
+  const filtered = useMemo(() => {
     const q = searchQ.toLowerCase();
-    return mc && (!q || s.name.toLowerCase().includes(q) || s.tagline.toLowerCase().includes(q) || s.desc.toLowerCase().includes(q));
-  });
+    return SKILLS.filter(s => {
+      const mc = catFilter === "All" || s.cat === catFilter;
+      return mc && (!q || s._searchIndex.includes(q));
+    });
+  }, [catFilter, searchQ]);
 
   const openSkill = useCallback((skill) => {
     const sid = `${skill.id}-${Date.now()}`;
