@@ -860,10 +860,10 @@
     
     const cats = ['All', ...Object.keys(window.CATS)];
     
+    const q = searchQ.toLowerCase();
     const filtered = window.SKILLS.filter(s => {
       const matchCat = catFilter === 'All' || s.cat === catFilter;
-      const q = searchQ.toLowerCase();
-      const matchQ = !q || s.name.toLowerCase().includes(q) || s.tagline.toLowerCase().includes(q) || s.desc.toLowerCase().includes(q);
+      const matchQ = !q || s._searchIndex.includes(q);
       return matchCat && matchQ;
     });
 
