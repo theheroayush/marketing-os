@@ -183,7 +183,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <h2 class="modal-title">${config.title || 'Modal'}</h2>
-          <button class="modal-close" onclick="app.closeModal()">
+          <button aria-label="Close modal" class="modal-close" onclick="app.closeModal()">
             <span class="material-symbols-outlined">close</span>
           </button>
         </div>
@@ -650,7 +650,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <h2 class="modal-title">${config.title || 'Modal'}</h2>
-          <button class="modal-close" onclick="app.closeModal()">
+          <button aria-label="Close modal" class="modal-close" onclick="app.closeModal()">
             <span class="material-symbols-outlined">close</span>
           </button>
         </div>
@@ -874,10 +874,10 @@
       <!-- Search Box -->
       <div style="background:var(--card-bg);border:1px solid var(--border);border-radius:12px;padding:10px 14px;display:flex;align-items:center;gap:8px;margin-bottom:16px;">
         <span class="material-symbols-outlined" style="color:var(--text-muted);font-size:18px">search</span>
-        <input type="text" id="skills-search" placeholder="Search skills..." value="${searchQ}" 
+        <input aria-label="Search skills" type="text" id="skills-search" placeholder="Search skills..." value="${searchQ}"
                style="flex:1;background:transparent;border:none;color:var(--text);font-size:0.95rem;outline:none;" 
                onkeyup="app.handleSearch(event)">
-        ${searchQ ? `<button onclick="app.clearSearch()" style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:18px;">&times;</button>` : ''}
+        ${searchQ ? `<button aria-label="Clear search" onclick="app.clearSearch()" style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:18px;">&times;</button>` : ''}
       </div>
 
       <!-- Categories Scroll -->
@@ -982,7 +982,7 @@
 
     el.innerHTML = `
       <div class="skill-header" style="position:sticky;top:60px;background:var(--bg);z-index:10;padding-bottom:10px;border-bottom:1px solid ${accentColor}44;margin-bottom:16px;">
-        <button class="back-btn" onclick="app.navigate('history')"><span class="material-symbols-outlined">history</span></button>
+        <button aria-label="Go back to history" class="back-btn" onclick="app.navigate('history')"><span class="material-symbols-outlined">history</span></button>
         <div style="flex:1;text-align:center;">
           <h2 style="font-size:1rem;font-weight:800;display:flex;align-items:center;justify-content:center;gap:6px;">
             <span style="font-size:1.2rem">${activeSkill.emoji}</span> ${activeSkill.name}
@@ -1032,14 +1032,14 @@
       <div class="chat-input-wrapper">
         <form onsubmit="app.sendChatMessage(event)" style="position:relative;max-width:600px;margin:0 auto;display:flex;gap:8px;align-items:flex-end;">
           <input type="file" id="local-file-upload" style="display:none" onchange="app.handleFileUpload(event)" accept="image/*,.txt,.md,.csv,.json">
-          <button type="button" onclick="document.getElementById('local-file-upload').click()" style="width:44px;height:44px;border-radius:12px;border:1px solid var(--border);background:var(--card-bg);color:var(--text-muted);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:0.2s;flex-shrink:0;" title="Attach Local File">
+          <button aria-label="Attach Local File" type="button" onclick="document.getElementById('local-file-upload').click()" style="width:44px;height:44px;border-radius:12px;border:1px solid var(--border);background:var(--card-bg);color:var(--text-muted);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:0.2s;flex-shrink:0;" title="Attach Local File">
             <span class="material-symbols-outlined" style="font-size:22px;transform:rotate(45deg);">attach_file</span>
           </button>
-          <textarea id="chat-input" placeholder="Type your answer... (Press Enter to send)" 
+          <textarea aria-label="Chat input message" id="chat-input" placeholder="Type your answer... (Press Enter to send)"
                     style="flex:1;background:var(--card-bg);border:1px solid var(--border);border-radius:12px;padding:12px 45px 12px 14px;color:var(--text);font-family:inherit;font-size:0.95rem;resize:none;max-height:120px;min-height:44px;"
                     oninput="this.style.height='';this.style.height=Math.min(this.scrollHeight, 120)+'px';"
                     onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();app.sendChatMessage(event);}"></textarea>
-          <button type="submit" disabled style="position:absolute;right:8px;bottom:6px;width:32px;height:32px;border-radius:8px;border:none;background:${accentColor};color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0.5;transition:0.2s;" id="chat-send-btn">
+          <button aria-label="Send message" type="submit" disabled style="position:absolute;right:8px;bottom:6px;width:32px;height:32px;border-radius:8px;border:none;background:${accentColor};color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0.5;transition:0.2s;" id="chat-send-btn">
             <span class="material-symbols-outlined" style="font-size:18px;">arrow_upward</span>
           </button>
         </form>
@@ -1293,7 +1293,7 @@
                 ${s.messages[s.messages.length - 1].content.replace(/<[^>]*>/g, '').slice(0, 120)}...
               </p>
             </div>
-            <button onclick="app.deleteSession('${s.id}')" style="position:absolute;top:10px;right:10px;background:none;border:none;color:var(--red);cursor:pointer;" title="Delete">
+            <button aria-label="Delete session" onclick="app.deleteSession('${s.id}')" style="position:absolute;top:10px;right:10px;background:none;border:none;color:var(--red);cursor:pointer;" title="Delete">
               <span class="material-symbols-outlined" style="font-size:18px">delete</span>
             </button>
           </div>

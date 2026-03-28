@@ -1904,6 +1904,7 @@ export default function AyushOS() {
               <div style={S.searchBox}>
                 <span style={{ fontSize: 14, color: P.muted }}>🔍</span>
                 <input
+                  aria-label="Search skills"
                   value={searchQ}
                   onChange={e => setSearchQ(e.target.value)}
                   placeholder="Search 33 skills..."
@@ -1911,7 +1912,7 @@ export default function AyushOS() {
                   className="search-input"
                 />
                 {searchQ && (
-                  <button onClick={() => setSearchQ("")} style={S.clearBtn} className="btn-ghost">×</button>
+                  <button aria-label="Clear search" onClick={() => setSearchQ("")} style={S.clearBtn} className="btn-ghost">×</button>
                 )}
               </div>
             </div>
@@ -1987,7 +1988,7 @@ export default function AyushOS() {
 
       {/* Chat header */}
       <div style={{ ...S.chatHeader, borderBottomColor: `${accentColor}33` }}>
-        <button className="btn-ghost" onClick={() => setView("home")} style={S.backBtn}>← Back</button>
+        <button aria-label="Go back" className="btn-ghost" onClick={() => setView("home")} style={S.backBtn}>← Back</button>
         <div style={{ flex: 1, textAlign: "center" }}>
           <div style={{ fontSize: 14, fontWeight: 700, color: P.text, display: "flex", alignItems: "center", justifyContent: "center", gap: 6 }}>
             <span style={{ fontSize: 18 }}>{activeSkill?.emoji}</span>
@@ -1996,10 +1997,10 @@ export default function AyushOS() {
           <div style={{ fontSize: 11, color: accentColor, marginTop: 1 }}>{catInfo?.icon} {activeSkill?.cat}</div>
         </div>
         <div style={{ display: "flex", gap: 6 }}>
-          <button className="btn-ghost" onClick={copyLastOutput} style={{ ...S.iconBtn, color: copied ? P.green : P.muted }}>
+          <button aria-label="Copy last output" className="btn-ghost" onClick={copyLastOutput} style={{ ...S.iconBtn, color: copied ? P.green : P.muted }}>
             {copied ? "✓" : "📋"}
           </button>
-          <button className="btn-ghost" onClick={() => {
+          <button aria-label="Start new session" className="btn-ghost" onClick={() => {
             const sid = `${activeSkill.id}-${Date.now()}`;
             setSessionId(sid);
             const opener = {
@@ -2067,6 +2068,7 @@ export default function AyushOS() {
       <div style={S.inputArea}>
         <div style={S.inputBox}>
           <textarea
+            aria-label="Chat input message"
             ref={el => { inputRef.current = el; taRef.current = el; }}
             value={input}
             onChange={e => setInput(e.target.value)}
@@ -2076,6 +2078,7 @@ export default function AyushOS() {
             rows={1}
           />
           <button
+            aria-label="Send message"
             onClick={sendMessage}
             disabled={loading || !input.trim()}
             className="send-btn"
