@@ -183,8 +183,8 @@
       <div class="modal-content">
         <div class="modal-header">
           <h2 class="modal-title">${config.title || 'Modal'}</h2>
-          <button class="modal-close" onclick="app.closeModal()">
-            <span class="material-symbols-outlined">close</span>
+          <button class="modal-close" aria-label="Close Modal" onclick="app.closeModal()">
+            <span class="material-symbols-outlined" aria-hidden="true">close</span>
           </button>
         </div>
         <div class="modal-body">
@@ -245,8 +245,8 @@
     list.innerHTML = window.modalTeam.map((email, idx) => `
       <div class="team-member">
         <span>${email}</span>
-        <button onclick="app.removeFromModalTeam(${idx})" class="remove-member">
-          <span class="material-symbols-outlined">delete</span>
+        <button onclick="app.removeFromModalTeam(${idx})" class="remove-member" aria-label="Remove member">
+          <span class="material-symbols-outlined" aria-hidden="true">delete</span>
         </button>
       </div>
     `).join('');
@@ -650,8 +650,8 @@
       <div class="modal-content">
         <div class="modal-header">
           <h2 class="modal-title">${config.title || 'Modal'}</h2>
-          <button class="modal-close" onclick="app.closeModal()">
-            <span class="material-symbols-outlined">close</span>
+          <button class="modal-close" aria-label="Close Modal" onclick="app.closeModal()">
+            <span class="material-symbols-outlined" aria-hidden="true">close</span>
           </button>
         </div>
         <div class="modal-body">
@@ -712,8 +712,8 @@
     list.innerHTML = window.modalTeam.map((email, idx) => `
       <div class="team-member">
         <span>${email}</span>
-        <button onclick="app.removeFromModalTeam(${idx})" class="remove-member">
-          <span class="material-symbols-outlined">delete</span>
+        <button onclick="app.removeFromModalTeam(${idx})" class="remove-member" aria-label="Remove member">
+          <span class="material-symbols-outlined" aria-hidden="true">delete</span>
         </button>
       </div>
     `).join('');
@@ -982,7 +982,7 @@
 
     el.innerHTML = `
       <div class="skill-header" style="position:sticky;top:60px;background:var(--bg);z-index:10;padding-bottom:10px;border-bottom:1px solid ${accentColor}44;margin-bottom:16px;">
-        <button class="back-btn" onclick="app.navigate('history')"><span class="material-symbols-outlined">history</span></button>
+        <button class="back-btn" aria-label="Go back" onclick="app.navigate('history')"><span class="material-symbols-outlined" aria-hidden="true">history</span></button>
         <div style="flex:1;text-align:center;">
           <h2 style="font-size:1rem;font-weight:800;display:flex;align-items:center;justify-content:center;gap:6px;">
             <span style="font-size:1.2rem">${activeSkill.emoji}</span> ${activeSkill.name}
@@ -990,9 +990,9 @@
           <p style="font-size:0.7rem;color:${accentColor};margin-top:2px;">${catInfo.icon} ${activeSkill.cat}</p>
         </div>
         <div style="display:flex;gap:8px;">
-          <button class="icon-btn" onclick="app.exportPDF()" title="Export Customized PDF"><span class="material-symbols-outlined">picture_as_pdf</span></button>
-          <button class="icon-btn" onclick="app.openSkill('${activeSkill.id}')" title="New Session" style="color:var(--text-dim)"><span class="material-symbols-outlined">restart_alt</span></button>
-          <button class="icon-btn" onclick="app.triggerSetupApiKey()" title="Setup API Key" style="color:var(--text-dim)"><span class="material-symbols-outlined">key</span></button>
+          <button class="icon-btn" aria-label="Export Customized PDF" onclick="app.exportPDF()" title="Export Customized PDF"><span class="material-symbols-outlined" aria-hidden="true">picture_as_pdf</span></button>
+          <button class="icon-btn" aria-label="New Session" onclick="app.openSkill('${activeSkill.id}')" title="New Session" style="color:var(--text-dim)"><span class="material-symbols-outlined" aria-hidden="true">restart_alt</span></button>
+          <button class="icon-btn" aria-label="Setup API Key" onclick="app.triggerSetupApiKey()" title="Setup API Key" style="color:var(--text-dim)"><span class="material-symbols-outlined" aria-hidden="true">key</span></button>
         </div>
       </div>
 
