@@ -7,6 +7,16 @@
   app.$ = $;
   app.$$ = $$;
 
+  app.escapeHtml = function(str) {
+    if (!str) return '';
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  };
+
   // Current state
   let currentView = 'dashboard';
   let catFilter = 'All';
@@ -244,7 +254,7 @@
     if (!list) return;
     list.innerHTML = window.modalTeam.map((email, idx) => `
       <div class="team-member">
-        <span>${email}</span>
+        <span>${app.escapeHtml(email)}</span>
         <button onclick="app.removeFromModalTeam(${idx})" class="remove-member">
           <span class="material-symbols-outlined">delete</span>
         </button>
@@ -874,7 +884,7 @@
       <!-- Search Box -->
       <div style="background:var(--card-bg);border:1px solid var(--border);border-radius:12px;padding:10px 14px;display:flex;align-items:center;gap:8px;margin-bottom:16px;">
         <span class="material-symbols-outlined" style="color:var(--text-muted);font-size:18px">search</span>
-        <input type="text" id="skills-search" placeholder="Search skills..." value="${searchQ}" 
+        <input type="text" id="skills-search" placeholder="Search skills..." value="${app.escapeHtml(searchQ)}"
                style="flex:1;background:transparent;border:none;color:var(--text);font-size:0.95rem;outline:none;" 
                onkeyup="app.handleSearch(event)">
         ${searchQ ? `<button onclick="app.clearSearch()" style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:18px;">&times;</button>` : ''}
