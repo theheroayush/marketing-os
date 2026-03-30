@@ -1,0 +1,4 @@
+## 2024-05-18 - XSS Vulnerability in innerHTML Assignments
+**Vulnerability:** Several user-controlled inputs, specifically `searchQ` and `email`, were being directly interpolated into HTML strings and rendered via `innerHTML` in `app.js` without any sanitization. This allowed for Cross-Site Scripting (XSS) attacks.
+**Learning:** The application heavily relies on `innerHTML` for templating without utilizing a robust frontend framework or a dedicated sanitization library, leading to high-risk XSS vulnerabilities if developers forget to manually escape inputs.
+**Prevention:** An `app.escapeHtml` utility function was created. Any user-controlled data being injected into `innerHTML` strings must be passed through `app.escapeHtml(value)` first to neutralize potentially malicious characters (`<`, `>`, `&`, `"`, `'`). Future additions to `app.js` should consistently apply this function to prevent regressions.
