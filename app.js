@@ -183,8 +183,8 @@
       <div class="modal-content">
         <div class="modal-header">
           <h2 class="modal-title">${config.title || 'Modal'}</h2>
-          <button class="modal-close" onclick="app.closeModal()">
-            <span class="material-symbols-outlined">close</span>
+          <button class="modal-close" aria-label="Close modal" onclick="app.closeModal()">
+            <span class="material-symbols-outlined" aria-hidden="true">close</span>
           </button>
         </div>
         <div class="modal-body">
@@ -650,8 +650,8 @@
       <div class="modal-content">
         <div class="modal-header">
           <h2 class="modal-title">${config.title || 'Modal'}</h2>
-          <button class="modal-close" onclick="app.closeModal()">
-            <span class="material-symbols-outlined">close</span>
+          <button class="modal-close" aria-label="Close modal" onclick="app.closeModal()">
+            <span class="material-symbols-outlined" aria-hidden="true">close</span>
           </button>
         </div>
         <div class="modal-body">
@@ -990,9 +990,9 @@
           <p style="font-size:0.7rem;color:${accentColor};margin-top:2px;">${catInfo.icon} ${activeSkill.cat}</p>
         </div>
         <div style="display:flex;gap:8px;">
-          <button class="icon-btn" onclick="app.exportPDF()" title="Export Customized PDF"><span class="material-symbols-outlined">picture_as_pdf</span></button>
-          <button class="icon-btn" onclick="app.openSkill('${activeSkill.id}')" title="New Session" style="color:var(--text-dim)"><span class="material-symbols-outlined">restart_alt</span></button>
-          <button class="icon-btn" onclick="app.triggerSetupApiKey()" title="Setup API Key" style="color:var(--text-dim)"><span class="material-symbols-outlined">key</span></button>
+          <button class="icon-btn" aria-label="Export PDF" onclick="app.exportPDF()" title="Export Customized PDF"><span class="material-symbols-outlined" aria-hidden="true">picture_as_pdf</span></button>
+          <button class="icon-btn" aria-label="Restart session" onclick="app.openSkill('${activeSkill.id}')" title="New Session" style="color:var(--text-dim)"><span class="material-symbols-outlined" aria-hidden="true">restart_alt</span></button>
+          <button class="icon-btn" aria-label="Setup API Key" onclick="app.triggerSetupApiKey()" title="Setup API Key" style="color:var(--text-dim)"><span class="material-symbols-outlined" aria-hidden="true">key</span></button>
         </div>
       </div>
 
