@@ -451,377 +451,6 @@
       </div>
 
       <div class="flex-col gap-12 mb-24 px-6">
-        ${sessions.length > 0 ? sessions.slice(0, 2).map(s => \`
-          <div class="card card-sm" onclick="app.resumeSession('\${s.id}')" style="cursor:pointer">
-            <div style="display:flex;align-items:center;gap:10px">
-              <span style="font-size:20px">\${s.skillEmoji}</span>
-              <div style="flex:1">
-                <div style="font-weight:700;font-size:0.9rem">\${s.skillName}</div>
-                <div style="font-size:0.75rem;color:var(--text-muted)">\${new Date(s.ts).toLocaleDateString()} • \${s.messages.length} messages</div>
-              </div>
-              <span class="material-symbols-outlined" style="font-size:18px;color:var(--text-muted)">chevron_right</span>
-            </div>
-          </div>
-        \`).join('') : '<p style="font-size:0.8rem;color:var(--text-muted);text-align:center;padding:10px">No recent sessions.</p>'}
-      </div>
-    ` + footerHTML;
-  } Skills App - Main Application Logic
-(function(){
-  window.app = window.app || {};
-  const app = window.app;
-  const $ = s => document.querySelector(s);
-  const $$ = s => document.querySelectorAll(s);
-  app.$ = $;
-  app.$$ = $$;
-
-  // Current state
-  let currentView = 'dashboard';
-  let catFilter = 'All';
-  let searchQ = '';
-
-  const footerHTML = `
-    <div style="padding: 40px 20px 20px; text-align: center; color: var(--text-muted); font-size: 0.75rem; margin-top: 20px;">
-      <button onclick="app.navigate('support')" style="background:none; border:none; color:var(--text-dim); text-decoration:none; display:flex; align-items:center; justify-content:center; gap:6px; margin-bottom:8px; font-weight:600; cursor:pointer; width:100%;">
-        <span class="material-symbols-outlined" style="font-size:16px;">support_agent</span> Support & Feedback
-      </button>
-      &copy; 2026 MarkU
-    </div>
-  `;
-
-  // Capgo Live Updates Integration
-  const triggerHaptic = async (style = "LIGHT") => {
-    if (window.Capacitor && window.Capacitor.isPluginAvailable("Haptics")) {
-      const { Haptics, ImpactStyle } = window.Capacitor.Plugins;
-      try { await Haptics.impact({ style: ImpactStyle[style] || ImpactStyle.Light }); } catch(e) {}
-    }
-  };
-  app.triggerHaptic = triggerHaptic;
-  const notifyReady = async () => {
-    if (window.Capacitor && window.Capacitor.isPluginAvailable("CapacitorUpdater")) {
-      try { await window.Capacitor.Plugins.CapacitorUpdater.notifyAppReady(); } catch(e) {}
-    }
-  };
-  notifyReady();
-
-  const checkForUpdates = async (isManual = false) => {
-    if (!window.Capacitor || !window.Capacitor.isPluginAvailable('CapacitorUpdater')) {
-      if (isManual) app.notify('Native environment not detected');
-      return;
-    }
-    
-    const { CapacitorUpdater } = window.Capacitor.Plugins;
-    
-    try {
-      if (isManual) app.notify('Checking for updates...');
-      const version = await CapacitorUpdater.getLatest();
-      
-      if (version.url) {
-        app.notify('New update found! Downloading...');
-        const res = await CapacitorUpdater.download({
-          url: version.url,
-          version: version.version
-        });
-        
-        if (confirm('A new update is ready. Reload now to apply?')) {
-          await CapacitorUpdater.set(res);
-        }
-      } else {
-        if (isManual) app.notify('System is up to date.');
-      }
-    } catch (err) {
-      console.error('Update failed:', err);
-      if (isManual) app.notify('Check failed. Connect to internet.');
-    }
-  };
-  app.checkForUpdates = checkForUpdates;
-  const Storage = {
-    getSessions: () => JSON.parse(localStorage.getItem('marku_sessions') || '[]'),
-    saveSession: (session) => {
-      const sessions = Storage.getSessions();
-      const idx = sessions.findIndex(s => s.id === session.id);
-      if (idx > -1) sessions[idx] = session;
-      else sessions.unshift(session);
-      localStorage.setItem('marku_sessions', JSON.stringify(sessions.slice(0, 50)));
-    },
-    deleteSession: (id) => {
-      const sessions = Storage.getSessions().filter(s => s.id !== id);
-      localStorage.setItem('marku_sessions', JSON.stringify(sessions));
-      if (currentView === 'history') app.renderHistoryView();
-    },
-    getProfiles: () => {
-      let ps = JSON.parse(localStorage.getItem('marku_profiles') || '[{"id":"default","name":"Default Profile","content":"","team":[]}]');
-      return ps.map(p => ({ ...p, team: p.team || [] }));
-    },
-    saveProfiles: (profiles) => localStorage.setItem('marku_profiles', JSON.stringify(profiles)),
-    getActiveProfileId: () => localStorage.getItem('marku_active_profile') || 'default',
-    setActiveProfileId: (id) => localStorage.setItem('marku_active_profile', id),
-    getProductCtx: () => {
-      const ps = Storage.getProfiles();
-      const aid = Storage.getActiveProfileId();
-      const p = ps.find(x => x.id === aid);
-      return p ? p.content : '';
-    },
-    saveProductCtx: (ctx) => {
-      const profiles = Storage.getProfiles();
-      let p = profiles.find(x => x.id === Storage.getActiveProfileId());
-      if (p) {
-        p.content = ctx;
-        if (p.name === 'Default Profile' || p.name.startsWith('Profile ')) {
-           const lines = (ctx||'').split('\n').filter(l => l.trim().length > 0);
-           if (lines.length > 0) p.name = lines[0].substring(0, 25).replace(/[^a-zA-Z0-9 ]/g, '').trim() + '...';
-        }
-      }
-      Storage.saveProfiles(profiles);
-    },
-    getStats: () => {
-      const sessions = Storage.getSessions();
-      const uniqueSkills = new Set(sessions.map(s => s.skillId)).size;
-      const totalMessages = sessions.reduce((sum, s) => sum + s.messages.length, 0);
-      return { uniqueSkills, totalMessages, sessionsCount: sessions.length };
-    }
-  };
-
-  // Chat state
-  let activeSkill = null;
-  let activeSessionId = null;
-  let messages = [];
-  let isGenerating = false;
-
-  // Simple Markdown to HTML parser
-  function parseMd(text) {
-    if (!text) return '';
-    let html = text
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-      .replace(/`(.*?)`/g, '<code style="background:var(--border);padding:2px 4px;border-radius:4px;color:var(--accent);font-size:0.85em;">$1</code>');
-    return html.replace(/\n/g, '<br>');
-  }
-
-  // ---- ROUTER ----
-  function navigate(view, data) {
-    currentView = view;
-    $$('.view').forEach(v => v.classList.remove('active'));
-    $$('.nav-item').forEach(n => n.classList.remove('active'));
-    $$('.sidebar-item').forEach(n => n.classList.remove('active'));
-
-    if (view === 'skill-tool') {
-      const el = $('#view-skill-tool');
-      if(el) el.classList.add('active');
-      setActiveNav('skills');
-      
-      if (data && data !== activeSessionId) {
-        startChatSession(data);
-      } else {
-        renderChatView(); // Re-render existing session
-      }
-    } else {
-      const el = $(`#view-${view}`);
-      if(el) el.classList.add('active');
-      setActiveNav(view);
-      
-      if (view === 'skills') renderSkillsHub();
-      else if (view === 'dashboard') renderDashboard();
-      else if (view === 'content') renderContentView();
-      else if (view === 'campaigns') renderCampaignsView();
-      else if (view === 'analytics') renderAnalyticsView();
-      else if (view === 'history') renderHistoryView();
-      else if (view === 'settings') renderSettingsView();
-      else if (view === 'support') renderSupportView();
-    }
-    window.scrollTo({top:0, behavior:'smooth'});
-  }
-
-  function setActiveNav(view) {
-    $$('.nav-item').forEach(n => {
-      n.classList.toggle('active', n.dataset.view === view);
-    });
-    $$('.sidebar-item').forEach(n => {
-      n.classList.toggle('active', n.dataset.view === view);
-    });
-  }
-
-  app.showModal = function(config) {
-    const container = $('#modal-container');
-    if (!container) return;
-    
-    container.innerHTML = `
-      <div class="modal-backdrop" onclick="app.closeModal()"></div>
-      <div class="modal-content">
-        <div class="modal-header">
-          <h2 class="modal-title">${config.title || 'Modal'}</h2>
-          <button class="modal-close" onclick="app.closeModal()">
-            <span class="material-symbols-outlined">close</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          ${config.body || ''}
-        </div>
-        <div class="modal-footer">
-          ${config.footer || ''}
-        </div>
-      </div>
-    `;
-    container.classList.add('active');
-  };
-
-  app.closeModal = function() {
-    const container = $('#modal-container');
-    if (container) container.classList.remove('active');
-  };
-
-  app.newProfile = function() {
-    app.showModal({
-      title: 'Create Project Team',
-      body: `
-        <div class="form-group">
-          <label class="form-label">Project Name</label>
-          <input type="text" id="modal-project-name" class="form-input" placeholder="e.g. Acme Marketing SEO">
-        </div>
-        <div class="form-group">
-          <label class="form-label">Add Team Member (Email)</label>
-          <div style="display:flex; gap:8px;">
-            <input type="email" id="modal-team-email" class="form-input" placeholder="colleague@example.com">
-            <button onclick="app.addTeamMemberToModal()" class="btn btn-primary" style="padding:0 12px;"><span class="material-symbols-outlined">add</span></button>
-          </div>
-          <div id="modal-team-list" class="team-list"></div>
-        </div>
-      `,
-      footer: `
-        <button onclick="app.closeModal()" class="btn btn-ghost">Cancel</button>
-        <button onclick="app.saveNewProfileFromModal()" class="btn btn-primary">Create Project</button>
-      `
-    });
-    window.modalTeam = [];
-  };
-
-  app.addTeamMemberToModal = function() {
-    const emailInput = $('#modal-team-email');
-    const email = emailInput.value.trim();
-    if (!email || !email.includes('@')) return app.notify('Valid email required');
-    if (window.modalTeam.includes(email)) return app.notify('Already added');
-    
-    window.modalTeam.push(email);
-    emailInput.value = '';
-    app.renderModalTeamList();
-  };
-
-  app.renderModalTeamList = function() {
-    const list = $('#modal-team-list');
-    if (!list) return;
-    list.innerHTML = window.modalTeam.map((email, idx) => `
-      <div class="team-member">
-        <span>${email}</span>
-        <button onclick="app.removeFromModalTeam(${idx})" class="remove-member">
-          <span class="material-symbols-outlined">delete</span>
-        </button>
-      </div>
-    `).join('');
-  };
-
-  app.removeFromModalTeam = function(idx) {
-    window.modalTeam.splice(idx, 1);
-    app.renderModalTeamList();
-  };
-
-  app.saveNewProfileFromModal = function() {
-    const nameInput = $('#modal-project-name');
-    const name = nameInput.value.trim();
-    if (!name) return app.notify('Project name required');
-    
-    const profiles = Storage.getProfiles();
-    const newId = 'prof_' + Date.now();
-    profiles.push({ id: newId, name, content: '', team: [...window.modalTeam] });
-    Storage.saveProfiles(profiles);
-    Storage.setActiveProfileId(newId);
-    app.closeModal();
-    app.notify(`Created Project: ${name}`);
-    renderDashboard();
-    if (currentView === 'settings') renderSettingsView();
-  };
-
-  app.switchProfile = function(id) {
-    console.log("Switching profile to:", id);
-    if (!id) return;
-    Storage.setActiveProfileId(id);
-    const profiles = Storage.getProfiles();
-    const prof = profiles.find(p => p.id === id);
-    if(prof) app.notify(`Switched to: ${prof.name}`);
-    renderDashboard();
-    if (currentView === 'settings') renderSettingsView();
-  };
-
-  app.toggleTheme = function() {
-    document.body.classList.toggle('light-theme');
-    const isLight = document.body.classList.contains('light-theme');
-    localStorage.setItem('marku_theme', isLight ? 'light' : 'dark');
-  };
-
-  // ---- INIT ----
-  function renderDashboard() {
-    const el = $('#view-dashboard');
-    if (!el) return;
-
-    const activeProfileId = Storage.getActiveProfileId();
-    const profiles = Storage.getProfiles();
-
-    const profileSwitcherHTML = `
-      <div style="background:var(--bg-elevated); padding:18px; border-radius:var(--radius-sm); margin-bottom: 24px; display:flex; gap:16px; align-items:center; border:1px solid var(--border); box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
-        <div style="width:42px; height:42px; border-radius:10px; background:var(--primary-bg); display:flex; align-items:center; justify-content:center; flex-shrink:0;">
-          <span class="material-symbols-outlined" style="color:var(--primary); font-size:24px;">business_center</span>
-        </div>
-        <div style="flex:1;">
-          <div style="font-size:0.75rem; color:var(--text-muted); margin-bottom:6px; font-weight:700; text-transform:uppercase; letter-spacing:0.08em;">Active Project Workspace</div>
-          <select id="profile-select" style="width:100%; background:var(--bg-input); color:var(--text); border:1px solid var(--border); padding:10px 12px; border-radius:10px; font-family:inherit; font-size:0.95rem; font-weight:600; appearance: none; cursor:pointer;" onchange="app.switchProfile(this.value)">
-             ${profiles.map(p => `<option value="${p.id}" ${p.id === activeProfileId ? 'selected' : ''}>${p.name}</option>`).join('')}
-          </select>
-        </div>
-        <button onclick="app.newProfile()" class="btn btn-primary" style="padding:12px 18px; border-radius:10px; display:flex; align-items:center; gap:8px;" title="Create New Project Workspace">
-          <span class="material-symbols-outlined" style="font-size:20px;">add_circle</span>
-          <span style="font-weight:700;">New Project</span>
-        </button>
-      </div>
-    `;
-    
-    // Pick first 3 skills as popular
-    const popSkills = window.SKILLS.slice(0, 3);
-    const sessions = Storage.getSessions();
-
-    el.innerHTML = `
-      <h1 class="view-title">Dashboard</h1>
-      ${profileSwitcherHTML}
-      <div class="hero-card mb-16">
-        <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
-          <span class="material-symbols-outlined" style="color:var(--accent);font-variation-settings:'FILL' 1">auto_awesome</span>
-          <span class="section-title" style="margin:0;color:var(--accent)">AI Strategy Insight</span>
-        </div>
-        <h2 style="font-size:1.3rem;font-weight:800;line-height:1.3;margin-bottom:8px">Welcome back, Marketer.</h2>
-        <p style="color:var(--text-dim);font-size:0.85rem;line-height:1.5;margin-bottom:16px">You have ${sessions.length} active consultations. Need a new campaign idea for Q2?</p>
-        <button class="btn btn-primary btn-full" onclick="app.navigate('skills')">Launch New Skill</button>
-      </div>
-
-      <div class="section-title">Quick Actions</div>
-      <div class="grid-3 mb-16">
-        <button class="card card-sm" style="text-align:center;cursor:pointer" onclick="app.navigate('skills')">
-          <span class="material-symbols-outlined" style="font-size:28px;color:var(--primary);display:block;margin-bottom:6px">auto_awesome</span>
-          <span style="font-size:0.7rem;font-weight:700;color:var(--text-dim)">Skills Hub</span>
-        </button>
-        <button class="card card-sm" style="text-align:center;cursor:pointer" onclick="app.navigate('content')">
-          <span class="material-symbols-outlined" style="font-size:28px;color:var(--secondary);display:block;margin-bottom:6px">edit_note</span>
-          <span style="font-size:0.7rem;font-weight:700;color:var(--text-dim)">Create Post</span>
-        </button>
-        <button class="card card-sm" style="text-align:center;cursor:pointer" onclick="app.navigate('history')">
-          <span class="material-symbols-outlined" style="font-size:28px;color:var(--accent);display:block;margin-bottom:6px">history</span>
-          <span style="font-size:0.7rem;font-weight:700;color:var(--text-dim)">History</span>
-        </button>
-      </div>
-
-      <div style="display:flex;justify-content:space-between;align-items:center" class="mb-8">
-        <h3 class="section-heading" style="margin:0">Recent AI Sessions</h3>
-        <button class="btn btn-ghost btn-sm" onclick="app.navigate('history')">View All</button>
-      </div>
-      
-      <div class="flex-col gap-12 mb-24">
         ${sessions.length > 0 ? sessions.slice(0, 2).map(s => `
           <div class="card card-sm" onclick="app.resumeSession('${s.id}')" style="cursor:pointer">
             <div style="display:flex;align-items:center;gap:10px">
@@ -835,22 +464,7 @@
           </div>
         `).join('') : '<p style="font-size:0.8rem;color:var(--text-muted);text-align:center;padding:10px">No recent sessions.</p>'}
       </div>
-
-      <div class="mt-24">
-        <div class="section-title">Popular Skills</div>
-        <div class="flex-col">
-          ${popSkills.map(s => renderQuickSkill(s.id, s.name, s.tagline, s.emoji, window.CATS[s.cat]?.color || '#f472b6')).join('')}
-        </div>
-      </div>
-      ${footerHTML}
-    `;
-  }
-
-  function renderQuickSkill(id,name,desc,emoji,color) {
-    return `<div class="skill-list-item" onclick="app.openSkill('${id}')">
-      <div class="skill-icon" style="background:${color}15;color:${color};display:flex;align-items:center;justify-content:center;font-size:20px;">${emoji}</div>
-      <div><h5>${name}</h5><p style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:200px;">${desc}</p></div>
-    </div>`;
+    ` + footerHTML;
   }
 
   // ---- SKILLS HUB VIEW WITH SEARCH ----
@@ -859,10 +473,10 @@
     if (!el) return;
     
     const cats = ['All', ...Object.keys(window.CATS)];
+    const q = searchQ.toLowerCase();
     
     const filtered = window.SKILLS.filter(s => {
       const matchCat = catFilter === 'All' || s.cat === catFilter;
-      const q = searchQ.toLowerCase();
       const matchQ = !q || s.name.toLowerCase().includes(q) || s.tagline.toLowerCase().includes(q) || s.desc.toLowerCase().includes(q);
       return matchCat && matchQ;
     });
@@ -919,21 +533,26 @@
   }
 
   window.app = window.app || {};
+  let searchTimeout = null;
   app.handleSearch = function(e) {
     searchQ = e.target.value;
-    renderSkillsHub();
-    // Keep focus
-    setTimeout(() => {
-      const input = document.getElementById('skills-search');
-      if (input) {
-        input.focus();
-        // Move cursor to end
-        input.selectionStart = input.selectionEnd = input.value.length;
-      }
-    }, 0);
+    if (searchTimeout) clearTimeout(searchTimeout);
+    searchTimeout = setTimeout(() => {
+      renderSkillsHub();
+      // Keep focus
+      setTimeout(() => {
+        const input = document.getElementById('skills-search');
+        if (input) {
+          input.focus();
+          // Move cursor to end
+          input.selectionStart = input.selectionEnd = input.value.length;
+        }
+      }, 0);
+    }, 300); // 300ms debounce
   };
   app.clearSearch = function() {
     searchQ = '';
+    if (searchTimeout) clearTimeout(searchTimeout);
     renderSkillsHub();
   };
   app.setCategoryFilter = function(cat) {
