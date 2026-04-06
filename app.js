@@ -12,6 +12,16 @@
   let catFilter = 'All';
   let searchQ = '';
 
+  app.escapeHtml = function(str) {
+    if (!str) return '';
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+  };
+
   const footerHTML = `
     <div style="padding: 40px 20px 20px; text-align: center; color: var(--text-muted); font-size: 0.75rem; margin-top: 20px;">
       <button onclick="app.navigate('support')" style="background:none; border:none; color:var(--text-dim); text-decoration:none; display:flex; align-items:center; justify-content:center; gap:6px; margin-bottom:8px; font-weight:600; cursor:pointer; width:100%;">
@@ -244,7 +254,7 @@
     if (!list) return;
     list.innerHTML = window.modalTeam.map((email, idx) => `
       <div class="team-member">
-        <span>${email}</span>
+        <span>${app.escapeHtml(email)}</span>
         <button onclick="app.removeFromModalTeam(${idx})" class="remove-member">
           <span class="material-symbols-outlined">delete</span>
         </button>
@@ -306,7 +316,7 @@
         <div style="flex:1;">
           <div style="font-size:0.75rem; color:var(--text-muted); margin-bottom:6px; font-weight:700; text-transform:uppercase; letter-spacing:0.08em;">Active Project Workspace</div>
           <select id="profile-select" style="width:100%; background:var(--bg-input); color:var(--text); border:1px solid var(--border); padding:10px 12px; border-radius:10px; font-family:inherit; font-size:0.95rem; font-weight:600; appearance: none; cursor:pointer;" onchange="app.switchProfile(this.value)">
-             ${profiles.map(p => `<option value="${p.id}" ${p.id === activeProfileId ? 'selected' : ''}>${p.name}</option>`).join('')}
+             ${profiles.map(p => `<option value="${p.id}" ${p.id === activeProfileId ? 'selected' : ''}>${app.escapeHtml(p.name)}</option>`).join('')}
           </select>
         </div>
         <button onclick="app.newProfile()" class="btn btn-primary" style="padding:12px 18px; border-radius:10px; display:flex; align-items:center; gap:8px;" title="Create New Project Workspace">
@@ -1410,7 +1420,7 @@
         <div style="display:flex; gap:12px; flex-wrap:wrap; margin-bottom:20px;">
           <div style="flex:1; min-width:200px;">
             <select id="settings-profile-select" style="width:100%; background:var(--bg-input); color:var(--text); border:1px solid var(--border); padding:10px 14px; border-radius:8px; font-family:inherit; font-size:0.95rem;" onchange="app.switchProfile(this.value)">
-               ${profiles.map(p => `<option value="${p.id}" ${p.id === activeProfileId ? 'selected' : ''}>${p.name}</option>`).join('')}
+               ${profiles.map(p => `<option value="${p.id}" ${p.id === activeProfileId ? 'selected' : ''}>${app.escapeHtml(p.name)}</option>`).join('')}
             </select>
           </div>
           <button onclick="app.newProfile()" class="btn btn-primary" style="padding:10px 20px;">+ New Project</button>
@@ -1424,7 +1434,7 @@
           <div style="display:flex; flex-wrap:wrap; gap:8px;">
             ${team.length > 0 ? team.map(email => `
               <div class="chip chip-accent" style="text-transform:none; padding:6px 14px; font-size:0.75rem;">
-                <span class="material-symbols-outlined" style="font-size:14px;">person</span> ${email}
+                <span class="material-symbols-outlined" style="font-size:14px;">person</span> ${app.escapeHtml(email)}
               </div>
             `).join('') : '<p style="color:var(--text-muted); font-size:0.8rem;">No team members added yet.</p>'}
           </div>
@@ -1488,7 +1498,7 @@
       body: `
         <div class="form-group">
           <label class="form-label">Project Name</label>
-          <input type="text" id="modal-project-name" class="form-input" value="${p.name}">
+          <input type="text" id="modal-project-name" class="form-input" value="${app.escapeHtml(p.name)}">
         </div>
         <div class="form-group">
           <label class="form-label">Add Team Member (Email)</label>
