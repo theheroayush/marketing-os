@@ -225,7 +225,7 @@
           <label class="form-label">Add Team Member (Email)</label>
           <div style="display:flex; gap:8px;">
             <input type="email" id="modal-team-email" class="form-input" placeholder="colleague@example.com">
-            <button onclick="app.addTeamMemberToModal()" class="btn btn-primary" style="padding:0 12px;"><span class="material-symbols-outlined">add</span></button>
+            <button onclick="app.addTeamMemberToModal()" class="btn btn-primary" style="padding:0 12px;" aria-label="Add team member"><span class="material-symbols-outlined" aria-hidden="true">add</span></button>
           </div>
           <div id="modal-team-list" class="team-list"></div>
         </div>
@@ -611,7 +611,7 @@
 
     el.innerHTML = `
       <div class="skill-header" style="position:sticky;top:60px;background:var(--bg);z-index:10;padding-bottom:10px;border-bottom:1px solid ${accentColor}44;margin-bottom:16px;">
-        <button class="back-btn" onclick="app.navigate('history')"><span class="material-symbols-outlined">history</span></button>
+        <button class="back-btn" onclick="app.navigate('history')" aria-label="Back to history"><span class="material-symbols-outlined" aria-hidden="true">history</span></button>
         <div style="flex:1;text-align:center;">
           <h2 style="font-size:1rem;font-weight:800;display:flex;align-items:center;justify-content:center;gap:6px;">
             <span style="font-size:1.2rem">${activeSkill.emoji}</span> ${activeSkill.name}
@@ -619,9 +619,9 @@
           <p style="font-size:0.7rem;color:${accentColor};margin-top:2px;">${catInfo.icon} ${activeSkill.cat}</p>
         </div>
         <div style="display:flex;gap:8px;">
-          <button class="icon-btn" onclick="app.exportPDF()" title="Export Customized PDF"><span class="material-symbols-outlined">picture_as_pdf</span></button>
-          <button class="icon-btn" onclick="app.openSkill('${activeSkill.id}')" title="New Session" style="color:var(--text-dim)"><span class="material-symbols-outlined">restart_alt</span></button>
-          <button class="icon-btn" onclick="app.triggerSetupApiKey()" title="Setup API Key" style="color:var(--text-dim)"><span class="material-symbols-outlined">key</span></button>
+          <button class="icon-btn" onclick="app.exportPDF()" title="Export Customized PDF" aria-label="Export Customized PDF"><span class="material-symbols-outlined" aria-hidden="true">picture_as_pdf</span></button>
+          <button class="icon-btn" onclick="app.openSkill('${activeSkill.id}')" title="New Session" style="color:var(--text-dim)" aria-label="New Session"><span class="material-symbols-outlined" aria-hidden="true">restart_alt</span></button>
+          <button class="icon-btn" onclick="app.triggerSetupApiKey()" title="Setup API Key" style="color:var(--text-dim)" aria-label="Setup API Key"><span class="material-symbols-outlined" aria-hidden="true">key</span></button>
         </div>
       </div>
 
@@ -1123,7 +1123,7 @@
           <label class="form-label">Add Team Member (Email)</label>
           <div style="display:flex; gap:8px;">
             <input type="email" id="modal-team-email" class="form-input" placeholder="colleague@example.com">
-            <button onclick="app.addTeamMemberToModal()" class="btn btn-primary" style="padding:0 12px;"><span class="material-symbols-outlined">add</span></button>
+            <button onclick="app.addTeamMemberToModal()" class="btn btn-primary" style="padding:0 12px;" aria-label="Add team member"><span class="material-symbols-outlined" aria-hidden="true">add</span></button>
           </div>
           <div id="modal-team-list" class="team-list"></div>
         </div>

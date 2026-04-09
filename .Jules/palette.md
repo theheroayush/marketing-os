@@ -1,0 +1,3 @@
+## 2023-10-27 - Icon-Only Button Accessibility Pattern
+**Learning:** The application heavily uses Google Material Symbols for icon-only buttons via `<span class="material-symbols-outlined">`. By default, screen readers read the icon ligature text (e.g., "search", "notifications") instead of the button's intended action, leading to poor accessibility.
+**Action:** Always add an explicit `aria-label` attribute to the parent `<button>` describing the action, and add `aria-hidden="true"` to the inner `<span>` containing the Material Symbol ligature. This pattern ensures screen readers announce the correct functionality without reading the internal icon text.
