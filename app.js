@@ -118,9 +118,14 @@
     },
     getStats: () => {
       const sessions = Storage.getSessions();
-      const uniqueSkills = new Set(sessions.map(s => s.skillId)).size;
-      const totalMessages = sessions.reduce((sum, s) => sum + s.messages.length, 0);
-      return { uniqueSkills, totalMessages, sessionsCount: sessions.length };
+      const uniqueSkillIds = new Set();
+      let totalMessages = 0;
+      for (let i = 0; i < sessions.length; i++) {
+        const s = sessions[i];
+        uniqueSkillIds.add(s.skillId);
+        totalMessages += s.messages.length;
+      }
+      return { uniqueSkills: uniqueSkillIds.size, totalMessages, sessionsCount: sessions.length };
     }
   };
 
@@ -485,11 +490,53 @@
     const cats = ['All', ...Object.keys(window.CATS)];
     const q = searchQ.toLowerCase();
     
-    const filtered = window.SKILLS.filter(s => {
+    let skillsHTML = '';
+    let filteredCount = 0;
+
+    // Single-pass optimization: filter and map in one loop
+    for (let i = 0; i < window.SKILLS.length; i++) {
+      const s = window.SKILLS[i];
       const matchCat = catFilter === 'All' || s.cat === catFilter;
       const matchQ = !q || s.name.toLowerCase().includes(q) || s.tagline.toLowerCase().includes(q) || s.desc.toLowerCase().includes(q);
-      return matchCat && matchQ;
-    });
+
+      if (matchCat && matchQ) {
+        filteredCount++;
+        const c = window.CATS[s.cat];
+        skillsHTML += `
+            <div class="card" onclick="app.openSkill('${s.id}')" style="cursor:pointer;display:flex;flex-direction:column;gap:8px;transition:0.2s;">
+              <div style="display:flex;justify-content:space-between;align-items:start;">
+                <div style="width:36px;height:36px;border-radius:10px;background:${c.bg || '#333'};display:flex;align-items:center;justify-content:center;font-size:18px;">
+                  ${s.emoji}
+                </div>
+                <span style="font-size:0.65rem;font-weight:700;border-radius:4px;padding:2px 6px;color:${c.color};background:${c.bg || '#333'}">
+                  ${s.cat}
+                </span>
+              </div>
+              <h4 style="font-size:0.95rem;margin-top:4px;">${s.name}</h4>
+              <p style="font-size:0.75rem;color:var(--text-muted);line-height:1.4">${s.tagline}</p>
+              <div style="margin-top:auto;font-size:0.75rem;color:${c.color};font-weight:700;">Start &rarr;</div>
+            </div>
+        `;
+      }
+    }
+
+    if (filteredCount === 0) {
+      skillsHTML = `<p style="grid-column:1/-1;text-align:center;color:var(--text-muted);padding:40px 0;">No skills found.</p>`;
+    }
+
+    let catsHTML = '';
+    for (let i = 0; i < cats.length; i++) {
+      const c = cats[i];
+      const catInfo = window.CATS[c];
+      const isActive = catFilter === c;
+      const bg = isActive ? 'var(--text)' : 'var(--card-bg)';
+      const color = isActive ? 'var(--bg)' : 'var(--text-dim)';
+      const border = isActive ? 'transparent' : 'var(--border)';
+      catsHTML += `<button onclick="app.setCategoryFilter('${c}')"
+        style="background:${bg};color:${color};border:1px solid ${border};border-radius:20px;padding:6px 14px;font-size:0.8rem;white-space:nowrap;font-weight:600;display:flex;align-items:center;gap:6px;cursor:pointer;">
+        ${c !== 'All' ? catInfo.icon + ' ' : ''}${c}
+      </button>`;
+    }
 
     el.innerHTML = `
       <h2 class="section-heading" style="font-size:1.4rem">Skills Hub</h2>
@@ -506,38 +553,11 @@
 
       <!-- Categories Scroll -->
       <div style="display:flex;gap:8px;overflow-x:auto;padding-bottom:12px;margin-bottom:8px;scrollbar-width:none;-webkit-overflow-scrolling:touch;">
-        ${cats.map(c => {
-          const catInfo = window.CATS[c];
-          const isActive = catFilter === c;
-          const bg = isActive ? 'var(--text)' : 'var(--card-bg)';
-          const color = isActive ? 'var(--bg)' : 'var(--text-dim)';
-          const border = isActive ? 'transparent' : 'var(--border)';
-          return `<button onclick="app.setCategoryFilter('${c}')" 
-            style="background:${bg};color:${color};border:1px solid ${border};border-radius:20px;padding:6px 14px;font-size:0.8rem;white-space:nowrap;font-weight:600;display:flex;align-items:center;gap:6px;cursor:pointer;">
-            ${c !== 'All' ? catInfo.icon + ' ' : ''}${c}
-          </button>`;
-        }).join('')}
+        ${catsHTML}
       </div>
 
       <div class="grid-2 gap-16">
-        ${filtered.length > 0 ? filtered.map(s => {
-          const c = window.CATS[s.cat];
-          return `
-            <div class="card" onclick="app.openSkill('${s.id}')" style="cursor:pointer;display:flex;flex-direction:column;gap:8px;transition:0.2s;">
-              <div style="display:flex;justify-content:space-between;align-items:start;">
-                <div style="width:36px;height:36px;border-radius:10px;background:${c.bg || '#333'};display:flex;align-items:center;justify-content:center;font-size:18px;">
-                  ${s.emoji}
-                </div>
-                <span style="font-size:0.65rem;font-weight:700;border-radius:4px;padding:2px 6px;color:${c.color};background:${c.bg || '#333'}">
-                  ${s.cat}
-                </span>
-              </div>
-              <h4 style="font-size:0.95rem;margin-top:4px;">${s.name}</h4>
-              <p style="font-size:0.75rem;color:var(--text-muted);line-height:1.4">${s.tagline}</p>
-              <div style="margin-top:auto;font-size:0.75rem;color:${c.color};font-weight:700;">Start &rarr;</div>
-            </div>
-          `;
-        }).join('') : `<p style="grid-column:1/-1;text-align:center;color:var(--text-muted);padding:40px 0;">No skills found.</p>`}
+        ${skillsHTML}
       </div>
     `;
   }
