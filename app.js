@@ -464,9 +464,9 @@
         ${sessions.length > 0 ? sessions.slice(0, 2).map(s => `
           <div class="card card-sm" onclick="app.resumeSession('${s.id}')" style="cursor:pointer">
             <div style="display:flex;align-items:center;gap:10px">
-              <span style="font-size:20px">${s.skillEmoji}</span>
+              <span style="font-size:20px">${app.escapeHtml(s.skillEmoji)}</span>
               <div style="flex:1">
-                <div style="font-weight:700;font-size:0.9rem">${s.skillName}</div>
+                <div style="font-weight:700;font-size:0.9rem">${app.escapeHtml(s.skillName)}</div>
                 <div style="font-size:0.75rem;color:var(--text-muted)">${new Date(s.ts).toLocaleDateString()} • ${s.messages.length} messages</div>
               </div>
               <span class="material-symbols-outlined" style="font-size:18px;color:var(--text-muted)">chevron_right</span>
@@ -911,15 +911,15 @@
             <div onclick="app.resumeSession('${s.id}')" style="cursor:pointer">
               <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:8px">
                 <div style="display:flex;align-items:center;gap:10px">
-                  <div style="width:32px;height:32px;border-radius:8px;background:var(--border);display:flex;align-items:center;justify-content:center;font-size:18px">${s.skillEmoji}</div>
+                  <div style="width:32px;height:32px;border-radius:8px;background:var(--border);display:flex;align-items:center;justify-content:center;font-size:18px">${app.escapeHtml(s.skillEmoji)}</div>
                   <div>
-                    <h4 style="font-size:1rem;margin:0">${s.skillName}</h4>
+                    <h4 style="font-size:1rem;margin:0">${app.escapeHtml(s.skillName)}</h4>
                     <span style="font-size:0.7rem;color:var(--text-muted)">${new Date(s.ts).toLocaleString()}</span>
                   </div>
                 </div>
               </div>
               <p style="font-size:0.8rem;color:var(--text-dim);margin-bottom:8px;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;">
-                ${s.messages[s.messages.length - 1].content.replace(/<[^>]*>/g, '').slice(0, 120)}...
+                ${app.escapeHtml(s.messages[s.messages.length - 1].content.replace(/<[^>]*>/g, '').slice(0, 120))}...
               </p>
             </div>
             <button onclick="app.deleteSession('${s.id}')" style="position:absolute;top:10px;right:10px;background:none;border:none;color:var(--red);cursor:pointer;" title="Delete">
@@ -974,7 +974,7 @@
       <div style="border-bottom:2px solid #000; padding-bottom:10px; margin-bottom:20px; text-align:left;">
         <h1 style="margin:0; font-size:28px; font-weight:800;">MarkU AI Report</h1>
         <div style="display:flex; justify-content:space-between; margin-top:10px; font-size:14px; color:#444; font-weight:600;">
-          <span>Project Team: <strong>${projectName}</strong></span>
+          <span>Project Team: <strong>${app.escapeHtml(projectName)}</strong></span>
           <span>Date: ${new Date().toLocaleDateString()}</span>
         </div>
       </div>
