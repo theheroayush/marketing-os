@@ -1,0 +1,3 @@
+## 2026-04-11 - Single-Pass Iterations for UI Updates
+**Learning:** In a vanilla JS architecture where search input dynamically updates the DOM using string interpolation, chaining multiple array methods (`filter().map().join()`) on large data sets (like the `SKILLS` array) causes unnecessary intermediate array allocations, adding GC pressure and briefly blocking the main thread during fast keystrokes.
+**Action:** Replace `filter().map()` chains with a single `reduce` pass (or a `for` loop) in critical rendering paths to directly compute the final string/result and minimize memory allocations.
