@@ -525,3 +525,9 @@ input, textarea, select, button {
 }
 .form-input:focus { border-color: var(--primary); box-shadow: 0 0 0 4px var(--primary-glow); }
 .btn-full { width: 100%; justify-content: center; }
+
+/* Global focus states for accessibility */
+*:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
