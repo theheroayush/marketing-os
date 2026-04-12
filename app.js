@@ -77,25 +77,38 @@
     }
   };
   app.checkForUpdates = checkForUpdates;
+  let _sessionsCache = null;
+  let _profilesCache = null;
   const Storage = {
-    getSessions: () => JSON.parse(localStorage.getItem('marku_sessions') || '[]'),
+    getSessions: () => {
+      if (!_sessionsCache) _sessionsCache = JSON.parse(localStorage.getItem('marku_sessions') || '[]');
+      return _sessionsCache;
+    },
     saveSession: (session) => {
       const sessions = Storage.getSessions();
       const idx = sessions.findIndex(s => s.id === session.id);
       if (idx > -1) sessions[idx] = session;
       else sessions.unshift(session);
-      localStorage.setItem('marku_sessions', JSON.stringify(sessions.slice(0, 50)));
+      _sessionsCache = sessions.slice(0, 50);
+      localStorage.setItem('marku_sessions', JSON.stringify(_sessionsCache));
     },
     deleteSession: (id) => {
       const sessions = Storage.getSessions().filter(s => s.id !== id);
+      _sessionsCache = sessions;
       localStorage.setItem('marku_sessions', JSON.stringify(sessions));
       if (currentView === 'history') app.renderHistoryView();
     },
     getProfiles: () => {
-      let ps = JSON.parse(localStorage.getItem('marku_profiles') || '[{"id":"default","name":"Default Profile","content":"","team":[]}]');
-      return ps.map(p => ({ ...p, team: p.team || [] }));
+      if (!_profilesCache) {
+        let ps = JSON.parse(localStorage.getItem('marku_profiles') || '[{"id":"default","name":"Default Profile","content":"","team":[]}]');
+        _profilesCache = ps.map(p => ({ ...p, team: p.team || [] }));
+      }
+      return _profilesCache;
     },
-    saveProfiles: (profiles) => localStorage.setItem('marku_profiles', JSON.stringify(profiles)),
+    saveProfiles: (profiles) => {
+      _profilesCache = profiles;
+      localStorage.setItem('marku_profiles', JSON.stringify(profiles));
+    },
     getActiveProfileId: () => localStorage.getItem('marku_active_profile') || 'default',
     setActiveProfileId: (id) => localStorage.setItem('marku_active_profile', id),
     getProductCtx: () => {
@@ -118,9 +131,15 @@
     },
     getStats: () => {
       const sessions = Storage.getSessions();
-      const uniqueSkills = new Set(sessions.map(s => s.skillId)).size;
-      const totalMessages = sessions.reduce((sum, s) => sum + s.messages.length, 0);
-      return { uniqueSkills, totalMessages, sessionsCount: sessions.length };
+      // Performance Optimization: Single-pass iteration replaces multiple array
+      // traversals (map, reduce) to minimize memory allocations and redundant loops.
+      let uniqueSkillsSet = new Set();
+      let totalMessages = 0;
+      for (let i = 0; i < sessions.length; i++) {
+        uniqueSkillsSet.add(sessions[i].skillId);
+        totalMessages += sessions[i].messages ? sessions[i].messages.length : 0;
+      }
+      return { uniqueSkills: uniqueSkillsSet.size, totalMessages, sessionsCount: sessions.length };
     }
   };
 
