@@ -77,27 +77,60 @@
     }
   };
   app.checkForUpdates = checkForUpdates;
+  // Performance Optimization: Caching the JSON string in memory to avoid repetitive synchronous
+  // localStorage.getItem reads on the main thread, while returning a fresh parsed object to prevent mutability bugs.
+  // We use string caching because JSON.parse(string) is faster than JSON.parse(JSON.stringify(object))
+  // and reading from memory is significantly faster than reading from disk via localStorage.
+  let _sessionsCacheString = null;
+  let _profilesCacheString = null;
+  let _activeProfileIdCache = null;
+
   const Storage = {
-    getSessions: () => JSON.parse(localStorage.getItem('marku_sessions') || '[]'),
+    getSessions: () => {
+      if (_sessionsCacheString === null) {
+        _sessionsCacheString = localStorage.getItem('marku_sessions') || '[]';
+      }
+      return JSON.parse(_sessionsCacheString);
+    },
     saveSession: (session) => {
       const sessions = Storage.getSessions();
       const idx = sessions.findIndex(s => s.id === session.id);
       if (idx > -1) sessions[idx] = session;
       else sessions.unshift(session);
-      localStorage.setItem('marku_sessions', JSON.stringify(sessions.slice(0, 50)));
+      _sessionsCacheString = JSON.stringify(sessions.slice(0, 50));
+      localStorage.setItem('marku_sessions', _sessionsCacheString);
     },
     deleteSession: (id) => {
       const sessions = Storage.getSessions().filter(s => s.id !== id);
-      localStorage.setItem('marku_sessions', JSON.stringify(sessions));
+      _sessionsCacheString = JSON.stringify(sessions);
+      localStorage.setItem('marku_sessions', _sessionsCacheString);
       if (currentView === 'history') app.renderHistoryView();
     },
     getProfiles: () => {
-      let ps = JSON.parse(localStorage.getItem('marku_profiles') || '[{"id":"default","name":"Default Profile","content":"","team":[]}]');
-      return ps.map(p => ({ ...p, team: p.team || [] }));
+      if (_profilesCacheString === null) {
+        let rawStr = localStorage.getItem('marku_profiles');
+        if (!rawStr) {
+          rawStr = '[{"id":"default","name":"Default Profile","content":"","team":[]}]';
+        }
+        let ps = JSON.parse(rawStr);
+        _profilesCacheString = JSON.stringify(ps.map(p => ({ ...p, team: p.team || [] })));
+      }
+      return JSON.parse(_profilesCacheString);
     },
-    saveProfiles: (profiles) => localStorage.setItem('marku_profiles', JSON.stringify(profiles)),
-    getActiveProfileId: () => localStorage.getItem('marku_active_profile') || 'default',
-    setActiveProfileId: (id) => localStorage.setItem('marku_active_profile', id),
+    saveProfiles: (profiles) => {
+      _profilesCacheString = JSON.stringify(profiles);
+      localStorage.setItem('marku_profiles', _profilesCacheString);
+    },
+    getActiveProfileId: () => {
+      if (_activeProfileIdCache === null) {
+        _activeProfileIdCache = localStorage.getItem('marku_active_profile') || 'default';
+      }
+      return _activeProfileIdCache;
+    },
+    setActiveProfileId: (id) => {
+      _activeProfileIdCache = id;
+      localStorage.setItem('marku_active_profile', id);
+    },
     getProductCtx: () => {
       const ps = Storage.getProfiles();
       const aid = Storage.getActiveProfileId();

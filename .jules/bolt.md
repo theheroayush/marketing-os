@@ -1,0 +1,3 @@
+## 2026-04-13 - [localStorage Mutability Bug Prevention]
+**Learning:** Returning a cached `localStorage` JSON object as a reference causes UI desync bugs if consumers mutate the array (e.g., `sessions.unshift()`). However, `JSON.parse(JSON.stringify(cache))` is slower than parsing a raw string from `localStorage`.
+**Action:** When caching `localStorage` data to prevent main-thread blocking from cross-boundary I/O, cache the raw JSON string in memory (e.g. `_sessionsCacheString = localStorage.getItem(...)`). Then, always `return JSON.parse(_sessionsCacheString)` on demand to safely return fresh object instances while maintaining high performance.
