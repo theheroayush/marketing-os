@@ -77,25 +77,40 @@
     }
   };
   app.checkForUpdates = checkForUpdates;
+  let _cachedSessionsStr = null;
+  let _cachedProfilesStr = null;
   const Storage = {
-    getSessions: () => JSON.parse(localStorage.getItem('marku_sessions') || '[]'),
+    getSessions: () => {
+      if (_cachedSessionsStr === null) {
+        _cachedSessionsStr = localStorage.getItem('marku_sessions') || '[]';
+      }
+      return JSON.parse(_cachedSessionsStr);
+    },
     saveSession: (session) => {
       const sessions = Storage.getSessions();
       const idx = sessions.findIndex(s => s.id === session.id);
       if (idx > -1) sessions[idx] = session;
       else sessions.unshift(session);
-      localStorage.setItem('marku_sessions', JSON.stringify(sessions.slice(0, 50)));
+      _cachedSessionsStr = JSON.stringify(sessions.slice(0, 50));
+      localStorage.setItem('marku_sessions', _cachedSessionsStr);
     },
     deleteSession: (id) => {
       const sessions = Storage.getSessions().filter(s => s.id !== id);
-      localStorage.setItem('marku_sessions', JSON.stringify(sessions));
+      _cachedSessionsStr = JSON.stringify(sessions);
+      localStorage.setItem('marku_sessions', _cachedSessionsStr);
       if (currentView === 'history') app.renderHistoryView();
     },
     getProfiles: () => {
-      let ps = JSON.parse(localStorage.getItem('marku_profiles') || '[{"id":"default","name":"Default Profile","content":"","team":[]}]');
+      if (_cachedProfilesStr === null) {
+        _cachedProfilesStr = localStorage.getItem('marku_profiles') || '[{"id":"default","name":"Default Profile","content":"","team":[]}]';
+      }
+      let ps = JSON.parse(_cachedProfilesStr);
       return ps.map(p => ({ ...p, team: p.team || [] }));
     },
-    saveProfiles: (profiles) => localStorage.setItem('marku_profiles', JSON.stringify(profiles)),
+    saveProfiles: (profiles) => {
+      _cachedProfilesStr = JSON.stringify(profiles);
+      localStorage.setItem('marku_profiles', _cachedProfilesStr);
+    },
     getActiveProfileId: () => localStorage.getItem('marku_active_profile') || 'default',
     setActiveProfileId: (id) => localStorage.setItem('marku_active_profile', id),
     getProductCtx: () => {
@@ -118,9 +133,13 @@
     },
     getStats: () => {
       const sessions = Storage.getSessions();
-      const uniqueSkills = new Set(sessions.map(s => s.skillId)).size;
-      const totalMessages = sessions.reduce((sum, s) => sum + s.messages.length, 0);
-      return { uniqueSkills, totalMessages, sessionsCount: sessions.length };
+      let totalMessages = 0;
+      const skillsSet = new Set();
+      for (let i = 0; i < sessions.length; i++) {
+        skillsSet.add(sessions[i].skillId);
+        totalMessages += sessions[i].messages.length;
+      }
+      return { uniqueSkills: skillsSet.size, totalMessages, sessionsCount: sessions.length };
     }
   };
 
