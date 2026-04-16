@@ -1,0 +1,3 @@
+## 2026-04-16 - [Storage I/O vs Parse Optimization]
+**Learning:** Caching raw JSON strings from `localStorage` in memory does not yield a measurable performance improvement because modern browsers natively cache `localStorage.getItem()`. The true performance bottleneck in vanilla JS state access is `JSON.parse()`. Furthermore, caching strings in local variables breaks cross-tab synchronization unless `storage` events are implemented.
+**Action:** When optimizing state access, target deep iterations (e.g., chained map/reduce operations) or cache parsed objects natively, avoiding string-caching micro-optimizations that introduce synchronization bugs.
