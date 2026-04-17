@@ -77,25 +77,38 @@
     }
   };
   app.checkForUpdates = checkForUpdates;
+  let _cachedSessions = null;
+  let _cachedProfiles = null;
   const Storage = {
-    getSessions: () => JSON.parse(localStorage.getItem('marku_sessions') || '[]'),
+    getSessions: () => {
+      if (_cachedSessions) return _cachedSessions.map(s => ({ ...s }));
+      _cachedSessions = JSON.parse(localStorage.getItem('marku_sessions') || '[]');
+      return _cachedSessions.map(s => ({ ...s }));
+    },
     saveSession: (session) => {
       const sessions = Storage.getSessions();
       const idx = sessions.findIndex(s => s.id === session.id);
       if (idx > -1) sessions[idx] = session;
       else sessions.unshift(session);
-      localStorage.setItem('marku_sessions', JSON.stringify(sessions.slice(0, 50)));
+      _cachedSessions = sessions.slice(0, 50);
+      localStorage.setItem('marku_sessions', JSON.stringify(_cachedSessions));
     },
     deleteSession: (id) => {
       const sessions = Storage.getSessions().filter(s => s.id !== id);
+      _cachedSessions = sessions;
       localStorage.setItem('marku_sessions', JSON.stringify(sessions));
       if (currentView === 'history') app.renderHistoryView();
     },
     getProfiles: () => {
+      if (_cachedProfiles) return _cachedProfiles.map(p => ({ ...p, team: p.team ? [...p.team] : [] }));
       let ps = JSON.parse(localStorage.getItem('marku_profiles') || '[{"id":"default","name":"Default Profile","content":"","team":[]}]');
-      return ps.map(p => ({ ...p, team: p.team || [] }));
+      _cachedProfiles = ps.map(p => ({ ...p, team: p.team || [] }));
+      return _cachedProfiles.map(p => ({ ...p, team: p.team ? [...p.team] : [] }));
     },
-    saveProfiles: (profiles) => localStorage.setItem('marku_profiles', JSON.stringify(profiles)),
+    saveProfiles: (profiles) => {
+      _cachedProfiles = profiles.map(p => ({ ...p, team: p.team ? [...p.team] : [] }));
+      localStorage.setItem('marku_profiles', JSON.stringify(profiles));
+    },
     getActiveProfileId: () => localStorage.getItem('marku_active_profile') || 'default',
     setActiveProfileId: (id) => localStorage.setItem('marku_active_profile', id),
     getProductCtx: () => {
