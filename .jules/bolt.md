@@ -1,0 +1,3 @@
+## 2024-04-20 - [Optimize localStorage parsing]
+**Learning:** When optimizing repeated synchronous `localStorage` reads containing JSON, the true performance bottleneck is `JSON.parse()`, as modern browsers already cache `getItem()` string results in memory.
+**Action:** Cache the parsed JavaScript objects rather than raw JSON strings. Since callers modify the returned references (e.g. state mutation), use deep copying techniques (e.g. array map with object spread) when returning the cached object to maintain data integrity without sacrificing speed.
