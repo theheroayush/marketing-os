@@ -472,7 +472,14 @@
               <span class="material-symbols-outlined" style="font-size:18px;color:var(--text-muted)">chevron_right</span>
             </div>
           </div>
-        `).join('') : '<p style="font-size:0.8rem;color:var(--text-muted);text-align:center;padding:10px">No recent sessions.</p>'}
+        `).join('') : `
+          <div class="card" style="text-align:center; padding:30px 20px; background:var(--bg-elevated); border:1px dashed var(--border);">
+            <span class="material-symbols-outlined" style="font-size:32px; color:var(--text-dim); margin-bottom:12px;">history_toggle_off</span>
+            <h4 style="font-size:1rem; margin-bottom:8px;">No recent sessions</h4>
+            <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:16px;">Start exploring AI marketing skills to build your history.</p>
+            <button class="btn btn-primary btn-sm" onclick="app.navigate('skills')">Explore Skills Hub</button>
+          </div>
+        `}
       </div>
     ` + footerHTML;
   }
@@ -926,7 +933,14 @@
               <span class="material-symbols-outlined" style="font-size:18px">delete</span>
             </button>
           </div>
-        `).join('') : '<div style="text-align:center;padding:40px;color:var(--text-muted)">No history yet. Start a skill in the Skills Hub!</div>'}
+        `).join('') : `
+          <div class="card" style="text-align:center; padding:40px 20px; background:var(--bg-elevated); border:1px dashed var(--border);">
+            <span class="material-symbols-outlined" style="font-size:48px; color:var(--text-dim); margin-bottom:16px;">history</span>
+            <h4 style="font-size:1.1rem; margin-bottom:8px;">Your history is empty</h4>
+            <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:24px;">AI consultations you start will be saved here so you can revisit them later.</p>
+            <button class="btn btn-primary" onclick="app.navigate('skills')">Start a Skill Session</button>
+          </div>
+        `}
       </div>
       ${footerHTML}
     `;
