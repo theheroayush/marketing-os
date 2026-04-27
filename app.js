@@ -472,7 +472,12 @@
               <span class="material-symbols-outlined" style="font-size:18px;color:var(--text-muted)">chevron_right</span>
             </div>
           </div>
-        `).join('') : '<p style="font-size:0.8rem;color:var(--text-muted);text-align:center;padding:10px">No recent sessions.</p>'}
+        `).join('') : `
+          <div style="text-align:center;padding:20px;color:var(--text-muted);background:var(--card-bg);border-radius:var(--radius-sm);border:1px dashed var(--border)">
+            <p style="font-size:0.85rem;margin-bottom:12px;">No recent sessions.</p>
+            <button class="btn btn-primary btn-sm" onclick="app.navigate('skills')">Explore Skills</button>
+          </div>
+        `}
       </div>
     ` + footerHTML;
   }
@@ -926,7 +931,14 @@
               <span class="material-symbols-outlined" style="font-size:18px">delete</span>
             </button>
           </div>
-        `).join('') : '<div style="text-align:center;padding:40px;color:var(--text-muted)">No history yet. Start a skill in the Skills Hub!</div>'}
+        `).join('') : `
+          <div style="text-align:center;padding:40px;color:var(--text-muted);background:var(--card-bg);border-radius:var(--radius);border:1px dashed var(--border)">
+            <span class="material-symbols-outlined" style="font-size:48px;color:var(--border);margin-bottom:16px;">history</span>
+            <h3 style="font-size:1.1rem;margin-bottom:8px;color:var(--text);">No history yet</h3>
+            <p style="font-size:0.85rem;margin-bottom:20px;">Start a skill session to build your marketing strategy.</p>
+            <button class="btn btn-primary" onclick="app.navigate('skills')">Explore Skills</button>
+          </div>
+        `}
       </div>
       ${footerHTML}
     `;
@@ -1055,7 +1067,12 @@
               <div class="chip chip-accent" style="text-transform:none; padding:6px 14px; font-size:0.75rem;">
                 <span class="material-symbols-outlined" style="font-size:14px;">person</span> ${app.escapeHtml(email)}
               </div>
-            `).join('') : '<p style="color:var(--text-muted); font-size:0.8rem;">No team members added yet.</p>'}
+            `).join('') : `
+              <div style="width:100%;text-align:center;padding:16px;background:var(--bg);border-radius:var(--radius-sm);border:1px dashed var(--border);">
+                <p style="color:var(--text-muted); font-size:0.85rem;margin-bottom:12px;">No team members added yet.</p>
+                <button class="btn btn-ghost btn-sm" onclick="app.editCurrentProject()">Manage Team</button>
+              </div>
+            `}
           </div>
         </div>
       </div>
