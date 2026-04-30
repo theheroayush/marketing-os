@@ -472,7 +472,18 @@
               <span class="material-symbols-outlined" style="font-size:18px;color:var(--text-muted)">chevron_right</span>
             </div>
           </div>
-        `).join('') : '<p style="font-size:0.8rem;color:var(--text-muted);text-align:center;padding:10px">No recent sessions.</p>'}
+        `).join('') : `
+          <div style="text-align:center; padding:30px 20px; background:var(--bg-elevated); border-radius:16px; border:1px dashed var(--border);">
+            <div style="width:48px; height:48px; border-radius:12px; background:var(--primary-bg); color:var(--primary); display:flex; align-items:center; justify-content:center; margin:0 auto 12px;">
+              <span class="material-symbols-outlined">auto_awesome</span>
+            </div>
+            <h4 style="font-size:1rem; margin:0 0 8px;">No recent sessions</h4>
+            <p style="font-size:0.85rem; color:var(--text-dim); margin-bottom:16px; line-height:1.4;">Start your first marketing consultation to get AI-powered insights.</p>
+            <button onclick="app.navigate('skills')" class="btn btn-primary btn-sm" style="margin:0 auto; display:flex; align-items:center; justify-content:center; gap:6px;">
+              Explore Skills Hub <span class="material-symbols-outlined" style="font-size:16px;">arrow_forward</span>
+            </button>
+          </div>
+        `}
       </div>
     ` + footerHTML;
   }
@@ -926,7 +937,18 @@
               <span class="material-symbols-outlined" style="font-size:18px">delete</span>
             </button>
           </div>
-        `).join('') : '<div style="text-align:center;padding:40px;color:var(--text-muted)">No history yet. Start a skill in the Skills Hub!</div>'}
+        `).join('') : `
+          <div style="text-align:center; padding:50px 20px; background:var(--bg-elevated); border-radius:16px; border:1px dashed var(--border); margin-top:20px;">
+            <div style="width:64px; height:64px; border-radius:16px; background:var(--primary-bg); color:var(--primary); display:flex; align-items:center; justify-content:center; margin:0 auto 16px;">
+              <span class="material-symbols-outlined" style="font-size:32px;">history_toggle_off</span>
+            </div>
+            <h3 style="font-size:1.2rem; margin:0 0 8px;">Your history is empty</h3>
+            <p style="font-size:0.9rem; color:var(--text-dim); margin-bottom:24px; max-width:300px; margin-left:auto; margin-right:auto; line-height:1.5;">All your past AI consultations and strategies will appear here.</p>
+            <button onclick="app.navigate('skills')" class="btn btn-primary" style="margin:0 auto; display:flex; align-items:center; justify-content:center; gap:8px;">
+              <span class="material-symbols-outlined">auto_awesome</span> Browse AI Skills
+            </button>
+          </div>
+        `}
       </div>
       ${footerHTML}
     `;
