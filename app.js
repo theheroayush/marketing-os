@@ -77,25 +77,41 @@
     }
   };
   app.checkForUpdates = checkForUpdates;
+
+  let _sessionsCache = null;
+  let _profilesCache = null;
+
   const Storage = {
-    getSessions: () => JSON.parse(localStorage.getItem('marku_sessions') || '[]'),
+    getSessions: () => {
+      if (!_sessionsCache) {
+        _sessionsCache = JSON.parse(localStorage.getItem('marku_sessions') || '[]');
+      }
+      return structuredClone(_sessionsCache);
+    },
     saveSession: (session) => {
       const sessions = Storage.getSessions();
       const idx = sessions.findIndex(s => s.id === session.id);
       if (idx > -1) sessions[idx] = session;
       else sessions.unshift(session);
-      localStorage.setItem('marku_sessions', JSON.stringify(sessions.slice(0, 50)));
+      _sessionsCache = sessions.slice(0, 50);
+      localStorage.setItem('marku_sessions', JSON.stringify(_sessionsCache));
     },
     deleteSession: (id) => {
       const sessions = Storage.getSessions().filter(s => s.id !== id);
+      _sessionsCache = sessions;
       localStorage.setItem('marku_sessions', JSON.stringify(sessions));
       if (currentView === 'history') app.renderHistoryView();
     },
     getProfiles: () => {
-      let ps = JSON.parse(localStorage.getItem('marku_profiles') || '[{"id":"default","name":"Default Profile","content":"","team":[]}]');
-      return ps.map(p => ({ ...p, team: p.team || [] }));
+      if (!_profilesCache) {
+        _profilesCache = JSON.parse(localStorage.getItem('marku_profiles') || '[{"id":"default","name":"Default Profile","content":"","team":[]}]');
+      }
+      return structuredClone(_profilesCache);
     },
-    saveProfiles: (profiles) => localStorage.setItem('marku_profiles', JSON.stringify(profiles)),
+    saveProfiles: (profiles) => {
+      _profilesCache = profiles;
+      localStorage.setItem('marku_profiles', JSON.stringify(profiles));
+    },
     getActiveProfileId: () => localStorage.getItem('marku_active_profile') || 'default',
     setActiveProfileId: (id) => localStorage.setItem('marku_active_profile', id),
     getProductCtx: () => {
@@ -487,7 +503,7 @@
     
     const filtered = window.SKILLS.filter(s => {
       const matchCat = catFilter === 'All' || s.cat === catFilter;
-      const matchQ = !q || s.name.toLowerCase().includes(q) || s.tagline.toLowerCase().includes(q) || s.desc.toLowerCase().includes(q);
+      const matchQ = !q || s.searchStr.includes(q);
       return matchCat && matchQ;
     });
 
@@ -939,6 +955,11 @@
       console.error("SKILLS data missing.");
       return;
     }
+
+    // Pre-calculate search strings for faster filtering
+    window.SKILLS.forEach(s => {
+      s.searchStr = (s.name + ' ' + s.tagline + ' ' + s.desc).toLowerCase();
+    });
 
     const hash = window.location.hash.slice(1) || 'dashboard';
     navigate(hash);
