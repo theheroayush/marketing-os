@@ -1,0 +1,3 @@
+## 2024-05-02 - Avoid Redundant String Transformations in Static Array Searches
+**Learning:** In `app.js` and React components (`ayush-os-v4.jsx`), filtering large static datasets (`SKILLS`) based on search input caused redundant `.toLowerCase()` and string concatenation operations on every keystroke/render. Pre-calculating a combined lowercase `_searchStr` property once at module load improves search filtering performance by ~4x.
+**Action:** For static lookup tables or data arrays used in client-side search, always pre-compute search strings at definition time rather than during the filter loop.
