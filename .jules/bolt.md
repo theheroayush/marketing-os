@@ -1,0 +1,3 @@
+## 2024-05-18 - [Cache Repeated LocalStorage Parse Operations]
+**Learning:** In vanilla JS or React components, repeatedly performing synchronous `JSON.parse` on large data from `localStorage` inside render or view-update loops can be a significant performance bottleneck. Modern browsers already cache `getItem()` string results in memory, so the true overhead is the JSON parsing itself, not the disk I/O.
+**Action:** When a static or semi-static array like session history or user profiles is queried often, cache the parsed JavaScript object locally. Always use array `.map()` with object/array spread (e.g., `cached.map(p => ({...p, team: [...p.team]}))`) when returning the cached object to prevent callers from accidentally mutating the centralized cache reference.
