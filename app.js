@@ -472,7 +472,7 @@
               <span class="material-symbols-outlined" style="font-size:18px;color:var(--text-muted)">chevron_right</span>
             </div>
           </div>
-        `).join('') : '<p style="font-size:0.8rem;color:var(--text-muted);text-align:center;padding:10px">No recent sessions.</p>'}
+        `).join('') : '<div style="text-align:center;padding:10px;display:flex;flex-direction:column;align-items:center;gap:10px;"><p style="font-size:0.8rem;color:var(--text-muted);margin:0;">No recent sessions.</p><button class="btn btn-primary btn-sm" onclick="app.navigate(\'skills\')">Explore Skills Hub</button></div>'}
       </div>
     ` + footerHTML;
   }
@@ -537,7 +537,7 @@
               <div style="margin-top:auto;font-size:0.75rem;color:${c.color};font-weight:700;">Start &rarr;</div>
             </div>
           `;
-        }).join('') : `<p style="grid-column:1/-1;text-align:center;color:var(--text-muted);padding:40px 0;">No skills found.</p>`}
+        }).join('') : `<div style="grid-column:1/-1;text-align:center;padding:40px 0;display:flex;flex-direction:column;align-items:center;gap:16px;"><p style="color:var(--text-muted);margin:0;">No skills found.</p><button class="btn btn-ghost btn-sm" onclick="app.clearSearch()">Clear Search</button></div>`}
       </div>
     `;
   }
@@ -926,7 +926,7 @@
               <span class="material-symbols-outlined" style="font-size:18px">delete</span>
             </button>
           </div>
-        `).join('') : '<div style="text-align:center;padding:40px;color:var(--text-muted)">No history yet. Start a skill in the Skills Hub!</div>'}
+        `).join('') : '<div style="text-align:center;padding:40px;display:flex;flex-direction:column;align-items:center;gap:16px;"><p style="color:var(--text-muted);margin:0;">No history yet. Start a skill in the Skills Hub!</p><button class="btn btn-primary btn-sm" onclick="app.navigate(\'skills\')">Explore Skills Hub</button></div>'}
       </div>
       ${footerHTML}
     `;
