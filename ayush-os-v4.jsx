@@ -1630,6 +1630,10 @@ function renderInline(text) {
   });
 }
 
+SKILLS.forEach(s => {
+  s._searchStr = `${s.name} ${s.tagline} ${s.desc}`.toLowerCase();
+});
+
 /* ─── MAIN APP ────────────────────────────────────────────────────────────── */
 export default function AyushOS() {
   const [view, setView] = useState("home");
@@ -1664,7 +1668,7 @@ export default function AyushOS() {
   const filtered = SKILLS.filter(s => {
     const mc = catFilter === "All" || s.cat === catFilter;
     const q = searchQ.toLowerCase();
-    return mc && (!q || s.name.toLowerCase().includes(q) || s.tagline.toLowerCase().includes(q) || s.desc.toLowerCase().includes(q));
+    return mc && (!q || s._searchStr.includes(q));
   });
 
   const openSkill = useCallback((skill) => {
