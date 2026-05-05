@@ -472,7 +472,18 @@
               <span class="material-symbols-outlined" style="font-size:18px;color:var(--text-muted)">chevron_right</span>
             </div>
           </div>
-        `).join('') : '<p style="font-size:0.8rem;color:var(--text-muted);text-align:center;padding:10px">No recent sessions.</p>'}
+        `).join('') : `
+          <div style="text-align:center;padding:30px 20px;background:var(--bg-elevated);border:1px dashed var(--border);border-radius:16px;">
+            <div style="width:40px;height:40px;border-radius:10px;background:var(--card-bg);display:flex;align-items:center;justify-content:center;margin:0 auto 12px auto;">
+              <span class="material-symbols-outlined" style="font-size:20px;color:var(--text-muted)">chat_bubble</span>
+            </div>
+            <h3 style="margin:0 0 6px 0;font-size:1rem;color:var(--text)">No recent sessions</h3>
+            <p style="margin:0 0 16px 0;font-size:0.8rem;color:var(--text-dim)">Your recent AI consultations will appear here.</p>
+            <button class="btn btn-primary btn-sm" onclick="app.navigate('skills')" style="display:inline-flex;align-items:center;gap:6px;">
+              <span class="material-symbols-outlined" style="font-size:16px">auto_awesome</span> Start a Session
+            </button>
+          </div>
+        `}
       </div>
     ` + footerHTML;
   }
@@ -537,7 +548,18 @@
               <div style="margin-top:auto;font-size:0.75rem;color:${c.color};font-weight:700;">Start &rarr;</div>
             </div>
           `;
-        }).join('') : `<p style="grid-column:1/-1;text-align:center;color:var(--text-muted);padding:40px 0;">No skills found.</p>`}
+        }).join('') : `
+          <div style="grid-column:1/-1;text-align:center;padding:50px 20px;background:var(--bg-elevated);border:1px dashed var(--border);border-radius:16px;">
+            <div style="width:56px;height:56px;border-radius:14px;background:var(--card-bg);display:flex;align-items:center;justify-content:center;margin:0 auto 16px auto;">
+              <span class="material-symbols-outlined" style="font-size:28px;color:var(--text-muted)">search_off</span>
+            </div>
+            <h3 style="margin:0 0 8px 0;font-size:1.1rem;color:var(--text)">No skills found</h3>
+            <p style="margin:0 0 20px 0;font-size:0.85rem;color:var(--text-dim)">We couldn't find any skills matching your search or category filter.</p>
+            <button class="btn btn-ghost btn-sm" onclick="app.clearSearch(); app.setCategoryFilter('All');" style="display:inline-flex;align-items:center;gap:6px;border:1px solid var(--border);">
+              <span class="material-symbols-outlined" style="font-size:16px">filter_list_off</span> Clear Filters
+            </button>
+          </div>
+        `}
       </div>
     `;
   }
@@ -926,7 +948,18 @@
               <span class="material-symbols-outlined" style="font-size:18px">delete</span>
             </button>
           </div>
-        `).join('') : '<div style="text-align:center;padding:40px;color:var(--text-muted)">No history yet. Start a skill in the Skills Hub!</div>'}
+        `).join('') : `
+          <div style="text-align:center;padding:40px 20px;background:var(--bg-elevated);border:1px dashed var(--border);border-radius:16px;margin-top:20px;">
+            <div style="width:48px;height:48px;border-radius:12px;background:var(--card-bg);display:flex;align-items:center;justify-content:center;margin:0 auto 16px auto;">
+              <span class="material-symbols-outlined" style="font-size:24px;color:var(--text-muted)">history</span>
+            </div>
+            <h3 style="margin:0 0 8px 0;font-size:1.1rem;color:var(--text)">No history yet</h3>
+            <p style="margin:0 0 20px 0;font-size:0.85rem;color:var(--text-dim)">Start a consultation in the Skills Hub to see it here.</p>
+            <button class="btn btn-primary btn-sm" onclick="app.navigate('skills')" style="display:inline-flex;align-items:center;gap:6px;">
+              <span class="material-symbols-outlined" style="font-size:16px">auto_awesome</span> Explore Skills
+            </button>
+          </div>
+        `}
       </div>
       ${footerHTML}
     `;
