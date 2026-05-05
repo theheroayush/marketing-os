@@ -1,0 +1,3 @@
+## 2024-05-18 - LocalStorage JSON Parse Bottleneck
+**Learning:** In highly interactive applications that repeatedly call `localStorage.getItem` for complex JSON objects (like conversation sessions), the `JSON.parse` operation is a massive performance bottleneck. `localStorage.getItem` itself is fast (cached by browser), but synchronous parsing of large strings on every read causes main thread blocking.
+**Action:** Always cache the parsed JavaScript object locally. To prevent cache-invalidation bugs across scopes, perform a quick string equality check on the `localStorage` string before parsing. Return a deep copy using `.map()` and spread syntax (`{...obj, array: [...obj.array]}`) to prevent caller mutations from silently poisoning the cache.
