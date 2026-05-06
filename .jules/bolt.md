@@ -1,0 +1,3 @@
+## 2024-05-15 - SKILLS search optimization
+**Learning:** Found a performance bottleneck when searching SKILLS array. The array is being repeatedly mapped and filtered on every keystroke, including creating lowercase versions of name, tagline and desc for string matching inside the component render loop in both app.js and ayush-os-v4.jsx. This is O(N) string manipulation on every render!
+**Action:** Pre-calculate a combined lowercase `_searchStr` property on the `SKILLS` array during initialization in `skills-data.js`. Then use this property in the filter instead of performing `toLowerCase()` and concatenation inside the filter function.
