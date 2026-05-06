@@ -1618,6 +1618,10 @@ Recommend specific tools (e.g., Zapier, Make, Search APIs like Tavily, or MCPs).
   }
 ];
 
+SKILLS.forEach(s => {
+  s._searchStr = `${s.name} ${s.tagline} ${s.desc}`.toLowerCase();
+});
+
 const getSkillOpener = (id) => {
     const openers = {
       "product-context": "Let's build your product context — the foundation everything else builds on.\n\n**Tell me about your product:** What does it do and who is it for? I'll ask follow-up questions as we go.",
