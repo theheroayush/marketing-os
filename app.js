@@ -619,9 +619,9 @@
           <p style="font-size:0.7rem;color:${accentColor};margin-top:2px;">${catInfo.icon} ${activeSkill.cat}</p>
         </div>
         <div style="display:flex;gap:8px;">
-          <button class="icon-btn" onclick="app.exportPDF()" title="Export Customized PDF"><span class="material-symbols-outlined">picture_as_pdf</span></button>
-          <button class="icon-btn" onclick="app.openSkill('${activeSkill.id}')" title="New Session" style="color:var(--text-dim)"><span class="material-symbols-outlined">restart_alt</span></button>
-          <button class="icon-btn" onclick="app.triggerSetupApiKey()" title="Setup API Key" style="color:var(--text-dim)"><span class="material-symbols-outlined">key</span></button>
+          <button class="icon-btn" onclick="app.exportPDF()" title="Export Customized PDF" aria-label="Export Customized PDF"><span class="material-symbols-outlined">picture_as_pdf</span></button>
+          <button class="icon-btn" onclick="app.openSkill('${activeSkill.id}')" title="New Session" aria-label="New Session" style="color:var(--text-dim)"><span class="material-symbols-outlined">restart_alt</span></button>
+          <button class="icon-btn" onclick="app.triggerSetupApiKey()" title="Setup API Key" aria-label="Setup API Key" style="color:var(--text-dim)"><span class="material-symbols-outlined">key</span></button>
         </div>
       </div>
 
@@ -922,7 +922,7 @@
                 ${s.messages[s.messages.length - 1].content.replace(/<[^>]*>/g, '').slice(0, 120)}...
               </p>
             </div>
-            <button onclick="app.deleteSession('${s.id}')" style="position:absolute;top:10px;right:10px;background:none;border:none;color:var(--red);cursor:pointer;" title="Delete">
+            <button onclick="app.deleteSession('${s.id}')" aria-label="Delete Session" style="position:absolute;top:10px;right:10px;background:none;border:none;color:var(--red);cursor:pointer;" title="Delete">
               <span class="material-symbols-outlined" style="font-size:18px">delete</span>
             </button>
           </div>
