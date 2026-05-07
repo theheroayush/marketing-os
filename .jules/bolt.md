@@ -1,0 +1,3 @@
+## 2026-05-07 - Uncached Parsing of Storage Profiles
+**Learning:** Synchronous `localStorage` access and `JSON.parse` are expensive operations, especially when called frequently in UI rendering paths. Using an in-memory cache drastically reduces the overhead. However, it is crucial to return deep clones from the cache to prevent unintentional state leakage and ensure that the application continues to work with fresh object references as it did before.
+**Action:** Implemented a `cachedProfiles` variable within the application scope and updated `Storage.getProfiles` and `Storage.saveProfiles` to manage this cache. Added deep cloning (including for the `team` array) to maintain functional parity.
