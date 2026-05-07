@@ -6,7 +6,7 @@
   "scripts": {
     "start": "npx serve .",
     "build": "mkdir -p dist && cp index.html app.js styles.css skills-data.js manifest.json sw.js logo.jpg dist/ && cp -r assets dist/",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node test_escape_html.js"
   },
   "keywords": [],
   "author": "",
