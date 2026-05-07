@@ -11,6 +11,7 @@
   let currentView = 'dashboard';
   let catFilter = 'All';
   let searchQ = '';
+  let cachedProfiles = null;
 
   app.escapeHtml = function(str) {
     if (!str) return '';
@@ -92,10 +93,16 @@
       if (currentView === 'history') app.renderHistoryView();
     },
     getProfiles: () => {
-      let ps = JSON.parse(localStorage.getItem('marku_profiles') || '[{"id":"default","name":"Default Profile","content":"","team":[]}]');
-      return ps.map(p => ({ ...p, team: p.team || [] }));
+      if (!cachedProfiles) {
+        let ps = JSON.parse(localStorage.getItem('marku_profiles') || '[{"id":"default","name":"Default Profile","content":"","team":[]}]');
+        cachedProfiles = ps.map(p => ({ ...p, team: p.team || [] }));
+      }
+      return cachedProfiles.map(p => ({ ...p, team: [...(p.team || [])] }));
     },
-    saveProfiles: (profiles) => localStorage.setItem('marku_profiles', JSON.stringify(profiles)),
+    saveProfiles: (profiles) => {
+      cachedProfiles = profiles.map(p => ({ ...p, team: [...(p.team || [])] }));
+      localStorage.setItem('marku_profiles', JSON.stringify(cachedProfiles));
+    },
     getActiveProfileId: () => localStorage.getItem('marku_active_profile') || 'default',
     setActiveProfileId: (id) => localStorage.setItem('marku_active_profile', id),
     getProductCtx: () => {
