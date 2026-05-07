@@ -487,7 +487,7 @@
     
     const filtered = window.SKILLS.filter(s => {
       const matchCat = catFilter === 'All' || s.cat === catFilter;
-      const matchQ = !q || s.name.toLowerCase().includes(q) || s.tagline.toLowerCase().includes(q) || s.desc.toLowerCase().includes(q);
+      const matchQ = !q || s._searchStr.includes(q);
       return matchCat && matchQ;
     });
 
