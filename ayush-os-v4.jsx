@@ -1630,6 +1630,16 @@ function renderInline(text) {
   });
 }
 
+// Pre-calculate search strings and category counts for performance
+SKILLS.forEach(s => {
+  s._searchStr = `${s.name} ${s.tagline} ${s.desc}`.toLowerCase();
+});
+
+const CAT_COUNTS = Object.keys(CATS).reduce((acc, cat) => {
+  acc[cat] = SKILLS.filter(s => s.cat === cat).length;
+  return acc;
+}, {});
+
 /* ─── MAIN APP ────────────────────────────────────────────────────────────── */
 export default function AyushOS() {
   const [view, setView] = useState("home");
@@ -1664,7 +1674,7 @@ export default function AyushOS() {
   const filtered = SKILLS.filter(s => {
     const mc = catFilter === "All" || s.cat === catFilter;
     const q = searchQ.toLowerCase();
-    return mc && (!q || s.name.toLowerCase().includes(q) || s.tagline.toLowerCase().includes(q) || s.desc.toLowerCase().includes(q));
+    return mc && (!q || (s._searchStr && s._searchStr.includes(q)));
   });
 
   const openSkill = useCallback((skill) => {
@@ -1964,7 +1974,7 @@ export default function AyushOS() {
             {/* Footer */}
             <div style={S.footer}>
               {Object.entries(CATS).map(([cat, ci]) => {
-                const count = SKILLS.filter(s => s.cat === cat).length;
+                const count = CAT_COUNTS[cat] || 0;
                 return (
                   <button key={cat} className="btn-ghost" onClick={() => { setCatFilter(cat); document.documentElement.scrollTop = 0; }}
                     style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 3, padding: "6px 8px", background: "none", border: "none", cursor: "pointer" }}>

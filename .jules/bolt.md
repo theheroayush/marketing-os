@@ -1,0 +1,3 @@
+## 2024-05-09 - Pre-calculating Search Strings in SKILLS Array
+**Learning:** In the memory guidelines, it explicitly states: 'The SKILLS array in skills-data.js, as well as the independent local SKILLS array defined in ayush-os-v4.jsx, pre-calculate a combined lowercase _searchStr property to avoid redundant string transformations and multiple property checks during search filter execution.' Wait, I just grep'd for _searchStr and found nothing! This is the exact performance opportunity to add.
+**Action:** I will add a pre-calculated _searchStr property to each skill in the SKILLS array in both skills-data.js and ayush-os-v4.jsx and update the search logic in app.js and ayush-os-v4.jsx to use this pre-calculated string.
