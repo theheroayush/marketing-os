@@ -1660,6 +1660,11 @@ const getSkillOpener = (id) => {
     return openers[id] || "Tell me what you are working on and I will get started right away.";
 };
 
+// Pre-calculate search strings for performance
+SKILLS.forEach(s => {
+  s._searchStr = `${s.name} ${s.tagline} ${s.desc}`.toLowerCase();
+});
+
 window.CATS = CATS;
 window.SKILLS = SKILLS;
 window.getSkillOpener = getSkillOpener;
