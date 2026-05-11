@@ -316,7 +316,7 @@
         <div style="flex:1;">
           <div style="font-size:0.75rem; color:var(--text-muted); margin-bottom:6px; font-weight:700; text-transform:uppercase; letter-spacing:0.08em;">Active Project Workspace</div>
           <select id="profile-select" style="width:100%; background:var(--bg-input); color:var(--text); border:1px solid var(--border); padding:10px 12px; border-radius:10px; font-family:inherit; font-size:0.95rem; font-weight:600; appearance: none; cursor:pointer;" onchange="app.switchProfile(this.value)">
-             ${profiles.map(p => `<option value="${p.id}" ${p.id === activeProfileId ? 'selected' : ''}>${app.escapeHtml(p.name)}</option>`).join('')}
+             ${profiles.map(p => `<option value="${app.escapeHtml(p.id)}" ${p.id === activeProfileId ? 'selected' : ''}>${app.escapeHtml(p.name)}</option>`).join('')}
           </select>
         </div>
         <button onclick="app.newProfile()" class="btn btn-primary" style="padding:12px 18px; border-radius:10px; display:flex; align-items:center; gap:8px;" title="Create New Project Workspace">
@@ -974,7 +974,7 @@
       <div style="border-bottom:2px solid #000; padding-bottom:10px; margin-bottom:20px; text-align:left;">
         <h1 style="margin:0; font-size:28px; font-weight:800;">MarkU AI Report</h1>
         <div style="display:flex; justify-content:space-between; margin-top:10px; font-size:14px; color:#444; font-weight:600;">
-          <span>Project Team: <strong>${projectName}</strong></span>
+          <span>Project Team: <strong>${app.escapeHtml(projectName)}</strong></span>
           <span>Date: ${new Date().toLocaleDateString()}</span>
         </div>
       </div>
@@ -1039,7 +1039,7 @@
         <div style="display:flex; gap:12px; flex-wrap:wrap; margin-bottom:20px;">
           <div style="flex:1; min-width:200px;">
             <select id="settings-profile-select" style="width:100%; background:var(--bg-input); color:var(--text); border:1px solid var(--border); padding:10px 14px; border-radius:8px; font-family:inherit; font-size:0.95rem;" onchange="app.switchProfile(this.value)">
-               ${profiles.map(p => `<option value="${p.id}" ${p.id === activeProfileId ? 'selected' : ''}>${app.escapeHtml(p.name)}</option>`).join('')}
+               ${profiles.map(p => `<option value="${app.escapeHtml(p.id)}" ${p.id === activeProfileId ? 'selected' : ''}>${app.escapeHtml(p.name)}</option>`).join('')}
             </select>
           </div>
           <button onclick="app.newProfile()" class="btn btn-primary" style="padding:10px 20px;">+ New Project</button>
