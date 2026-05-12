@@ -193,7 +193,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <h2 class="modal-title">${config.title || 'Modal'}</h2>
-          <button class="modal-close" onclick="app.closeModal()">
+          <button class="modal-close" onclick="app.closeModal()" aria-label="Close modal">
             <span class="material-symbols-outlined">close</span>
           </button>
         </div>
@@ -472,7 +472,14 @@
               <span class="material-symbols-outlined" style="font-size:18px;color:var(--text-muted)">chevron_right</span>
             </div>
           </div>
-        `).join('') : '<p style="font-size:0.8rem;color:var(--text-muted);text-align:center;padding:10px">No recent sessions.</p>'}
+        `).join('') : `
+          <div style="text-align:center;padding:30px 20px;background:var(--card-bg);border:1px dashed var(--border);border-radius:16px;">
+            <span class="material-symbols-outlined" style="font-size:32px;color:var(--text-dim);margin-bottom:12px;">hourglass_empty</span>
+            <p style="font-size:0.9rem;font-weight:700;margin-bottom:6px;">No recent sessions</p>
+            <p style="font-size:0.8rem;color:var(--text-dim);margin-bottom:16px;">Start a new session to see your history here.</p>
+            <button class="btn btn-primary btn-sm mx-auto" onclick="app.navigate('skills')">Go to Skills Hub</button>
+          </div>
+        `}
       </div>
     ` + footerHTML;
   }
@@ -501,7 +508,7 @@
         <input type="text" id="skills-search" placeholder="Search skills..." value="${searchQ}" 
                style="flex:1;background:transparent;border:none;color:var(--text);font-size:0.95rem;outline:none;" 
                onkeyup="app.handleSearch(event)">
-        ${searchQ ? `<button onclick="app.clearSearch()" style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:18px;">&times;</button>` : ''}
+        ${searchQ ? `<button onclick="app.clearSearch()" aria-label="Clear search" style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:18px;">&times;</button>` : ''}
       </div>
 
       <!-- Categories Scroll -->
@@ -619,9 +626,9 @@
           <p style="font-size:0.7rem;color:${accentColor};margin-top:2px;">${catInfo.icon} ${activeSkill.cat}</p>
         </div>
         <div style="display:flex;gap:8px;">
-          <button class="icon-btn" onclick="app.exportPDF()" title="Export Customized PDF"><span class="material-symbols-outlined">picture_as_pdf</span></button>
-          <button class="icon-btn" onclick="app.openSkill('${activeSkill.id}')" title="New Session" style="color:var(--text-dim)"><span class="material-symbols-outlined">restart_alt</span></button>
-          <button class="icon-btn" onclick="app.triggerSetupApiKey()" title="Setup API Key" style="color:var(--text-dim)"><span class="material-symbols-outlined">key</span></button>
+          <button class="icon-btn" onclick="app.exportPDF()" aria-label="Export PDF" title="Export Customized PDF"><span class="material-symbols-outlined">picture_as_pdf</span></button>
+          <button class="icon-btn" onclick="app.openSkill('${activeSkill.id}')" aria-label="Restart session" title="New Session" style="color:var(--text-dim)"><span class="material-symbols-outlined">restart_alt</span></button>
+          <button class="icon-btn" onclick="app.triggerSetupApiKey()" aria-label="Setup API Key" title="Setup API Key" style="color:var(--text-dim)"><span class="material-symbols-outlined">key</span></button>
         </div>
       </div>
 
@@ -661,14 +668,14 @@
       <div class="chat-input-wrapper">
         <form onsubmit="app.sendChatMessage(event)" style="position:relative;max-width:600px;margin:0 auto;display:flex;gap:8px;align-items:flex-end;">
           <input type="file" id="local-file-upload" style="display:none" onchange="app.handleFileUpload(event)" accept="image/*,.txt,.md,.csv,.json">
-          <button type="button" onclick="document.getElementById('local-file-upload').click()" style="width:44px;height:44px;border-radius:12px;border:1px solid var(--border);background:var(--card-bg);color:var(--text-muted);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:0.2s;flex-shrink:0;" title="Attach Local File">
+          <button type="button" onclick="document.getElementById('local-file-upload').click()" aria-label="Attach file" style="width:44px;height:44px;border-radius:12px;border:1px solid var(--border);background:var(--card-bg);color:var(--text-muted);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:0.2s;flex-shrink:0;" title="Attach Local File">
             <span class="material-symbols-outlined" style="font-size:22px;transform:rotate(45deg);">attach_file</span>
           </button>
           <textarea id="chat-input" placeholder="Type your answer... (Press Enter to send)" 
                     style="flex:1;background:var(--card-bg);border:1px solid var(--border);border-radius:12px;padding:12px 45px 12px 14px;color:var(--text);font-family:inherit;font-size:0.95rem;resize:none;max-height:120px;min-height:44px;"
                     oninput="this.style.height='';this.style.height=Math.min(this.scrollHeight, 120)+'px';"
                     onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();app.sendChatMessage(event);}"></textarea>
-          <button type="submit" disabled style="position:absolute;right:8px;bottom:6px;width:32px;height:32px;border-radius:8px;border:none;background:${accentColor};color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0.5;transition:0.2s;" id="chat-send-btn">
+          <button type="submit" disabled aria-label="Send message" style="position:absolute;right:8px;bottom:6px;width:32px;height:32px;border-radius:8px;border:none;background:${accentColor};color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0.5;transition:0.2s;" id="chat-send-btn">
             <span class="material-symbols-outlined" style="font-size:18px;">arrow_upward</span>
           </button>
         </form>
@@ -926,7 +933,14 @@
               <span class="material-symbols-outlined" style="font-size:18px">delete</span>
             </button>
           </div>
-        `).join('') : '<div style="text-align:center;padding:40px;color:var(--text-muted)">No history yet. Start a skill in the Skills Hub!</div>'}
+        `).join('') : `
+          <div style="text-align:center;padding:60px 20px;background:var(--card-bg);border:1px dashed var(--border);border-radius:16px;">
+            <span class="material-symbols-outlined" style="font-size:48px;color:var(--text-dim);margin-bottom:16px;">history</span>
+            <p style="font-size:1.1rem;font-weight:700;margin-bottom:8px;">No history yet</p>
+            <p style="font-size:0.85rem;color:var(--text-dim);margin-bottom:24px;">Your past AI marketing consultations will appear here.</p>
+            <button class="btn btn-primary mx-auto" onclick="app.navigate('skills')">Explore Skills</button>
+          </div>
+        `}
       </div>
       ${footerHTML}
     `;
