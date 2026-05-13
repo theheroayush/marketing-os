@@ -926,7 +926,14 @@
               <span class="material-symbols-outlined" style="font-size:18px">delete</span>
             </button>
           </div>
-        `).join('') : '<div style="text-align:center;padding:40px;color:var(--text-muted)">No history yet. Start a skill in the Skills Hub!</div>'}
+        `).join('') : `
+          <div style="text-align:center;padding:40px;display:flex;flex-direction:column;align-items:center;gap:16px;">
+            <div style="color:var(--text-muted);">No history yet. Start a skill in the Skills Hub!</div>
+            <button class="btn btn-primary" onclick="app.navigate('skills')">
+              <span class="material-symbols-outlined" style="font-size:18px;">auto_awesome</span> Explore Skills Hub
+            </button>
+          </div>
+        `}
       </div>
       ${footerHTML}
     `;
