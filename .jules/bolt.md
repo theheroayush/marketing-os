@@ -1,0 +1,3 @@
+## 2024-03-24 - HTML Escaping Single Pass Optimization
+**Learning:** Method chaining of `.replace()` in JavaScript, especially for frequent small operations like `escapeHtml`, creates multiple intermediate string allocations and requires multiple full passes over the string (O(5n) in this case). It also fails on falsy values like `0` if strictly checked with `!str`.
+**Action:** Replace chained string replacement calls with a single Regex character class `/[&<>"']/g` and a dictionary lookup function for the replacement, to accomplish O(n) parsing with no intermediate garbage collection. Always add explicit `// ⚡ Bolt` comments describing the optimization directly in the code.
