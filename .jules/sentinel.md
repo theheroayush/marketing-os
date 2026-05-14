@@ -1,4 +1,4 @@
-## 2024-05-18 - [HIGH] Fix Stored XSS via HTML Escaping
-**Vulnerability:** User inputs like profile names (`p.name`) and team member emails (`email`) were being injected directly into the DOM via `innerHTML` without sanitization. This allows for Stored Cross-Site Scripting (XSS) if malicious payloads are saved in local storage.
-**Learning:** In vanilla JavaScript applications utilizing template literals with `innerHTML` for rendering, failing to sanitize untrusted user data exposes the application to serious XSS vulnerabilities.
-**Prevention:** Always implement and enforce a global HTML escaping utility function (e.g., `app.escapeHtml`) to sanitize any dynamic, user-controlled data before it is rendered to the DOM using `innerHTML`.
+## 2025-05-14 - Fix Unescaped Interpolation Vulnerability
+**Vulnerability:** Found unescaped user inputs (`searchQ` and `projectName`) dynamically interpolated directly into template strings assigned to `innerHTML` in `app.js`.
+**Learning:** Even internal or local-storage sourced UI state variables like a project name must be consistently sanitized when building raw HTML strings using template literals to avoid XSS vectors.
+**Prevention:** Always wrap dynamically interpolated string values in sanitization functions (like `app.escapeHtml()`) before concatenating them into HTML strings.
