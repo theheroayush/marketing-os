@@ -926,7 +926,18 @@
               <span class="material-symbols-outlined" style="font-size:18px">delete</span>
             </button>
           </div>
-        `).join('') : '<div style="text-align:center;padding:40px;color:var(--text-muted)">No history yet. Start a skill in the Skills Hub!</div>'}
+        `).join('') : `
+          <div style="text-align:center;padding:60px 20px;display:flex;flex-direction:column;align-items:center;gap:16px;">
+            <div style="width:64px;height:64px;border-radius:50%;background:var(--bg-elevated);display:flex;align-items:center;justify-content:center;color:var(--primary);margin-bottom:8px;">
+              <span class="material-symbols-outlined" style="font-size:32px;">history_toggle_off</span>
+            </div>
+            <h3 style="font-size:1.1rem;margin:0;color:var(--text);">No history yet</h3>
+            <p style="font-size:0.85rem;color:var(--text-dim);max-width:280px;margin:0;line-height:1.5;">Your past sessions and generated content will appear here.</p>
+            <button onclick="app.navigate('skills')" class="btn btn-primary" style="margin-top:8px;">
+              <span class="material-symbols-outlined">auto_awesome</span> Explore Skills Hub
+            </button>
+          </div>
+        `}
       </div>
       ${footerHTML}
     `;
