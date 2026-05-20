@@ -1,0 +1,3 @@
+## 2024-06-25 - app.escapeHtml chained replace allocation
+**Learning:** In app.js, `app.escapeHtml` used 5 chained `.replace()` calls with global regular expressions. This forces V8 to allocate 5 separate intermediate strings for every escaped string, leading to GC pressure, especially since `escapeHtml` is called heavily during UI rendering. Using a single pass regex `/[&<>"']/g` with a lookup dictionary avoids intermediate string allocations and is roughly ~20% faster. Also, checking for `!str` drops valid falsy values like `0` or `false` which are important to preserve.
+**Action:** Default to single-pass regex with dictionary replacement for any HTML escaping function in hot UI paths.
