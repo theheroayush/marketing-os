@@ -12,14 +12,12 @@
   let catFilter = 'All';
   let searchQ = '';
 
+  // Optimization: Single-pass RegExp with dictionary lookup is faster than chained .replace()
+  // and avoids multiple intermediate string allocations. Also fixed handling of 0/false.
+  const ESCAPE_MAP = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
   app.escapeHtml = function(str) {
-    if (!str) return '';
-    return String(str)
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;')
-      .replace(/'/g, '&#039;');
+    if (str == null) return '';
+    return String(str).replace(/[&<>"']/g, m => ESCAPE_MAP[m]);
   };
 
   const footerHTML = `
