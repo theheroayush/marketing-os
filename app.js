@@ -12,14 +12,19 @@
   let catFilter = 'All';
   let searchQ = '';
 
+  const escapeMap = {
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#039;'
+  };
+  const escapeRegex = /[&<>"']/g;
+
+  // ⚡ Bolt: Single-pass regex with dictionary lookup avoids intermediate string allocations
   app.escapeHtml = function(str) {
-    if (!str) return '';
-    return String(str)
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;')
-      .replace(/'/g, '&#039;');
+    if (str === null || str === undefined) return '';
+    return String(str).replace(escapeRegex, m => escapeMap[m]);
   };
 
   const footerHTML = `
