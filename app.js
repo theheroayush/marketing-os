@@ -12,14 +12,12 @@
   let catFilter = 'All';
   let searchQ = '';
 
+  // Optimization: Pre-calculate entity map and use single-pass regex replacement
+  // to avoid allocating intermediate strings in chained .replace calls.
+  const entityMap = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
   app.escapeHtml = function(str) {
-    if (!str) return '';
-    return String(str)
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;')
-      .replace(/'/g, '&#039;');
+    if (str === null || str === undefined) return '';
+    return String(str).replace(/[&<>"']/g, match => entityMap[match]);
   };
 
   const footerHTML = `
