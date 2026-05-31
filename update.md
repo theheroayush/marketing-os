@@ -343,10 +343,9 @@ To address layout alignment bugs and complete the client-side integration of Pha
 - Restarted the local gateway (`task-1029`) on port `3000`.
 - Successfully launched the ngrok tunnel (`task-1024`), exposing the local gateway via: `https://thesaurus-upturned-fracture.ngrok-free.dev`.
 
-
-
-
-
-
-
-
+### 🌐 Custom GPT Tunnel Stabilization (Log)
+- **Problem**: Port `3005` got occupied by the Hermes WhatsApp bridge service, causing the MarkU HTTP gateway startup on port `3005` to fail.
+- **Resolution**: Since port `3000` was free, we moved the MarkU HTTP Gateway back to port `3000` (task `task-1193`) and successfully started it.
+- **Tunnel Execution**: Terminated the old ngrok process and started a new ngrok tunnel targeting port `3000` (task `task-1201`).
+- **Verification**: Confirmed the ngrok public URL is `https://thesaurus-upturned-fracture.ngrok-free.dev` and verified the list of skills endpoint responds successfully via HTTPS requests.
+- **OpenAPI Schema Sync**: Updated the servers URL in `chatgpt-openapi.json` to match the active ngrok URL so the user can copy-paste it directly into ChatGPT custom action settings.

@@ -7,7 +7,7 @@
   },
   "servers": [
     {
-      "url": "https://YOUR_TUNNEL_SUBDOMAIN.ngrok-free.app",
+      "url": "https://thesaurus-upturned-fracture.ngrok-free.dev",
       "description": "Local MarkU HTTP Gateway exposed via ngrok"
     }
   ],
