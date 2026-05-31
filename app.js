@@ -12,14 +12,12 @@
   let catFilter = 'All';
   let searchQ = '';
 
+  // Performance Optimization: Pre-compile escape map and regex for fast single-pass string replacement
+  const escapeMap = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
+  const escapeRegex = /[&<>"']/g;
   app.escapeHtml = function(str) {
-    if (!str) return '';
-    return String(str)
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;')
-      .replace(/'/g, '&#039;');
+    if (str == null) return '';
+    return String(str).replace(escapeRegex, m => escapeMap[m]);
   };
 
   const footerHTML = `
