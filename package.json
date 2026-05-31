@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "start": "npx serve .",
-    "build": "mkdir -p dist && cp index.html app.js styles.css skills-data.js manifest.json sw.js logo.jpg dist/ && cp -r assets dist/",
+    "build": "node build.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

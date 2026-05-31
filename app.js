@@ -309,19 +309,21 @@
     const profiles = Storage.getProfiles();
 
     const profileSwitcherHTML = `
-      <div style="background:var(--bg-elevated); padding:18px; border-radius:var(--radius-sm); margin-bottom: 24px; display:flex; gap:16px; align-items:center; border:1px solid var(--border); box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
-        <div style="width:42px; height:42px; border-radius:10px; background:var(--primary-bg); display:flex; align-items:center; justify-content:center; flex-shrink:0;">
-          <span class="material-symbols-outlined" style="color:var(--primary); font-size:24px;">business_center</span>
+      <div class="project-switcher">
+        <div class="project-switcher-main">
+          <div style="width:42px; height:42px; border-radius:10px; background:var(--primary-bg); display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+            <span class="material-symbols-outlined" style="color:var(--primary); font-size:24px;">business_center</span>
+          </div>
+          <div style="flex:1;">
+            <div style="font-size:0.75rem; color:var(--text-muted); margin-bottom:6px; font-weight:700; text-transform:uppercase; letter-spacing:0.08em;">Active Project Workspace</div>
+            <select id="profile-select" style="width:100%; background:var(--bg-input); color:var(--text); border:1px solid var(--border); padding:10px 12px; border-radius:10px; font-family:inherit; font-size:0.95rem; font-weight:600; appearance: none; cursor:pointer;" onchange="app.switchProfile(this.value)">
+               ${profiles.map(p => `<option value="${p.id}" ${p.id === activeProfileId ? 'selected' : ''}>${app.escapeHtml(p.name)}</option>`).join('')}
+            </select>
+          </div>
         </div>
-        <div style="flex:1;">
-          <div style="font-size:0.75rem; color:var(--text-muted); margin-bottom:6px; font-weight:700; text-transform:uppercase; letter-spacing:0.08em;">Active Project Workspace</div>
-          <select id="profile-select" style="width:100%; background:var(--bg-input); color:var(--text); border:1px solid var(--border); padding:10px 12px; border-radius:10px; font-family:inherit; font-size:0.95rem; font-weight:600; appearance: none; cursor:pointer;" onchange="app.switchProfile(this.value)">
-             ${profiles.map(p => `<option value="${p.id}" ${p.id === activeProfileId ? 'selected' : ''}>${app.escapeHtml(p.name)}</option>`).join('')}
-          </select>
-        </div>
-        <button onclick="app.newProfile()" class="btn btn-primary" style="padding:12px 18px; border-radius:10px; display:flex; align-items:center; gap:8px;" title="Create New Project Workspace">
+        <button onclick="app.newProfile()" class="btn btn-primary project-switcher-btn" style="padding:12px 18px; border-radius:10px; display:flex; align-items:center; justify-content:center; gap:8px;" title="Create New Project Workspace">
           <span class="material-symbols-outlined" style="font-size:20px;">add_circle</span>
-          <span style="font-weight:700;">New Project</span>
+          <span style="font-weight:700; white-space: nowrap;">New Project</span>
         </button>
       </div>
     `;
@@ -350,7 +352,7 @@
 <h2 class="text-2xl font-extrabold font-plus-jakarta leading-tight">Your 'Summer Glow' campaign is trending in Tokyo.</h2>
 <p class="text-on-surface-variant body-md leading-relaxed">AI suggests increasing ad spend by <span class="text-primary font-bold">15%</span> on Instagram Reels to capture an estimated <span class="text-tertiary font-bold">4.2k</span> new leads this weekend.</p>
 </div>
-<button class="w-full py-4 bg-gradient-to-br from-primary to-primary-container text-on-primary font-bold rounded-full shadow-lg shadow-primary/20 scale-95 active:scale-90 transition-all">
+<button onclick="app.navigate('campaigns'); app.notify('AI strategy applied to Summer Glow campaign!');" class="w-full py-4 bg-gradient-to-br from-primary to-primary-container text-on-primary font-bold rounded-full shadow-lg shadow-primary/20 scale-95 active:scale-90 transition-all">
                         Apply Strategy Now
                     </button>
 </div>
@@ -361,19 +363,19 @@
 <h3 class="text-on-surface font-plus-jakarta text-title-lg font-bold">Quick Actions</h3>
 <div class="grid grid-cols-3 gap-4">
 <div class="flex flex-col items-center gap-2 group">
-<button class="w-full aspect-square bg-surface-container-high rounded-3xl flex items-center justify-center text-primary group-active:scale-90 transition-transform">
+<button onclick="app.openSkill('social-content')" class="w-full aspect-square bg-surface-container-high rounded-3xl flex items-center justify-center text-primary group-active:scale-90 transition-transform quick-action-btn">
 <span class="material-symbols-outlined text-3xl" data-icon="add_circle">add_circle</span>
 </button>
 <span class="text-[10px] font-bold uppercase tracking-tighter text-on-surface-variant font-plus-jakarta">Create Post</span>
 </div>
 <div class="flex flex-col items-center gap-2 group">
-<button class="w-full aspect-square bg-surface-container-high rounded-3xl flex items-center justify-center text-secondary group-active:scale-90 transition-transform">
+<button onclick="app.navigate('skills')" class="w-full aspect-square bg-surface-container-high rounded-3xl flex items-center justify-center text-secondary group-active:scale-90 transition-transform quick-action-btn">
 <span class="material-symbols-outlined text-3xl" data-icon="psychology">psychology</span>
 </button>
 <span class="text-[10px] font-bold uppercase tracking-tighter text-on-surface-variant font-plus-jakarta">New Strategy</span>
 </div>
 <div class="flex flex-col items-center gap-2 group">
-<button class="w-full aspect-square bg-surface-container-high rounded-3xl flex items-center justify-center text-tertiary group-active:scale-90 transition-transform">
+<button onclick="app.navigate('analytics')" class="w-full aspect-square bg-surface-container-high rounded-3xl flex items-center justify-center text-tertiary group-active:scale-90 transition-transform quick-action-btn">
 <span class="material-symbols-outlined text-3xl" data-icon="query_stats">query_stats</span>
 </button>
 <span class="text-[10px] font-bold uppercase tracking-tighter text-on-surface-variant font-plus-jakarta">Performance</span>
@@ -384,11 +386,11 @@
 <section class="space-y-6 pb-12">
 <div class="flex items-center justify-between">
 <h3 class="text-on-surface font-plus-jakarta text-title-lg font-bold">Active Campaigns</h3>
-<button class="text-primary font-bold text-sm">View All</button>
+<button onclick="app.navigate('campaigns')" class="text-primary font-bold text-sm">View All</button>
 </div>
 <div class="grid grid-cols-1 gap-6">
 <!-- Campaign Card 1 -->
-<div class="bg-surface-container-low rounded-[2rem] p-6 space-y-6">
+<div onclick="app.navigate('campaigns')" class="bg-surface-container-low rounded-[2rem] p-6 space-y-6 dashboard-card cursor-pointer">
 <div class="flex justify-between items-start">
 <div class="space-y-1">
 <h4 class="text-xl font-bold font-plus-jakarta">Project Nebula</h4>
@@ -419,7 +421,7 @@
 </div>
 </div>
 <!-- Campaign Card 2 -->
-<div class="bg-surface-container-low rounded-[2rem] p-6 space-y-6">
+<div onclick="app.navigate('campaigns')" class="bg-surface-container-low rounded-[2rem] p-6 space-y-6 dashboard-card cursor-pointer">
 <div class="flex justify-between items-start">
 <div class="space-y-1">
 <h4 class="text-xl font-bold font-plus-jakarta">Aura Launch</h4>
@@ -625,18 +627,18 @@
         </div>
       </div>
 
-      <div id="chat-messages" style="display:flex;flex-direction:column;gap:16px;padding-bottom:200px;min-height:60vh;">
+      <div id="chat-messages" style="display:flex;flex-direction:column;gap:20px;padding-bottom:200px;min-height:60vh;">
         ${messages.map(m => `
           <div style="display:flex;justify-content:${m.role==='user'?'flex-end':'flex-start'};width:100%;">
             ${m.role === 'assistant' ? `
-              <div style="display:flex;gap:10px;max-width:90%;">
-                <div style="width:28px;height:28px;border-radius:8px;background:${catInfo.bg||'#333'};display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;font-size:14px;">${activeSkill.emoji}</div>
-                <div style="background:var(--card-bg);border:1px solid var(--border);border-radius:4px 12px 12px 12px;padding:12px;font-size:0.9rem;line-height:1.6;color:var(--text);">
+              <div style="display:flex;gap:12px;max-width:90%;">
+                <div style="width:34px;height:34px;border-radius:12px;background:${catInfo.bg||'rgba(192, 132, 252, 0.15)'};border:1px solid rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;font-size:16px;">${activeSkill.emoji}</div>
+                <div style="background:var(--bg-card);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid var(--border);border-top:1px solid rgba(255,255,255,0.08);border-radius:4px 18px 18px 18px;padding:16px;font-size:0.92rem;line-height:1.65;color:var(--text);box-shadow:0 8px 32px rgba(0,0,0,0.2);">
                   ${parseMd(m.content)}
                 </div>
               </div>
             ` : `
-              <div style="background:${accentColor};color:#fff;border-radius:12px 12px 4px 12px;padding:10px 14px;font-size:0.9rem;line-height:1.5;max-width:85%;">
+              <div style="background:linear-gradient(135deg, ${accentColor} 0%, rgba(244, 63, 94, 0.8) 100%);border:1px solid rgba(255,255,255,0.15);box-shadow:0 6px 20px rgba(244, 63, 94, 0.25);color:#fff;border-radius:18px 18px 4px 18px;padding:12px 18px;font-size:0.92rem;line-height:1.55;max-width:80%;">
                 ${parseMd(m.content)}
               </div>
             `}
@@ -645,12 +647,12 @@
         
         ${isGenerating ? `
           <div style="display:flex;justify-content:flex-start;width:100%;">
-            <div style="display:flex;gap:10px;max-width:90%;">
-              <div style="width:28px;height:28px;border-radius:8px;background:${catInfo.bg||'#333'};display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;font-size:14px;">${activeSkill.emoji}</div>
-              <div style="background:var(--card-bg);border:1px solid var(--border);border-radius:4px 12px 12px 12px;padding:12px;display:flex;gap:4px;align-items:center;">
-                <span class="animate-pulse" style="width:6px;height:6px;background:${accentColor};border-radius:50%;display:inline-block;"></span>
-                <span class="animate-pulse" style="width:6px;height:6px;background:${accentColor};border-radius:50%;display:inline-block;animation-delay:0.2s"></span>
-                <span class="animate-pulse" style="width:6px;height:6px;background:${accentColor};border-radius:50%;display:inline-block;animation-delay:0.4s"></span>
+            <div style="display:flex;gap:12px;max-width:90%;">
+              <div style="width:34px;height:34px;border-radius:12px;background:${catInfo.bg||'rgba(192, 132, 252, 0.15)'};border:1px solid rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;font-size:16px;">${activeSkill.emoji}</div>
+              <div style="background:var(--bg-card);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid var(--border);border-radius:4px 18px 18px 18px;padding:16px;display:flex;gap:6px;align-items:center;box-shadow:0 8px 32px rgba(0,0,0,0.2);">
+                <span class="animate-pulse" style="width:7px;height:7px;background:${accentColor};border-radius:50%;display:inline-block;"></span>
+                <span class="animate-pulse" style="width:7px;height:7px;background:${accentColor};border-radius:50%;display:inline-block;animation-delay:0.2s"></span>
+                <span class="animate-pulse" style="width:7px;height:7px;background:${accentColor};border-radius:50%;display:inline-block;animation-delay:0.4s"></span>
               </div>
             </div>
           </div>
@@ -816,6 +818,24 @@
       renderChatView();
     }
   };
+
+  function renderQuickSkill(id, name, tagline, emoji, color) {
+    return `
+      <div class="card" onclick="app.openSkill('${id}')" style="cursor:pointer;display:flex;flex-direction:column;gap:8px;transition:0.2s;">
+        <div style="display:flex;justify-content:space-between;align-items:start;">
+          <div style="width:36px;height:36px;border-radius:10px;background:rgba(255,255,255,0.05);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:18px;">
+            ${emoji}
+          </div>
+          <span style="font-size:0.65rem;font-weight:700;border-radius:4px;padding:2px 6px;color:${color};background:rgba(255,255,255,0.05);border:1px solid var(--border)">
+            Skill
+          </span>
+        </div>
+        <h4 style="font-size:0.95rem;margin-top:4px;">${name}</h4>
+        <p style="font-size:0.75rem;color:var(--text-muted);line-height:1.4">${tagline}</p>
+        <div style="margin-top:auto;font-size:0.75rem;color:${color};font-weight:700;">Start &rarr;</div>
+      </div>
+    `;
+  }
 
   // ---- SIMPLE VIEWS ----
   function renderContentView() {
