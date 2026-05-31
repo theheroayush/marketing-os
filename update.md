@@ -332,6 +332,12 @@ To address layout alignment bugs and complete the client-side integration of Pha
 ### 🔌 ngrok CLI Troubleshooting Guide (Log)
 - Assisted the user with execution guidelines for ngrok on Windows (since double-clicking CLI binaries flashes/closes terminal windows). Provided instructions to run via PowerShell with local paths (`.\ngrok.exe`) and set up authentication tokens.
 
+### 🚇 Tunnel Infrastructure Execution (Log)
+- Started the `mcp-http-gateway.js` server on port `3000` (task `task-960`).
+- Discovered that `ngrok` was installed as an MSIX Windows Store package but was missing an authorization token.
+- Started `localtunnel` as a fallback on port `3000` (task `task-996`), yielding public URL: `https://shaggy-cooks-go.loca.lt`. Requested the user's ngrok authtoken to establish a permanent and warning-free connection.
+
+
 
 
 
