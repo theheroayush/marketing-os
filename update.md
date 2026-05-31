@@ -322,5 +322,9 @@ To address layout alignment bugs and complete the client-side integration of Pha
 - **Documentation Updated**:
   - Expanded `README_MCP.md` with step-by-step instructions for tunnel routing (`ngrok http 3000`), Custom Action credential configuration, and OpenAPI schema loading.
 
+### 📝 Simplified Instructions Explained (Log)
+- Provided a highly simplified, clear step-by-step tutorial to guide the user in setting up their Custom GPT with the local HTTP gateway and ngrok connection.
+
+
 
 
