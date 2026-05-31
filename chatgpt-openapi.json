@@ -1,0 +1,128 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "MarkU Marketing OS API",
+    "description": "Exposes local product context and marketing skills to execute custom marketing tasks using active brand configurations.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://YOUR_TUNNEL_SUBDOMAIN.ngrok-free.app",
+      "description": "Local MarkU HTTP Gateway exposed via ngrok"
+    }
+  ],
+  "paths": {
+    "/get_product_context": {
+      "get": {
+        "summary": "Retrieve active brand and product context",
+        "description": "Reads the active marku-context.json containing the brand profile, target audience, tone of voice, and other context parameters.",
+        "operationId": "getProductContext",
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved product context",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Context file not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/list_skills": {
+      "get": {
+        "summary": "List all available marketing skills",
+        "description": "Returns a list of all 39 marketing skills with their names, tags, categories, and descriptions.",
+        "operationId": "listSkills",
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved skills list",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": { "type": "string" },
+                      "name": { "type": "string" },
+                      "category": { "type": "string" },
+                      "tagline": { "type": "string" },
+                      "description": { "type": "string" }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/execute_marketing_skill": {
+      "post": {
+        "summary": "Compile marketing skill prompt",
+        "description": "Combines the selected marketing skill's system instructions, the loaded product context, and the user request to return a compiled prompt ready to be executed by ChatGPT.",
+        "operationId": "executeMarketingSkill",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["skillId", "userInput"],
+                "properties": {
+                  "skillId": {
+                    "type": "string",
+                    "description": "The unique ID of the marketing skill to run (e.g., 'seo-meta-optimizer', 'social-post-creator')."
+                  },
+                  "userInput": {
+                    "type": "string",
+                    "description": "The specific request or instruction for the marketing task."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Prompt compiled successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "prompt": {
+                      "type": "string",
+                      "description": "The full, rich marketing prompt to be evaluated by the LLM."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - Missing skillId or userInput"
+          },
+          "404": {
+            "description": "Skill not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    }
+  }
+}

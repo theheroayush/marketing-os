@@ -310,7 +310,17 @@ To address layout alignment bugs and complete the client-side integration of Pha
 - **Cross-Platform Sync**: Cleaned the android assets folder and ran `npx cap sync android` successfully without any compile issues or build conflicts.
 
 ### 🚀 Next Steps
-- Stage and commit the local changes (`README_MCP.md`, `mcp-server.js`, `qa_report.md`, `scratch/test-mcp.js`).
+- Stage and commit the local changes (`README_MCP.md`, `mcp-server.js`, `qa_report.md`, `scratch/test-mcp.js`, `chatgpt-openapi.json`).
 - Promote changes to Git and build/sync the android app workspace.
+
+---
+
+## 🤖 ChatGPT Custom GPT Actions Integration (Added)
+- **Feature**: Added support for connecting ChatGPT Custom GPTs to the local Marketing OS HTTP gateway via OpenAPI and ngrok.
+- **Artifacts Created**:
+  - `chatgpt-openapi.json`: Standard OpenAPI 3.1.0 schema documenting `/get_product_context`, `/list_skills`, and `/execute_marketing_skill`.
+- **Documentation Updated**:
+  - Expanded `README_MCP.md` with step-by-step instructions for tunnel routing (`ngrok http 3000`), Custom Action credential configuration, and OpenAPI schema loading.
+
 
 
