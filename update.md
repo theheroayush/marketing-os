@@ -329,6 +329,10 @@ To address layout alignment bugs and complete the client-side integration of Pha
 - Analyzed deploying the HTTP gateway on Vercel. Decided that for **Phase 1 (Local MVP)**, local execution with `ngrok` is preferred because the gateway reads local files (`marku-context.json`).
 - Recommended waiting until **Phase 2 (Cloud Sync & REST DB)** to deploy on Vercel, when a serverless PostgreSQL database (Neon) will store the context centrally, allowing ChatGPT to access it 24/7 without needing a local laptop to be on.
 
+### 🔌 ngrok CLI Troubleshooting Guide (Log)
+- Assisted the user with execution guidelines for ngrok on Windows (since double-clicking CLI binaries flashes/closes terminal windows). Provided instructions to run via PowerShell with local paths (`.\ngrok.exe`) and set up authentication tokens.
+
+
 
 
 
