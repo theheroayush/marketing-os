@@ -256,3 +256,16 @@ To enable ₹0 operational overhead for the MVP launch, MarkU leverages a server
 - **Ad Budget Abuse**: Limit ads triggers to drafts. Require manual confirmation in the PWA prior to any budget deployment.
 - **Optimization Bias**: Implement statistical significance thresholds before letting telemetry rewrite context prompts.
 
+---
+
+## 🛠️ Next Sprint: Implementing Phase 1 (Local MCP Server)
+We are starting the implementation of **Phase 1: Local MCP Server** to allow external LLMs (Claude Desktop, Cursor, VS Code, ChatGPT) to connect directly to MarkU.
+- **Benefits**: Eliminates copy-paste friction, offloads prompts to user's flat-rate subscriptions for ₹0 pay-per-token API fees.
+- **Consequences**: Adds `@modelcontextprotocol/sdk` to `package.json` dependencies and adds an export button to Settings view.
+- **Tasks Assigned**:
+  - **CTO**: Write `mcp-server.js` stdio server daemon.
+  - **COO**: Update dependencies, package config, and setup guides.
+  - **Designer**: Add "Export to MCP Config" button in Settings view.
+  - **QA Lead**: Test stdio endpoints and JSON-RPC compliance.
+
+
