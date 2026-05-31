@@ -337,6 +337,13 @@ To address layout alignment bugs and complete the client-side integration of Pha
 - Discovered that `ngrok` was installed as an MSIX Windows Store package but was missing an authorization token.
 - Started `localtunnel` as a fallback on port `3000` (task `task-996`), yielding public URL: `https://shaggy-cooks-go.loca.lt`. Requested the user's ngrok authtoken to establish a permanent and warning-free connection.
 
+### 🔑 ngrok Activation & Verified Tunnel URL (Log)
+- Received ngrok authtoken from the user.
+- Configured ngrok globally using `ngrok config add-authtoken <token>`.
+- Restarted the local gateway (`task-1029`) on port `3000`.
+- Successfully launched the ngrok tunnel (`task-1024`), exposing the local gateway via: `https://thesaurus-upturned-fracture.ngrok-free.dev`.
+
+
 
 
 
