@@ -333,8 +333,8 @@
     const sessions = Storage.getSessions();
 
     el.innerHTML = `
-      <h1 class="view-title" style="margin-bottom: 0;">Dashboard</h1>
-      <div style="margin-top: -20px; margin-bottom: 20px;">
+      <h1 class="view-title">Dashboard</h1>
+      <div style="margin-bottom: 24px;">
         ${profileSwitcherHTML}
       </div>
       <div class="mb-16">
@@ -900,9 +900,14 @@
           <h2 class="section-heading" style="font-size:1.4rem; margin-bottom:4px;">History</h2>
           <p style="color:var(--text-dim);font-size:0.85rem;margin:0">Your past AI marketing consultations.</p>
         </div>
-        <button onclick="app.exportData()" class="btn btn-primary btn-sm" style="display:flex;align-items:center;gap:6px;padding:6px 12px;background:var(--border);color:var(--text);border-color:transparent;">
-          <span class="material-symbols-outlined" style="font-size:16px">download</span> <span style="font-size:0.85rem">Backup</span>
-        </button>
+        <div style="display:flex; gap:8px;">
+          <button onclick="app.exportMcpConfig()" class="btn btn-primary btn-sm" style="display:flex;align-items:center;gap:6px;padding:6px 12px;background:var(--border);color:var(--text);border-color:transparent;">
+            <span class="material-symbols-outlined" style="font-size:16px">settings_ethernet</span> <span style="font-size:0.85rem">Export MCP</span>
+          </button>
+          <button onclick="app.exportData()" class="btn btn-primary btn-sm" style="display:flex;align-items:center;gap:6px;padding:6px 12px;background:var(--border);color:var(--text);border-color:transparent;">
+            <span class="material-symbols-outlined" style="font-size:16px">download</span> <span style="font-size:0.85rem">Backup</span>
+          </button>
+        </div>
       </div>
       
       ${productCtx ? `
@@ -1092,6 +1097,17 @@
         </button>
       </div>
 
+      <!-- MCP Integration -->
+      <div class="card mb-24" style="background:var(--bg-elevated); border:1px solid var(--border);">
+        <h3 class="section-heading" style="margin-top:0; font-size:1.1rem; display:flex; align-items:center; gap:8px;">
+          <span class="material-symbols-outlined" style="color:var(--primary);">terminal</span> MCP Integration
+        </h3>
+        <p style="color:var(--text-dim); font-size:0.85rem; margin-bottom:16px;">
+          The local MCP server uses a local context configuration. Export this configuration below to allow local editors (like Cursor or Claude Desktop) to load your active project workspace context.
+        </p>
+        <button onclick="app.exportMcpConfig()" class="btn btn-primary btn-sm">Export MCP Config</button>
+      </div>
+
       <!-- General User Guide -->
       <div class="card mb-24" style="background:var(--bg-elevated); border:1px solid var(--border);">
         <h3 class="section-heading" style="margin-top:0; font-size:1.1rem; display:flex; align-items:center; gap:8px;">
@@ -1196,6 +1212,31 @@
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
     }, 0);
+  };
+
+  window.app.exportMcpConfig = function() {
+    const activeProfileId = Storage.getActiveProfileId();
+    const profiles = Storage.getProfiles();
+    const activeProfile = profiles.find(p => p.id === activeProfileId) || {};
+    const data = {
+      profile: {
+        id: activeProfileId,
+        name: activeProfile.name || 'Default Profile',
+        content: activeProfile.content || ''
+      }
+    };
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `marku-context.json`;
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(() => {
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }, 0);
+    app.notify('MCP Config Exported!');
   };
 
   function renderSupportView() {

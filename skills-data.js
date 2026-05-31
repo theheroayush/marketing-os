@@ -1660,6 +1660,11 @@ const getSkillOpener = (id) => {
     return openers[id] || "Tell me what you are working on and I will get started right away.";
 };
 
-window.CATS = CATS;
-window.SKILLS = SKILLS;
-window.getSkillOpener = getSkillOpener;
+if (typeof window !== 'undefined') {
+  window.CATS = CATS;
+  window.SKILLS = SKILLS;
+  window.getSkillOpener = getSkillOpener;
+}
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = { CATS, SKILLS, getSkillOpener };
+}

@@ -6,7 +6,8 @@
   "scripts": {
     "start": "npx serve .",
     "build": "node build.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "mcp": "node mcp-server.js"
   },
   "keywords": [],
   "author": "",
@@ -16,7 +17,8 @@
     "@capacitor/android": "^8.2.0",
     "@capacitor/core": "^8.2.0",
     "@capacitor/haptics": "^8.0.1",
-    "@capgo/capacitor-updater": "^8.45.0"
+    "@capgo/capacitor-updater": "^8.45.0",
+    "@modelcontextprotocol/sdk": "^1.4.1"
   },
   "devDependencies": {
     "@capacitor/assets": "^3.0.5",

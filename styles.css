@@ -135,6 +135,7 @@ body::after {
 .app-header .logo { display: flex; align-items: center; gap: 10px; }
 .header-logo-img { height: 36px; max-width: 140px; width: auto; border-radius: 10px; object-fit: contain; }
 .sidebar-logo-img { height: 44px; max-width: 180px; width: auto; border-radius: 12px; object-fit: contain; }
+.header-actions { display: flex; align-items: center; gap: 8px; }
 
 .icon-btn {
   width: 44px; height: 44px; border-radius: 14px; border: 1px solid var(--border);
@@ -174,7 +175,7 @@ body::after {
   min-width: 50px;
 }
 .nav-item .material-symbols-outlined { font-size: 22px; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-.nav-item span:last-child { font-size: 8px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; opacity: 0.8; }
+.nav-item span:last-child { font-size: 8px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; opacity: 0.8; white-space: nowrap; }
 .nav-item:hover { color: var(--text); }
 .nav-item.active {
   color: var(--primary);
@@ -686,5 +687,41 @@ input, textarea, select, button {
   }
   .project-switcher-btn {
     width: auto;
+  }
+}
+
+/* Premium Title Gradient and Layout sizing */
+.view-title {
+  font-size: 1.8rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  margin-bottom: 24px;
+  background: linear-gradient(135deg, #fff 40%, var(--text-dim));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.light-theme .view-title {
+  background: linear-gradient(135deg, #171520 40%, #5d5a75);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Mobile responsive bottom navigation constraints */
+@media (max-width: 480px) {
+  .bottom-nav {
+    left: 8px;
+    right: 8px;
+    padding: 0 6px;
+    height: 60px;
+  }
+  .nav-item {
+    padding: 6px 4px;
+    min-width: 40px;
+  }
+  .nav-item span:last-child {
+    font-size: 7.5px;
+    letter-spacing: 0.02em;
   }
 }
