@@ -23,7 +23,22 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object"
+                  "type": "object",
+                  "properties": {
+                    "profile": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "description": "The name of the active brand/product"
+                        },
+                        "content": {
+                          "type": "string",
+                          "description": "The complete positioning context and audience details"
+                        }
+                      }
+                    }
+                  }
                 }
               }
             }

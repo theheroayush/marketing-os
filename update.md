@@ -349,3 +349,8 @@ To address layout alignment bugs and complete the client-side integration of Pha
 - **Tunnel Execution**: Terminated the old ngrok process and started a new ngrok tunnel targeting port `3000` (task `task-1201`).
 - **Verification**: Confirmed the ngrok public URL is `https://thesaurus-upturned-fracture.ngrok-free.dev` and verified the list of skills endpoint responds successfully via HTTPS requests.
 - **OpenAPI Schema Sync**: Updated the servers URL in `chatgpt-openapi.json` to match the active ngrok URL so the user can copy-paste it directly into ChatGPT custom action settings.
+
+### 🩹 OpenAPI Schema Validation Fix (Log)
+- **Problem**: ChatGPT's OpenAPI validator threw a validation error: "object schema missing properties" under the `/get_product_context` 200 response schema.
+- **Resolution**: Defined explicit `profile`, `name`, and `content` properties in the OpenAPI schema under `chatgpt-openapi.json` to satisfy the validator.
+
