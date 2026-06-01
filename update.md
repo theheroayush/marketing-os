@@ -354,3 +354,23 @@ To address layout alignment bugs and complete the client-side integration of Pha
 - **Problem**: ChatGPT's OpenAPI validator threw a validation error: "object schema missing properties" under the `/get_product_context` 200 response schema.
 - **Resolution**: Defined explicit `profile`, `name`, and `content` properties in the OpenAPI schema under `chatgpt-openapi.json` to satisfy the validator.
 
+## 🚀 MarkU Execution Layer & Cloud Deployment Setup (Phase 2 & 3 Completed)
+
+### ⚙️ Gateway & API Actions Integration
+- **Dynamic Context Updates**: Created `POST /update_product_context` to allow ChatGPT to overwrite local product context JSON dynamically.
+- **WhatsApp Integration**: Connected gateway to the local Hermes WhatsApp bridge (listening on port `3005`) via `GET /list_whatsapp_groups` and `POST /send_whatsapp_message`.
+- **Email Draft Saving**: Exposed `POST /save_email_draft` which creates structured `.txt` files under a new local `drafts/` directory.
+- **OpenAPI Schema Sync**: Updated `chatgpt-openapi.json` to expose these 4 endpoints with full schemas.
+
+### 🌐 Serverless Cloud Setup Scaffolding
+- **Neon DB express code**: Created `cloud/index.js` representing a serverless Express app connected to Neon PostgreSQL instead of files.
+- **Vercel Routing**: Defined root-level `vercel.json` routing rules to map all edge calls to the cloud serverless index.
+- **Documentation**: Wrote `README_CLOUD.md` with complete setup instructions for Vercel + Neon.
+
+### 🧪 Verification
+- Verified `/update_product_context` successfully modifies `marku-context.json` dynamically.
+- Verified `/list_whatsapp_groups` correctly fetches and formats group list from the Hermes bridge.
+- Verified `/save_email_draft` generates file write output in the `drafts/` directory.
+- Synced and deployed packages via local npm installations.
+
+

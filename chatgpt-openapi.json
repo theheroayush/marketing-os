@@ -138,6 +138,190 @@
           }
         }
       }
+    },
+    "/update_product_context": {
+      "post": {
+        "summary": "Update active brand and product context",
+        "description": "Overwrites the active marku-context.json with the new brand profile name and positioning content details.",
+        "operationId": "updateProductContext",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["name", "content"],
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "The name of the brand or product."
+                  },
+                  "content": {
+                    "type": "string",
+                    "description": "Detailed positioning context, target audience, and key value propositions."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully updated product context",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": { "type": "boolean" },
+                    "message": { "type": "string" }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - Missing required parameters"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/list_whatsapp_groups": {
+      "get": {
+        "summary": "List all active WhatsApp groups",
+        "description": "Retrieves the list of participating WhatsApp groups from the local Hermes WhatsApp bridge (e.g. group IDs and names). Useful to find where to send reports or notifications.",
+        "operationId": "listWhatsAppGroups",
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved WhatsApp groups",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": { "type": "string", "description": "The WhatsApp Group JID (e.g. 120363416865907179@g.us)" },
+                      "subject": { "type": "string", "description": "The human-readable subject/name of the group" }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/send_whatsapp_message": {
+      "post": {
+        "summary": "Send a WhatsApp message",
+        "description": "Sends a text message to a specific WhatsApp chatId (either a personal contact or a group JID) via the local Hermes WhatsApp bridge.",
+        "operationId": "sendWhatsAppMessage",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["chatId", "message"],
+                "properties": {
+                  "chatId": {
+                    "type": "string",
+                    "description": "The target WhatsApp ID (e.g. '120363416865907179@g.us' for groups, or 'phone_number@s.whatsapp.net' for individuals)."
+                  },
+                  "message": {
+                    "type": "string",
+                    "description": "The text message body to send."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Message sent successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": { "type": "boolean" },
+                    "messageId": { "type": "string" }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - Missing parameters"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/save_email_draft": {
+      "post": {
+        "summary": "Save email outreach draft",
+        "description": "Writes the generated cold email or email sequence draft as a file inside the local drafts/ folder for review.",
+        "operationId": "saveEmailDraft",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["subject", "body"],
+                "properties": {
+                  "recipient": {
+                    "type": "string",
+                    "description": "The target recipient email address (optional)."
+                  },
+                  "subject": {
+                    "type": "string",
+                    "description": "The subject line of the email."
+                  },
+                  "body": {
+                    "type": "string",
+                    "description": "The complete email body content."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully saved email draft",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": { "type": "boolean" },
+                    "filename": { "type": "string" },
+                    "filepath": { "type": "string" }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - Missing parameters"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
     }
   }
 }

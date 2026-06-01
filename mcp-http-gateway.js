@@ -11,7 +11,7 @@ const { SKILLS } = require("./skills-data.js");
 
 const PORT = process.env.PORT || 3000;
 
-const server = http.createServer((req, res) => {
+const server = http.createServer(async (req, res) => {
   // CORS Headers
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
@@ -107,6 +107,108 @@ Using the product marketing context and the marketing system instructions above,
       }
     });
   } 
+  else if (url.pathname === "/update_product_context" && req.method === "POST") {
+    let body = "";
+    req.on("data", chunk => { body += chunk; });
+    req.on("end", () => {
+      try {
+        const payload = JSON.parse(body || "{}");
+        const { name, content } = payload;
+        if (!name || !content) {
+          res.writeHead(400, { "Content-Type": "application/json" });
+          res.end(JSON.stringify({ error: "Missing name or content in payload" }));
+          return;
+        }
+        const contextData = { profile: { name, content } };
+        const contextPath = path.join(process.cwd(), "marku-context.json");
+        fs.writeFileSync(contextPath, JSON.stringify(contextData, null, 2), "utf-8");
+        res.writeHead(200, { "Content-Type": "application/json" });
+        res.end(JSON.stringify({ success: true, message: "Product context updated successfully" }));
+      } catch (e) {
+        res.writeHead(500, { "Content-Type": "application/json" });
+        res.end(JSON.stringify({ error: e.message }));
+      }
+    });
+  }
+  else if (url.pathname === "/list_whatsapp_groups" && req.method === "GET") {
+    try {
+      const response = await fetch("http://127.0.0.1:3005/groups");
+      if (!response.ok) {
+        throw new Error(`Hermes bridge returned status ${response.status}`);
+      }
+      const data = await response.json();
+      res.writeHead(200, { "Content-Type": "application/json" });
+      res.end(JSON.stringify(data));
+    } catch (e) {
+      res.writeHead(500, { "Content-Type": "application/json" });
+      res.end(JSON.stringify({ error: `Failed to fetch groups from WhatsApp bridge: ${e.message}` }));
+    }
+  }
+  else if (url.pathname === "/send_whatsapp_message" && req.method === "POST") {
+    let body = "";
+    req.on("data", chunk => { body += chunk; });
+    req.on("end", async () => {
+      try {
+        const payload = JSON.parse(body || "{}");
+        const { chatId, message } = payload;
+        if (!chatId || !message) {
+          res.writeHead(400, { "Content-Type": "application/json" });
+          res.end(JSON.stringify({ error: "Missing chatId or message in payload" }));
+          return;
+        }
+        const response = await fetch("http://127.0.0.1:3005/send", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ chatId, message })
+        });
+        if (!response.ok) {
+          const errData = await response.json().catch(() => ({}));
+          throw new Error(errData.error || `Hermes bridge returned status ${response.status}`);
+        }
+        const resData = await response.json();
+        res.writeHead(200, { "Content-Type": "application/json" });
+        res.end(JSON.stringify({ success: true, resData }));
+      } catch (e) {
+        res.writeHead(500, { "Content-Type": "application/json" });
+        res.end(JSON.stringify({ error: `Failed to send WhatsApp message via bridge: ${e.message}` }));
+      }
+    });
+  }
+  else if (url.pathname === "/save_email_draft" && req.method === "POST") {
+    let body = "";
+    req.on("data", chunk => { body += chunk; });
+    req.on("end", () => {
+      try {
+        const payload = JSON.parse(body || "{}");
+        const { subject, body: emailBody, recipient } = payload;
+        if (!subject || !emailBody) {
+          res.writeHead(400, { "Content-Type": "application/json" });
+          res.end(JSON.stringify({ error: "Missing subject or body in payload" }));
+          return;
+        }
+        const draftsDir = path.join(process.cwd(), "drafts");
+        if (!fs.existsSync(draftsDir)) {
+          fs.mkdirSync(draftsDir, { recursive: true });
+        }
+        const sanitizedSubject = subject.replace(/[^a-zA-Z0-9_-]/g, "_").substring(0, 50);
+        const filename = `draft_${Date.now()}_${sanitizedSubject}.txt`;
+        const filepath = path.join(draftsDir, filename);
+        
+        const fileContent = `Recipient: ${recipient || "Not specified"}
+Subject: ${subject}
+Date: ${new Date().toISOString()}
+--------------------------------------------------------------------------------
+${emailBody}
+`;
+        fs.writeFileSync(filepath, fileContent, "utf-8");
+        res.writeHead(200, { "Content-Type": "application/json" });
+        res.end(JSON.stringify({ success: true, filename, filepath }));
+      } catch (e) {
+        res.writeHead(500, { "Content-Type": "application/json" });
+        res.end(JSON.stringify({ error: e.message }));
+      }
+    });
+  }
   else {
     res.writeHead(404, { "Content-Type": "application/json" });
     res.end(JSON.stringify({ error: "Not found" }));
