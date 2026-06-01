@@ -39,4 +39,5 @@ jobs:
 
     - name: Capacitor Sync Validation
       run: |
+        npx cap add android || true
         npx cap sync android
