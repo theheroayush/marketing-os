@@ -1,0 +1,3 @@
+## 2026-05-18 - Missing ARIA Labels on Icon-Only Buttons
+**Learning:** Found multiple instances of icon-only buttons (e.g., search, notifications, export PDF, add team member, restart session) that lacked `aria-label` attributes and did not hide their visual icon content with `aria-hidden="true"`. This is a common pattern in the app that significantly degrades the screen reader experience.
+**Action:** When adding icon-only interactive elements, I must always include a descriptive `aria-label` on the parent button and add `aria-hidden="true"` to the inner icon element to prevent redundant or confusing screen reader announcements.
