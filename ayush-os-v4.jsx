@@ -1661,10 +1661,14 @@ export default function AyushOS() {
   }, [input]);
 
   const cats = ["All", ...Object.keys(CATS)];
+  const q = searchQ.toLowerCase();
+
+  // Bolt Optimization: Hoisted searchQ.toLowerCase() outside the loop to prevent recalculating loop invariants
+  // and added early returns to bypass expensive string match checks for filtered out categories.
   const filtered = SKILLS.filter(s => {
-    const mc = catFilter === "All" || s.cat === catFilter;
-    const q = searchQ.toLowerCase();
-    return mc && (!q || s.name.toLowerCase().includes(q) || s.tagline.toLowerCase().includes(q) || s.desc.toLowerCase().includes(q));
+    if (catFilter !== "All" && s.cat !== catFilter) return false;
+    if (!q) return true;
+    return s.name.toLowerCase().includes(q) || s.tagline.toLowerCase().includes(q) || s.desc.toLowerCase().includes(q);
   });
 
   const openSkill = useCallback((skill) => {
