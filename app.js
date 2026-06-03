@@ -317,7 +317,7 @@
           <div style="flex:1;">
             <div style="font-size:0.75rem; color:var(--text-muted); margin-bottom:6px; font-weight:700; text-transform:uppercase; letter-spacing:0.08em;">Active Project Workspace</div>
             <select id="profile-select" style="width:100%; background:var(--bg-input); color:var(--text); border:1px solid var(--border); padding:10px 12px; border-radius:10px; font-family:inherit; font-size:0.95rem; font-weight:600; appearance: none; cursor:pointer;" onchange="app.switchProfile(this.value)">
-               ${profiles.map(p => `<option value="${p.id}" ${p.id === activeProfileId ? 'selected' : ''}>${app.escapeHtml(p.name)}</option>`).join('')}
+               ${profiles.map(p => `<option value="${app.escapeHtml(p.id)}" ${p.id === activeProfileId ? 'selected' : ''}>${app.escapeHtml(p.name)}</option>`).join('')}
             </select>
           </div>
         </div>
@@ -468,7 +468,7 @@
             <div style="display:flex;align-items:center;gap:10px">
               <span style="font-size:20px">${s.skillEmoji}</span>
               <div style="flex:1">
-                <div style="font-weight:700;font-size:0.9rem">${s.skillName}</div>
+                <div style="font-weight:700;font-size:0.9rem">${app.escapeHtml(s.skillName)}</div>
                 <div style="font-size:0.75rem;color:var(--text-muted)">${new Date(s.ts).toLocaleDateString()} • ${s.messages.length} messages</div>
               </div>
               <span class="material-symbols-outlined" style="font-size:18px;color:var(--text-muted)">chevron_right</span>
@@ -500,7 +500,7 @@
       <!-- Search Box -->
       <div style="background:var(--card-bg);border:1px solid var(--border);border-radius:12px;padding:10px 14px;display:flex;align-items:center;gap:8px;margin-bottom:16px;">
         <span class="material-symbols-outlined" style="color:var(--text-muted);font-size:18px">search</span>
-        <input type="text" id="skills-search" placeholder="Search skills..." value="${searchQ}" 
+        <input type="text" id="skills-search" placeholder="Search skills..." value="${app.escapeHtml(searchQ)}"
                style="flex:1;background:transparent;border:none;color:var(--text);font-size:0.95rem;outline:none;" 
                onkeyup="app.handleSearch(event)">
         ${searchQ ? `<button onclick="app.clearSearch()" style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:18px;">&times;</button>` : ''}
@@ -938,13 +938,13 @@
                 <div style="display:flex;align-items:center;gap:10px">
                   <div style="width:32px;height:32px;border-radius:8px;background:var(--border);display:flex;align-items:center;justify-content:center;font-size:18px">${s.skillEmoji}</div>
                   <div>
-                    <h4 style="font-size:1rem;margin:0">${s.skillName}</h4>
+                    <h4 style="font-size:1rem;margin:0">${app.escapeHtml(s.skillName)}</h4>
                     <span style="font-size:0.7rem;color:var(--text-muted)">${new Date(s.ts).toLocaleString()}</span>
                   </div>
                 </div>
               </div>
               <p style="font-size:0.8rem;color:var(--text-dim);margin-bottom:8px;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;">
-                ${s.messages[s.messages.length - 1].content.replace(/<[^>]*>/g, '').slice(0, 120)}...
+                ${app.escapeHtml(s.messages[s.messages.length - 1].content.replace(/<[^>]*>/g, '').slice(0, 120))}...
               </p>
             </div>
             <button onclick="app.deleteSession('${s.id}')" style="position:absolute;top:10px;right:10px;background:none;border:none;color:var(--red);cursor:pointer;" title="Delete">
@@ -999,7 +999,7 @@
       <div style="border-bottom:2px solid #000; padding-bottom:10px; margin-bottom:20px; text-align:left;">
         <h1 style="margin:0; font-size:28px; font-weight:800;">MarkU AI Report</h1>
         <div style="display:flex; justify-content:space-between; margin-top:10px; font-size:14px; color:#444; font-weight:600;">
-          <span>Project Team: <strong>${projectName}</strong></span>
+          <span>Project Team: <strong>${app.escapeHtml(projectName)}</strong></span>
           <span>Date: ${new Date().toLocaleDateString()}</span>
         </div>
       </div>
@@ -1064,7 +1064,7 @@
         <div style="display:flex; gap:12px; flex-wrap:wrap; margin-bottom:20px;">
           <div style="flex:1; min-width:200px;">
             <select id="settings-profile-select" style="width:100%; background:var(--bg-input); color:var(--text); border:1px solid var(--border); padding:10px 14px; border-radius:8px; font-family:inherit; font-size:0.95rem;" onchange="app.switchProfile(this.value)">
-               ${profiles.map(p => `<option value="${p.id}" ${p.id === activeProfileId ? 'selected' : ''}>${app.escapeHtml(p.name)}</option>`).join('')}
+               ${profiles.map(p => `<option value="${app.escapeHtml(p.id)}" ${p.id === activeProfileId ? 'selected' : ''}>${app.escapeHtml(p.name)}</option>`).join('')}
             </select>
           </div>
           <button onclick="app.newProfile()" class="btn btn-primary" style="padding:10px 20px;">+ New Project</button>
