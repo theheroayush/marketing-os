@@ -1,0 +1,3 @@
+## 2024-05-19 - Early Return Over Boolean Assigment
+**Learning:** In V8/Node.js environments, filtering arrays using boolean variables built via string methods (`matchQ = ...`) forces allocation and evaluation even if an earlier condition failed (unless strictly short-circuited). Using explicit early returns for inexpensive conditions (`if (cat !== filter) return false;`) skips allocating strings entirely, vastly speeding up filtering on large datasets.
+**Action:** Always structure array filter and map callbacks with early returns for the most exclusive and cheapest checks first, rather than aggregating boolean results for a single return statement.
