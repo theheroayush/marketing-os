@@ -487,10 +487,13 @@
     const cats = ['All', ...Object.keys(window.CATS)];
     const q = searchQ.toLowerCase();
     
+    // ⚡ Bolt: Hoisted loop invariant (catFilter check) and added early returns
+    // to avoid redundant .toLowerCase() evaluations in array callback
+    const isAllCat = catFilter === 'All';
     const filtered = window.SKILLS.filter(s => {
-      const matchCat = catFilter === 'All' || s.cat === catFilter;
-      const matchQ = !q || s.name.toLowerCase().includes(q) || s.tagline.toLowerCase().includes(q) || s.desc.toLowerCase().includes(q);
-      return matchCat && matchQ;
+      if (!isAllCat && s.cat !== catFilter) return false;
+      if (!q) return true;
+      return s.name.toLowerCase().includes(q) || s.tagline.toLowerCase().includes(q) || s.desc.toLowerCase().includes(q);
     });
 
     el.innerHTML = `
