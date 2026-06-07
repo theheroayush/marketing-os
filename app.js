@@ -488,9 +488,12 @@
     const q = searchQ.toLowerCase();
     
     const filtered = window.SKILLS.filter(s => {
-      const matchCat = catFilter === 'All' || s.cat === catFilter;
-      const matchQ = !q || s.name.toLowerCase().includes(q) || s.tagline.toLowerCase().includes(q) || s.desc.toLowerCase().includes(q);
-      return matchCat && matchQ;
+      if (catFilter !== 'All' && s.cat !== catFilter) return false;
+      if (!q) return true;
+      // ⚡ Bolt: Early return prevents expensive string operations if category doesn't match
+      return s.name.toLowerCase().includes(q) ||
+             s.tagline.toLowerCase().includes(q) ||
+             s.desc.toLowerCase().includes(q);
     });
 
     el.innerHTML = `
