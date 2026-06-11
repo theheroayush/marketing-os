@@ -500,7 +500,7 @@
       <!-- Search Box -->
       <div style="background:var(--card-bg);border:1px solid var(--border);border-radius:12px;padding:10px 14px;display:flex;align-items:center;gap:8px;margin-bottom:16px;">
         <span class="material-symbols-outlined" style="color:var(--text-muted);font-size:18px">search</span>
-        <input type="text" id="skills-search" placeholder="Search skills..." value="${searchQ}" 
+        <input type="text" id="skills-search" placeholder="Search skills..." value="${app.escapeHtml(searchQ)}"
                style="flex:1;background:transparent;border:none;color:var(--text);font-size:0.95rem;outline:none;" 
                onkeyup="app.handleSearch(event)">
         ${searchQ ? `<button onclick="app.clearSearch()" style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:18px;">&times;</button>` : ''}
@@ -514,9 +514,9 @@
           const bg = isActive ? 'var(--text)' : 'var(--card-bg)';
           const color = isActive ? 'var(--bg)' : 'var(--text-dim)';
           const border = isActive ? 'transparent' : 'var(--border)';
-          return `<button onclick="app.setCategoryFilter('${c}')" 
+          return `<button data-category="${app.escapeHtml(c)}" onclick="app.setCategoryFilter(this.dataset.category)"
             style="background:${bg};color:${color};border:1px solid ${border};border-radius:20px;padding:6px 14px;font-size:0.8rem;white-space:nowrap;font-weight:600;display:flex;align-items:center;gap:6px;cursor:pointer;">
-            ${c !== 'All' ? catInfo.icon + ' ' : ''}${c}
+            ${c !== 'All' ? catInfo.icon + ' ' : ''}${app.escapeHtml(c)}
           </button>`;
         }).join('')}
       </div>
@@ -938,13 +938,13 @@
                 <div style="display:flex;align-items:center;gap:10px">
                   <div style="width:32px;height:32px;border-radius:8px;background:var(--border);display:flex;align-items:center;justify-content:center;font-size:18px">${s.skillEmoji}</div>
                   <div>
-                    <h4 style="font-size:1rem;margin:0">${s.skillName}</h4>
+                    <h4 style="font-size:1rem;margin:0">${app.escapeHtml(s.skillName)}</h4>
                     <span style="font-size:0.7rem;color:var(--text-muted)">${new Date(s.ts).toLocaleString()}</span>
                   </div>
                 </div>
               </div>
               <p style="font-size:0.8rem;color:var(--text-dim);margin-bottom:8px;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;">
-                ${s.messages[s.messages.length - 1].content.replace(/<[^>]*>/g, '').slice(0, 120)}...
+                ${app.escapeHtml(s.messages[s.messages.length - 1].content.replace(/<[^>]*>/g, '').slice(0, 120))}...
               </p>
             </div>
             <button onclick="app.deleteSession('${s.id}')" style="position:absolute;top:10px;right:10px;background:none;border:none;color:var(--red);cursor:pointer;" title="Delete">
