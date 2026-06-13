@@ -1,0 +1,4 @@
+
+## 2026-04-27 - localStorage Reads the Bottleneck? No, JSON.parse() Is.
+**Learning:** In vanilla JS setups, repeatedly reading JSON strings from `localStorage` within rendering cycles can become a severe performance bottleneck. The issue isn't the `localStorage.getItem` read itself (browsers cache it), but the cost of synchronous `JSON.parse` executing hundreds of times for large nested arrays (like chat histories).
+**Action:** Implemented an internal cache `_sessionsCache` and `_profilesCache` that parses the string exactly once. Crucially, when returning this cache to callers, use a shallow/deep clone (e.g., `.map` with spread syntax) to ensure callers don't accidentally mutate the single cache instance. Invalidating the cache directly on save ensures subsequent reads parse fresh data properly without slowing down runtime operations.
