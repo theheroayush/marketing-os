@@ -1,0 +1,6 @@
+## 2026-06-15 - Array Filter Optimization
+**Learning:** The array  method executes its callback on every element. If the callback performs expensive operations (like string allocations and substring searches) that could be bypassed by checking cheaper conditions (like exact property matches or early returns) first, placing the expensive operations at the end of the callback evaluation or after an early return significantly improves performance.
+**Action:** Always hoist invariant checks and utilize early returns for inexpensive conditions before executing computationally expensive operations within array iteration callbacks.
+## 2024-06-15 - Array Filter Optimization
+**Learning:** The array `.filter()` method executes its callback on every element. If the callback performs expensive operations (like string allocations and substring searches) that could be bypassed by checking cheaper conditions (like exact property matches or early returns) first, placing the expensive operations at the end of the callback evaluation or after an early return significantly improves performance.
+**Action:** Always hoist invariant checks and utilize early returns for inexpensive conditions before executing computationally expensive operations within array iteration callbacks.
