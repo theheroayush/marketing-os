@@ -489,8 +489,10 @@
     
     const filtered = window.SKILLS.filter(s => {
       const matchCat = catFilter === 'All' || s.cat === catFilter;
+      // ⚡ Bolt: Add early return to avoid expensive string allocations and includes() checks
+      if (!matchCat) return false;
       const matchQ = !q || s.name.toLowerCase().includes(q) || s.tagline.toLowerCase().includes(q) || s.desc.toLowerCase().includes(q);
-      return matchCat && matchQ;
+      return matchQ;
     });
 
     el.innerHTML = `
