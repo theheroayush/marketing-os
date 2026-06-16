@@ -1,0 +1,3 @@
+## 2024-06-25 - LocalStorage I/O Caching and Loop Fusion
+**Learning:** The project relies on repeated synchronous `localStorage` reads which blocks the main thread. While doing so, passing complex objects might introduce mutability bugs. Furthermore, array iterations via chaining methods (e.g., `map`, then `reduce` with Sets) creates unnecessary intermediate objects, slowing down processing of potentially large stats collections.
+**Action:** When caching, cache the JSON string instead of the object array to skip slow IO bounds while maintaining pure functional clones. Fusing loop methods to single-pass standard `for` loops helps mitigate garbage collector lag.
