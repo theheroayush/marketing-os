@@ -95,7 +95,7 @@
 
   <!-- Desktop Sidebar -->
   <aside class="desktop-sidebar">
-    <div class="sidebar-logo" onclick="app.navigate('dashboard')" style="cursor:pointer; display:flex; align-items:center; gap:10px;">
+    <div class="sidebar-logo" onclick="app.navigate('dashboard')" onkeydown="if(event.key==='Enter') app.navigate('dashboard')" role="button" tabindex="0" style="cursor:pointer; display:flex; align-items:center; gap:10px;">
       <img src="logo.jpg" alt="" class="sidebar-logo-img">
       MarkU
     </div>
@@ -130,12 +130,12 @@
 
   <!-- Header (Mobile) -->
   <header class="app-header">
-    <div class="logo" onclick="app.navigate('dashboard')" style="cursor:pointer;">
+    <div class="logo" onclick="app.navigate('dashboard')" onkeydown="if(event.key==='Enter') app.navigate('dashboard')" role="button" tabindex="0" style="cursor:pointer;">
       <img src="logo.jpg" alt="MarkU" class="header-logo-img">
     </div>
     <div class="header-actions">
-      <button class="icon-btn" onclick="app.focusSearch()"><span class="material-symbols-outlined">search</span></button>
-      <button class="icon-btn"><span class="material-symbols-outlined">notifications</span></button>
+      <button class="icon-btn" onclick="app.focusSearch()" aria-label="Search"><span class="material-symbols-outlined" aria-hidden="true">search</span></button>
+      <button class="icon-btn" aria-label="Notifications"><span class="material-symbols-outlined" aria-hidden="true">notifications</span></button>
     </div>
   </header>
 
