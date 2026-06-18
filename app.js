@@ -193,7 +193,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <h2 class="modal-title">${config.title || 'Modal'}</h2>
-          <button class="modal-close" onclick="app.closeModal()">
+          <button class="modal-close" aria-label="Close modal" onclick="app.closeModal()">
             <span class="material-symbols-outlined">close</span>
           </button>
         </div>
@@ -670,7 +670,7 @@
                     style="flex:1;background:var(--card-bg);border:1px solid var(--border);border-radius:12px;padding:12px 45px 12px 14px;color:var(--text);font-family:inherit;font-size:0.95rem;resize:none;max-height:120px;min-height:44px;"
                     oninput="this.style.height='';this.style.height=Math.min(this.scrollHeight, 120)+'px';"
                     onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();app.sendChatMessage(event);}"></textarea>
-          <button type="submit" disabled style="position:absolute;right:8px;bottom:6px;width:32px;height:32px;border-radius:8px;border:none;background:${accentColor};color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0.5;transition:0.2s;" id="chat-send-btn">
+          <button type="submit" aria-label="Send message" disabled style="position:absolute;right:8px;bottom:6px;width:32px;height:32px;border-radius:8px;border:none;background:${accentColor};color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0.5;transition:0.2s;" id="chat-send-btn">
             <span class="material-symbols-outlined" style="font-size:18px;">arrow_upward</span>
           </button>
         </form>
