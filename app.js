@@ -193,7 +193,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <h2 class="modal-title">${config.title || 'Modal'}</h2>
-          <button class="modal-close" onclick="app.closeModal()">
+          <button class="modal-close" onclick="app.closeModal()" aria-label="Close modal">
             <span class="material-symbols-outlined">close</span>
           </button>
         </div>
@@ -225,7 +225,7 @@
           <label class="form-label">Add Team Member (Email)</label>
           <div style="display:flex; gap:8px;">
             <input type="email" id="modal-team-email" class="form-input" placeholder="colleague@example.com">
-            <button onclick="app.addTeamMemberToModal()" class="btn btn-primary" style="padding:0 12px;"><span class="material-symbols-outlined">add</span></button>
+            <button onclick="app.addTeamMemberToModal()" class="btn btn-primary" style="padding:0 12px;" aria-label="Add team member"><span class="material-symbols-outlined">add</span></button>
           </div>
           <div id="modal-team-list" class="team-list"></div>
         </div>
@@ -255,7 +255,7 @@
     list.innerHTML = window.modalTeam.map((email, idx) => `
       <div class="team-member">
         <span>${app.escapeHtml(email)}</span>
-        <button onclick="app.removeFromModalTeam(${idx})" class="remove-member">
+        <button onclick="app.removeFromModalTeam(${idx})" class="remove-member" aria-label="Remove team member">
           <span class="material-symbols-outlined">delete</span>
         </button>
       </div>
@@ -613,7 +613,7 @@
 
     el.innerHTML = `
       <div class="skill-header" style="position:sticky;top:60px;background:var(--bg);z-index:10;padding-bottom:10px;border-bottom:1px solid ${accentColor}44;margin-bottom:16px;">
-        <button class="back-btn" onclick="app.navigate('history')"><span class="material-symbols-outlined">history</span></button>
+        <button class="back-btn" onclick="app.navigate('history')" aria-label="Back to history"><span class="material-symbols-outlined">history</span></button>
         <div style="flex:1;text-align:center;">
           <h2 style="font-size:1rem;font-weight:800;display:flex;align-items:center;justify-content:center;gap:6px;">
             <span style="font-size:1.2rem">${activeSkill.emoji}</span> ${activeSkill.name}
@@ -1159,7 +1159,7 @@
           <label class="form-label">Add Team Member (Email)</label>
           <div style="display:flex; gap:8px;">
             <input type="email" id="modal-team-email" class="form-input" placeholder="colleague@example.com">
-            <button onclick="app.addTeamMemberToModal()" class="btn btn-primary" style="padding:0 12px;"><span class="material-symbols-outlined">add</span></button>
+            <button onclick="app.addTeamMemberToModal()" class="btn btn-primary" style="padding:0 12px;" aria-label="Add team member"><span class="material-symbols-outlined">add</span></button>
           </div>
           <div id="modal-team-list" class="team-list"></div>
         </div>
