@@ -1,0 +1,3 @@
+## 2024-05-18 - Caching JSON.parse for localStorage
+**Learning:** Repeated synchronous `localStorage` reads containing JSON are a bottleneck because of `JSON.parse()`, not `getItem()`. When caching the parsed objects in-memory to improve performance, callers might mutate the returned arrays/objects (like `app.js` mutating `team` or `messages` arrays).
+**Action:** Implement in-memory variables to store parsed JSON, and always return a shallow/deep clone (e.g. `Array.prototype.map()` with object spread `{...obj, nestedArray: [...obj.nestedArray]}`) instead of the direct reference to prevent cache corruption. This is significantly faster than `structuredClone()` or `JSON.parse(JSON.stringify())` for simple arrays of objects.
