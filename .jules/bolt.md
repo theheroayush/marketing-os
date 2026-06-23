@@ -1,0 +1,3 @@
+## 2024-10-24 - [Optimize Array Iterations in Global Filters]
+**Learning:** The application filters the global `window.SKILLS` array repeatedly during search input. Evaluating boolean category checks together with `.toLowerCase()` text searches without early returns is a codebase-specific anti-pattern that causes unnecessary string allocations and garbage collection pressure on the main thread.
+**Action:** When filtering global data arrays, always hoist loop invariants (like `catFilter === 'All'`) and use early returns for inexpensive boolean checks to bypass computationally expensive operations like `.toLowerCase()` string allocations.
