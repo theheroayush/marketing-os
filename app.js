@@ -487,10 +487,11 @@
     const cats = ['All', ...Object.keys(window.CATS)];
     const q = searchQ.toLowerCase();
     
+    // ⚡ Bolt: Use early return for inexpensive exact matches to avoid expensive string allocation and case transformations when filtering arrays.
     const filtered = window.SKILLS.filter(s => {
-      const matchCat = catFilter === 'All' || s.cat === catFilter;
-      const matchQ = !q || s.name.toLowerCase().includes(q) || s.tagline.toLowerCase().includes(q) || s.desc.toLowerCase().includes(q);
-      return matchCat && matchQ;
+      if (catFilter !== 'All' && s.cat !== catFilter) return false;
+      if (!q) return true;
+      return s.name.toLowerCase().includes(q) || s.tagline.toLowerCase().includes(q) || s.desc.toLowerCase().includes(q);
     });
 
     el.innerHTML = `
