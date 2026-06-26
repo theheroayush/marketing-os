@@ -1,0 +1,3 @@
+## 2024-06-26 - Early returns in synchronous array filtering
+**Learning:** The frontend architecture relies on synchronously filtering the large global `window.SKILLS` array inside `renderSkillsHub` on every debounced keystroke. Processing expensive string allocations (`.toLowerCase()`) and search operations (`.includes()`) for every item before verifying inexpensive exact matches (like categories) causes unnecessary main thread blocking.
+**Action:** Always structure filter/map callbacks in this vanilla JS architecture to evaluate cheap boolean/category matches and early return before executing computationally expensive operations.
