@@ -193,7 +193,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <h2 class="modal-title">${config.title || 'Modal'}</h2>
-          <button class="modal-close" onclick="app.closeModal()">
+          <button class="modal-close" aria-label="Close modal" onclick="app.closeModal()">
             <span class="material-symbols-outlined">close</span>
           </button>
         </div>
