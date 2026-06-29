@@ -488,9 +488,11 @@
     const q = searchQ.toLowerCase();
     
     const filtered = window.SKILLS.filter(s => {
+      // ⚡ Bolt: Early return for inexpensive category check to avoid costly string allocations
       const matchCat = catFilter === 'All' || s.cat === catFilter;
+      if (!matchCat) return false;
       const matchQ = !q || s.name.toLowerCase().includes(q) || s.tagline.toLowerCase().includes(q) || s.desc.toLowerCase().includes(q);
-      return matchCat && matchQ;
+      return matchQ;
     });
 
     el.innerHTML = `
