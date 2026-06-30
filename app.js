@@ -487,10 +487,16 @@
     const cats = ['All', ...Object.keys(window.CATS)];
     const q = searchQ.toLowerCase();
     
+    const hasCatFilter = catFilter !== 'All';
     const filtered = window.SKILLS.filter(s => {
-      const matchCat = catFilter === 'All' || s.cat === catFilter;
-      const matchQ = !q || s.name.toLowerCase().includes(q) || s.tagline.toLowerCase().includes(q) || s.desc.toLowerCase().includes(q);
-      return matchCat && matchQ;
+      // ⚡ Bolt: Early return for category mismatch saves expensive string operations
+      if (hasCatFilter && s.cat !== catFilter) return false;
+      if (!q) return true;
+      // ⚡ Bolt: Short-circuit evaluations prevent unnecessary allocations
+      if (s.name.toLowerCase().includes(q)) return true;
+      if (s.tagline.toLowerCase().includes(q)) return true;
+      if (s.desc.toLowerCase().includes(q)) return true;
+      return false;
     });
 
     el.innerHTML = `
