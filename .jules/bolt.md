@@ -1,0 +1,3 @@
+## 2024-07-01 - Avoid expensive string allocations in tight filter loops
+**Learning:** When performing frontend searches on large arrays using multiple conditions, chaining boolean evaluations like `const match = (catMatch) && (stringMatch)` forces the engine to still evaluate all branches when preparing the statements, causing expensive `toLowerCase()` string allocations even when the item fails an initial, inexpensive category check.
+**Action:** Always structure filter callbacks to use early returns (e.g. `if (catMismatch) return false;`) for simple, low-cost checks before performing string manipulation or substring searches.
