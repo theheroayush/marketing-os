@@ -192,7 +192,7 @@
       <div class="modal-backdrop" onclick="app.closeModal()"></div>
       <div class="modal-content">
         <div class="modal-header">
-          <h2 class="modal-title">${config.title || 'Modal'}</h2>
+          <h2 class="modal-title">${app.escapeHtml(config.title) || 'Modal'}</h2>
           <button class="modal-close" onclick="app.closeModal()">
             <span class="material-symbols-outlined">close</span>
           </button>
@@ -999,7 +999,7 @@
       <div style="border-bottom:2px solid #000; padding-bottom:10px; margin-bottom:20px; text-align:left;">
         <h1 style="margin:0; font-size:28px; font-weight:800;">MarkU AI Report</h1>
         <div style="display:flex; justify-content:space-between; margin-top:10px; font-size:14px; color:#444; font-weight:600;">
-          <span>Project Team: <strong>${projectName}</strong></span>
+          <span>Project Team: <strong>${app.escapeHtml(projectName)}</strong></span>
           <span>Date: ${new Date().toLocaleDateString()}</span>
         </div>
       </div>
