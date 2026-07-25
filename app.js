@@ -130,15 +130,35 @@
   let messages = [];
   let isGenerating = false;
 
+  // Bounded in-memory LRU cache for markdown parsing
+  const mdCache = new Map();
+  const MD_CACHE_LIMIT = 500;
+
   // Simple Markdown to HTML parser
   function parseMd(text) {
     if (!text) return '';
+
+    if (mdCache.has(text)) {
+      const cached = mdCache.get(text);
+      mdCache.delete(text);
+      mdCache.set(text, cached);
+      return cached;
+    }
+
     let html = text
       .replace(/</g, "&lt;")
       .replace(/>/g, "&gt;")
       .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-      .replace(/`(.*?)`/g, '<code style="background:var(--border);padding:2px 4px;border-radius:4px;color:var(--accent);font-size:0.85em;">$1</code>');
-    return html.replace(/\n/g, '<br>');
+      .replace(/`(.*?)`/g, '<code style="background:var(--border);padding:2px 4px;border-radius:4px;color:var(--accent);font-size:0.85em;">$1</code>')
+      .replace(/\n/g, '<br>');
+
+    if (mdCache.size >= MD_CACHE_LIMIT) {
+      const firstKey = mdCache.keys().next().value;
+      mdCache.delete(firstKey);
+    }
+    mdCache.set(text, html);
+
+    return html;
   }
 
   // ---- ROUTER ----
