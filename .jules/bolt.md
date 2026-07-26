@@ -1,0 +1,3 @@
+## 2024-07-26 - Bounded LRU Cache for Pure Parsing Functions
+**Learning:** Using an unbounded object as a cache for frequent parsing functions (like markdown string replacement during frequent UI re-renders) causes a memory leak, while naive arrays are too slow. A bounded `Map` provides a simple, highly efficient LRU eviction strategy (by deleting and re-inserting) that maximizes cache hits without O(N) penalties.
+**Action:** Always implement a capacity limit on in-memory caches using `Map` (with `delete()` + `set()` on hits) for pure parsing functions called repeatedly during component/UI renders.
