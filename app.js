@@ -130,15 +130,34 @@
   let messages = [];
   let isGenerating = false;
 
-  // Simple Markdown to HTML parser
+  // Simple Markdown to HTML parser with bounded LRU cache for performance
+  const _parseMdCache = new Map();
+  const MAX_CACHE_SIZE = 100;
+
   function parseMd(text) {
     if (!text) return '';
+
+    if (_parseMdCache.has(text)) {
+      const cached = _parseMdCache.get(text);
+      _parseMdCache.delete(text);
+      _parseMdCache.set(text, cached);
+      return cached;
+    }
+
     let html = text
       .replace(/</g, "&lt;")
       .replace(/>/g, "&gt;")
       .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
       .replace(/`(.*?)`/g, '<code style="background:var(--border);padding:2px 4px;border-radius:4px;color:var(--accent);font-size:0.85em;">$1</code>');
-    return html.replace(/\n/g, '<br>');
+
+    const result = html.replace(/\n/g, '<br>');
+
+    if (_parseMdCache.size >= MAX_CACHE_SIZE) {
+      _parseMdCache.delete(_parseMdCache.keys().next().value);
+    }
+    _parseMdCache.set(text, result);
+
+    return result;
   }
 
   // ---- ROUTER ----
