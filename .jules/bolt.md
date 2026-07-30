@@ -1,0 +1,3 @@
+## 2024-07-30 - Bounded in-memory caching for Markdown parsing
+**Learning:** Pure parsing functions like parseMd can cause O(N²) string replacement bottlenecks during frequent UI re-renders if left unoptimized. A naive cache can grow unboundedly, but a simple LRU cache using JavaScript's Map (by deleting and re-inserting on hit, and deleting the first key on capacity) effectively manages memory while maintaining speed over long-lived sessions.
+**Action:** Implement bounded LRU caching with Map for expensive string replacement operations that run repeatedly on the same inputs, preventing memory leaks and UI lag.
