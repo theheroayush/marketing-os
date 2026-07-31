@@ -131,14 +131,29 @@
   let isGenerating = false;
 
   // Simple Markdown to HTML parser
+  // Optimization: Added bounded in-memory LRU cache to prevent O(N²) string replacement during frequent UI re-renders.
+  // Impact: Eliminates redundant parsing for previously rendered chat messages, improving UI thread responsiveness.
+  const parseMdCache = new Map();
   function parseMd(text) {
     if (!text) return '';
+    if (parseMdCache.has(text)) {
+      const cached = parseMdCache.get(text);
+      parseMdCache.delete(text); // Remove and re-add to maintain LRU insertion order
+      parseMdCache.set(text, cached);
+      return cached;
+    }
     let html = text
       .replace(/</g, "&lt;")
       .replace(/>/g, "&gt;")
       .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
       .replace(/`(.*?)`/g, '<code style="background:var(--border);padding:2px 4px;border-radius:4px;color:var(--accent);font-size:0.85em;">$1</code>');
-    return html.replace(/\n/g, '<br>');
+    const result = html.replace(/\n/g, '<br>');
+    if (parseMdCache.size >= 100) {
+      // Evict least recently used entry (first item in Map)
+      parseMdCache.delete(parseMdCache.keys().next().value);
+    }
+    parseMdCache.set(text, result);
+    return result;
   }
 
   // ---- ROUTER ----
