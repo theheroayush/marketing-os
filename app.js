@@ -218,11 +218,11 @@
       title: 'Create Project Team',
       body: `
         <div class="form-group">
-          <label class="form-label">Project Name</label>
+          <label class="form-label" for="modal-project-name">Project Name</label>
           <input type="text" id="modal-project-name" class="form-input" placeholder="e.g. Acme Marketing SEO">
         </div>
         <div class="form-group">
-          <label class="form-label">Add Team Member (Email)</label>
+          <label class="form-label" for="modal-team-email">Add Team Member (Email)</label>
           <div style="display:flex; gap:8px;">
             <input type="email" id="modal-team-email" class="form-input" placeholder="colleague@example.com">
             <button onclick="app.addTeamMemberToModal()" class="btn btn-primary" style="padding:0 12px;"><span class="material-symbols-outlined">add</span></button>
@@ -1152,11 +1152,11 @@
       title: 'Manage Project Team',
       body: `
         <div class="form-group">
-          <label class="form-label">Project Name</label>
+          <label class="form-label" for="modal-project-name">Project Name</label>
           <input type="text" id="modal-project-name" class="form-input" value="${app.escapeHtml(p.name)}">
         </div>
         <div class="form-group">
-          <label class="form-label">Add Team Member (Email)</label>
+          <label class="form-label" for="modal-team-email">Add Team Member (Email)</label>
           <div style="display:flex; gap:8px;">
             <input type="email" id="modal-team-email" class="form-input" placeholder="colleague@example.com">
             <button onclick="app.addTeamMemberToModal()" class="btn btn-primary" style="padding:0 12px;"><span class="material-symbols-outlined">add</span></button>
@@ -1263,7 +1263,7 @@
           </p>
 
           <div class="form-group" style="margin-bottom:0;">
-            <label class="form-label" style="font-size:0.7rem;">Topic</label>
+            <label class="form-label" style="font-size:0.7rem;" for="support-subject">Topic</label>
             <select id="support-subject" class="form-input" style="padding:10px;">
               <option>General Feedback</option>
               <option>Bug Report</option>
@@ -1274,7 +1274,7 @@
           </div>
 
           <div class="form-group" style="margin-bottom:0;">
-            <label class="form-label" style="font-size:0.7rem;">Description</label>
+            <label class="form-label" style="font-size:0.7rem;" for="support-message">Description</label>
             <textarea id="support-message" class="form-input" style="min-height:100px; resize:vertical; padding:10px;" placeholder="How can we help you today?"></textarea>
           </div>
 
