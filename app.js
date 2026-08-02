@@ -130,15 +130,33 @@
   let messages = [];
   let isGenerating = false;
 
+  const mdCache = new Map();
+
   // Simple Markdown to HTML parser
   function parseMd(text) {
     if (!text) return '';
+
+    // LRU eviction strategy: maintain insertion order recency
+    if (mdCache.has(text)) {
+      const cached = mdCache.get(text);
+      mdCache.delete(text);
+      mdCache.set(text, cached);
+      return cached;
+    }
+
     let html = text
       .replace(/</g, "&lt;")
       .replace(/>/g, "&gt;")
       .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
       .replace(/`(.*?)`/g, '<code style="background:var(--border);padding:2px 4px;border-radius:4px;color:var(--accent);font-size:0.85em;">$1</code>');
-    return html.replace(/\n/g, '<br>');
+    html = html.replace(/\n/g, '<br>');
+
+    // Prevent repeated O(N) string replacements on re-renders by caching.
+    if (mdCache.size >= 500) {
+      mdCache.delete(mdCache.keys().next().value);
+    }
+    mdCache.set(text, html);
+    return html;
   }
 
   // ---- ROUTER ----
