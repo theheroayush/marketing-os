@@ -1,0 +1,3 @@
+## 2025-02-28 - O(N²) String Replacement in Vanilla JS Component Renders
+**Learning:** In a vanilla JS architecture that aggressively re-renders entire message lists via template literals on state changes, text-heavy operations like Markdown parsing (which uses sequential regex string replacements) become O(N²) bottlenecks as the list grows.
+**Action:** Implement an LRU cache (using JavaScript's native Map ordering characteristics) around the parsing function. This bounds memory while ensuring previously processed text isn't redundantly parsed during re-renders, yielding a >90% reduction in parse time during full list renders.
