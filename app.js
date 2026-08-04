@@ -131,14 +131,27 @@
   let isGenerating = false;
 
   // Simple Markdown to HTML parser
+  // Optimization: LRU Cache to prevent O(N²) string replacements during chat re-renders.
+  // The chat view re-renders all historical messages every time a new message is added.
+  // Memoizing this prevents redundant regex parsing and improves UI responsiveness.
+  const _mdCache = new Map();
   function parseMd(text) {
     if (!text) return '';
+    if (_mdCache.has(text)) {
+      const val = _mdCache.get(text);
+      _mdCache.delete(text);
+      _mdCache.set(text, val);
+      return val;
+    }
     let html = text
       .replace(/</g, "&lt;")
       .replace(/>/g, "&gt;")
       .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
       .replace(/`(.*?)`/g, '<code style="background:var(--border);padding:2px 4px;border-radius:4px;color:var(--accent);font-size:0.85em;">$1</code>');
-    return html.replace(/\n/g, '<br>');
+    html = html.replace(/\n/g, '<br>');
+    if (_mdCache.size >= 200) _mdCache.delete(_mdCache.keys().next().value);
+    _mdCache.set(text, html);
+    return html;
   }
 
   // ---- ROUTER ----
