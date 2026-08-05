@@ -130,15 +130,29 @@
   let messages = [];
   let isGenerating = false;
 
-  // Simple Markdown to HTML parser
+  // Simple Markdown to HTML parser with LRU caching
+  const parseMdCache = new Map();
   function parseMd(text) {
     if (!text) return '';
+    // LRU caching strategy: preventing O(N^2) repeated expensive string replacements for same markdown strings.
+    // Impact: Improves UI responsiveness when re-rendering chat history which is repeatedly passed to this function.
+    if (parseMdCache.has(text)) {
+      const cached = parseMdCache.get(text);
+      parseMdCache.delete(text);
+      parseMdCache.set(text, cached);
+      return cached;
+    }
     let html = text
       .replace(/</g, "&lt;")
       .replace(/>/g, "&gt;")
       .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
       .replace(/`(.*?)`/g, '<code style="background:var(--border);padding:2px 4px;border-radius:4px;color:var(--accent);font-size:0.85em;">$1</code>');
-    return html.replace(/\n/g, '<br>');
+    html = html.replace(/\n/g, '<br>');
+    if (parseMdCache.size >= 500) {
+      parseMdCache.delete(parseMdCache.keys().next().value);
+    }
+    parseMdCache.set(text, html);
+    return html;
   }
 
   // ---- ROUTER ----
