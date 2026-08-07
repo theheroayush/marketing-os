@@ -1,0 +1,3 @@
+## 2024-08-07 - Inefficient markdown parsing in UI renders
+**Learning:** The `parseMd` function is called repeatedly inside `renderChatView()` on every message each time the chat state changes (e.g., character by character during streaming or even when simply clicking an input). Since the chat history can get long and regular expressions run repetitively on unchanged messages, this constitutes a measurable frontend bottleneck.
+**Action:** Implemented a bounded LRU cache `Map` for `parseMd` to avoid re-evaluating regexes on historical chat messages that have not changed, significantly reducing UI render overhead.
