@@ -1,4 +1,4 @@
-## 2024-05-18 - [HIGH] Fix Stored XSS via HTML Escaping
-**Vulnerability:** User inputs like profile names (`p.name`) and team member emails (`email`) were being injected directly into the DOM via `innerHTML` without sanitization. This allows for Stored Cross-Site Scripting (XSS) if malicious payloads are saved in local storage.
-**Learning:** In vanilla JavaScript applications utilizing template literals with `innerHTML` for rendering, failing to sanitize untrusted user data exposes the application to serious XSS vulnerabilities.
-**Prevention:** Always implement and enforce a global HTML escaping utility function (e.g., `app.escapeHtml`) to sanitize any dynamic, user-controlled data before it is rendered to the DOM using `innerHTML`.
+## 2024-10-15 - UI Preview and Template XSS Vulnerabilities
+**Vulnerability:** Cross-Site Scripting (XSS) vulnerabilities found in history view message previews, the search input field value attribute, and the PDF export header where user-controlled data was interpolated directly into innerHTML without escaping.
+**Learning:** In vanilla JS applications using template literals for DOM manipulation, escaping is not automatic. Furthermore, when mitigating XSS in truncated previews, applying escaping before slicing can cut HTML entities (e.g., &quot; becoming &qu), leading to broken UI or potential bypasses.
+**Prevention:** Always explicitly use app.escapeHtml() on dynamic user-controlled data before interpolating into HTML templates. When handling truncated text, operations must strictly follow the order: strip tags, slice/truncate, and finally escape.
