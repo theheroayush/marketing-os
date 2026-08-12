@@ -77,25 +77,45 @@
     }
   };
   app.checkForUpdates = checkForUpdates;
+  // Cache for parsed localStorage data to prevent repetitive JSON.parse overhead
+  const cache = { sessions: null, profiles: null };
+  window.addEventListener('storage', (e) => {
+    // Cross-tab synchronization: invalidate cache when other tabs modify localStorage
+    if (e.key === 'marku_sessions') cache.sessions = null;
+    if (e.key === 'marku_profiles') cache.profiles = null;
+  });
+
   const Storage = {
-    getSessions: () => JSON.parse(localStorage.getItem('marku_sessions') || '[]'),
+    getSessions: () => {
+      if (cache.sessions) return structuredClone(cache.sessions);
+      cache.sessions = JSON.parse(localStorage.getItem('marku_sessions') || '[]');
+      return structuredClone(cache.sessions);
+    },
     saveSession: (session) => {
       const sessions = Storage.getSessions();
       const idx = sessions.findIndex(s => s.id === session.id);
       if (idx > -1) sessions[idx] = session;
       else sessions.unshift(session);
-      localStorage.setItem('marku_sessions', JSON.stringify(sessions.slice(0, 50)));
+      const toSave = sessions.slice(0, 50);
+      cache.sessions = structuredClone(toSave);
+      localStorage.setItem('marku_sessions', JSON.stringify(toSave));
     },
     deleteSession: (id) => {
       const sessions = Storage.getSessions().filter(s => s.id !== id);
+      cache.sessions = structuredClone(sessions);
       localStorage.setItem('marku_sessions', JSON.stringify(sessions));
       if (currentView === 'history') app.renderHistoryView();
     },
     getProfiles: () => {
+      if (cache.profiles) return structuredClone(cache.profiles);
       let ps = JSON.parse(localStorage.getItem('marku_profiles') || '[{"id":"default","name":"Default Profile","content":"","team":[]}]');
-      return ps.map(p => ({ ...p, team: p.team || [] }));
+      cache.profiles = ps.map(p => ({ ...p, team: p.team || [] }));
+      return structuredClone(cache.profiles);
     },
-    saveProfiles: (profiles) => localStorage.setItem('marku_profiles', JSON.stringify(profiles)),
+    saveProfiles: (profiles) => {
+      cache.profiles = structuredClone(profiles);
+      localStorage.setItem('marku_profiles', JSON.stringify(profiles));
+    },
     getActiveProfileId: () => localStorage.getItem('marku_active_profile') || 'default',
     setActiveProfileId: (id) => localStorage.setItem('marku_active_profile', id),
     getProductCtx: () => {
