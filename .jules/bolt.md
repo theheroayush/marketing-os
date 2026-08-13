@@ -1,0 +1,3 @@
+## 2025-02-15 - In-memory caching for localStorage
+**Learning:** `JSON.parse(localStorage.getItem(...))` is heavily used throughout the app lifecycle, especially in getter methods (`getSessions`, `getProfiles`, `getProductCtx`) that might be called frequently during render cycles. `JSON.parse` blocks the main thread.
+**Action:** Implement an in-memory cache for `localStorage` getters. To preserve original behaviour of returning fresh object references and prevent unintended mutation bugs, use `structuredClone()` to return deep copies of the cached objects. Include a `storage` event listener to synchronize cache invalidation across tabs.
