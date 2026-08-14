@@ -492,11 +492,13 @@
       if (!matchCat) return false;
       if (!q) return true;
 
-      // Bolt Optimization: Lazy cache combined lowercased string to prevent O(N*3) string ops per search keystroke
-      if (s._searchStr === undefined) {
-        s._searchStr = `${s.name} ${s.tagline} ${s.desc}`.toLowerCase();
+      // Bolt Optimization: Lazy cache individual lowercased fields to prevent O(N*3) ops per keystroke
+      if (s._lowerName === undefined) {
+        s._lowerName = s.name.toLowerCase();
+        s._lowerTagline = s.tagline.toLowerCase();
+        s._lowerDesc = s.desc.toLowerCase();
       }
-      return s._searchStr.includes(q);
+      return s._lowerName.includes(q) || s._lowerTagline.includes(q) || s._lowerDesc.includes(q);
     });
 
     el.innerHTML = `
