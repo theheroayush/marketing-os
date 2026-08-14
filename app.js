@@ -489,8 +489,16 @@
     
     const filtered = window.SKILLS.filter(s => {
       const matchCat = catFilter === 'All' || s.cat === catFilter;
-      const matchQ = !q || s.name.toLowerCase().includes(q) || s.tagline.toLowerCase().includes(q) || s.desc.toLowerCase().includes(q);
-      return matchCat && matchQ;
+      if (!matchCat) return false;
+      if (!q) return true;
+
+      // Bolt Optimization: Lazy cache individual lowercased fields to prevent O(N*3) ops per keystroke
+      if (s._lowerName === undefined) {
+        s._lowerName = s.name.toLowerCase();
+        s._lowerTagline = s.tagline.toLowerCase();
+        s._lowerDesc = s.desc.toLowerCase();
+      }
+      return s._lowerName.includes(q) || s._lowerTagline.includes(q) || s._lowerDesc.includes(q);
     });
 
     el.innerHTML = `
