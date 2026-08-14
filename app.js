@@ -489,8 +489,14 @@
     
     const filtered = window.SKILLS.filter(s => {
       const matchCat = catFilter === 'All' || s.cat === catFilter;
-      const matchQ = !q || s.name.toLowerCase().includes(q) || s.tagline.toLowerCase().includes(q) || s.desc.toLowerCase().includes(q);
-      return matchCat && matchQ;
+      if (!matchCat) return false;
+      if (!q) return true;
+
+      // Bolt Optimization: Lazy cache combined lowercased string to prevent O(N*3) string ops per search keystroke
+      if (s._searchStr === undefined) {
+        s._searchStr = `${s.name} ${s.tagline} ${s.desc}`.toLowerCase();
+      }
+      return s._searchStr.includes(q);
     });
 
     el.innerHTML = `
