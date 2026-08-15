@@ -193,7 +193,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <h2 class="modal-title">${config.title || 'Modal'}</h2>
-          <button class="modal-close" onclick="app.closeModal()">
+          <button class="modal-close" onclick="app.closeModal()" aria-label="Close modal">
             <span class="material-symbols-outlined">close</span>
           </button>
         </div>
@@ -613,7 +613,7 @@
 
     el.innerHTML = `
       <div class="skill-header" style="position:sticky;top:60px;background:var(--bg);z-index:10;padding-bottom:10px;border-bottom:1px solid ${accentColor}44;margin-bottom:16px;">
-        <button class="back-btn" onclick="app.navigate('history')"><span class="material-symbols-outlined">history</span></button>
+        <button class="back-btn" onclick="app.navigate('history')" aria-label="Back to history"><span class="material-symbols-outlined">history</span></button>
         <div style="flex:1;text-align:center;">
           <h2 style="font-size:1rem;font-weight:800;display:flex;align-items:center;justify-content:center;gap:6px;">
             <span style="font-size:1.2rem">${activeSkill.emoji}</span> ${activeSkill.name}
@@ -670,7 +670,7 @@
                     style="flex:1;background:var(--card-bg);border:1px solid var(--border);border-radius:12px;padding:12px 45px 12px 14px;color:var(--text);font-family:inherit;font-size:0.95rem;resize:none;max-height:120px;min-height:44px;"
                     oninput="this.style.height='';this.style.height=Math.min(this.scrollHeight, 120)+'px';"
                     onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();app.sendChatMessage(event);}"></textarea>
-          <button type="submit" disabled style="position:absolute;right:8px;bottom:6px;width:32px;height:32px;border-radius:8px;border:none;background:${accentColor};color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0.5;transition:0.2s;" id="chat-send-btn">
+          <button type="submit" disabled aria-label="Send message" style="position:absolute;right:8px;bottom:6px;width:32px;height:32px;border-radius:8px;border:none;background:${accentColor};color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0.5;transition:0.2s;" id="chat-send-btn">
             <span class="material-symbols-outlined" style="font-size:18px;">arrow_upward</span>
           </button>
         </form>
