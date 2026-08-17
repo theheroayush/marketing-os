@@ -131,14 +131,35 @@
   let isGenerating = false;
 
   // Simple Markdown to HTML parser
+  // Caching strategy: Maintain recency by deleting and re-inserting on hit (LRU cache)
+  // Prevents O(N²) string replacements during render loops
+  // Anticipated impact: Improves UI responsiveness during chat renders.
+  const parseMdCache = new Map();
+  const MAX_MD_CACHE = 200;
+
   function parseMd(text) {
     if (!text) return '';
+
+    if (parseMdCache.has(text)) {
+      const cached = parseMdCache.get(text);
+      parseMdCache.delete(text);
+      parseMdCache.set(text, cached);
+      return cached;
+    }
+
     let html = text
       .replace(/</g, "&lt;")
       .replace(/>/g, "&gt;")
       .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
       .replace(/`(.*?)`/g, '<code style="background:var(--border);padding:2px 4px;border-radius:4px;color:var(--accent);font-size:0.85em;">$1</code>');
-    return html.replace(/\n/g, '<br>');
+    const finalHtml = html.replace(/\n/g, '<br>');
+
+    if (parseMdCache.size >= MAX_MD_CACHE) {
+      parseMdCache.delete(parseMdCache.keys().next().value);
+    }
+    parseMdCache.set(text, finalHtml);
+
+    return finalHtml;
   }
 
   // ---- ROUTER ----
