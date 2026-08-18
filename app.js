@@ -77,25 +77,48 @@
     }
   };
   app.checkForUpdates = checkForUpdates;
+
+  // ⚡ Bolt: LRU Cache for parsed localStorage items to avoid repetitive synchronous JSON.parse operations
+  const _storageCache = new Map();
+  window.addEventListener('storage', (e) => { if (_storageCache.has(e.key)) _storageCache.delete(e.key); });
+  const getParsedStorage = (key, defaultVal) => {
+    if (_storageCache.has(key)) {
+      const val = _storageCache.get(key);
+      _storageCache.delete(key);
+      _storageCache.set(key, val);
+      return structuredClone(val);
+    }
+    const val = JSON.parse(localStorage.getItem(key) || defaultVal);
+    _storageCache.set(key, val);
+    if (_storageCache.size > 20) _storageCache.delete(_storageCache.keys().next().value);
+    return structuredClone(val);
+  };
+  const setParsedStorage = (key, val) => {
+    _storageCache.delete(key);
+    _storageCache.set(key, val);
+    if (_storageCache.size > 20) _storageCache.delete(_storageCache.keys().next().value);
+    localStorage.setItem(key, JSON.stringify(val));
+  };
+
   const Storage = {
-    getSessions: () => JSON.parse(localStorage.getItem('marku_sessions') || '[]'),
+    getSessions: () => getParsedStorage('marku_sessions', '[]'),
     saveSession: (session) => {
       const sessions = Storage.getSessions();
       const idx = sessions.findIndex(s => s.id === session.id);
       if (idx > -1) sessions[idx] = session;
       else sessions.unshift(session);
-      localStorage.setItem('marku_sessions', JSON.stringify(sessions.slice(0, 50)));
+      setParsedStorage('marku_sessions', sessions.slice(0, 50));
     },
     deleteSession: (id) => {
       const sessions = Storage.getSessions().filter(s => s.id !== id);
-      localStorage.setItem('marku_sessions', JSON.stringify(sessions));
+      setParsedStorage('marku_sessions', sessions);
       if (currentView === 'history') app.renderHistoryView();
     },
     getProfiles: () => {
-      let ps = JSON.parse(localStorage.getItem('marku_profiles') || '[{"id":"default","name":"Default Profile","content":"","team":[]}]');
+      let ps = getParsedStorage('marku_profiles', '[{"id":"default","name":"Default Profile","content":"","team":[]}]');
       return ps.map(p => ({ ...p, team: p.team || [] }));
     },
-    saveProfiles: (profiles) => localStorage.setItem('marku_profiles', JSON.stringify(profiles)),
+    saveProfiles: (profiles) => setParsedStorage('marku_profiles', profiles),
     getActiveProfileId: () => localStorage.getItem('marku_active_profile') || 'default',
     setActiveProfileId: (id) => localStorage.setItem('marku_active_profile', id),
     getProductCtx: () => {
