@@ -118,7 +118,7 @@
       return structuredClone(_profilesCache).map(p => ({ ...p, team: p.team || [] }));
     },
     saveProfiles: (profiles) => {
-      _profilesCache = profiles;
+      _profilesCache = structuredClone(profiles);
       localStorage.setItem('marku_profiles', JSON.stringify(profiles));
     },
     getActiveProfileId: () => localStorage.getItem('marku_active_profile') || 'default',
