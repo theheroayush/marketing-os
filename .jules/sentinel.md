@@ -1,4 +1,8 @@
-## 2024-05-18 - [HIGH] Fix Stored XSS via HTML Escaping
-**Vulnerability:** User inputs like profile names (`p.name`) and team member emails (`email`) were being injected directly into the DOM via `innerHTML` without sanitization. This allows for Stored Cross-Site Scripting (XSS) if malicious payloads are saved in local storage.
-**Learning:** In vanilla JavaScript applications utilizing template literals with `innerHTML` for rendering, failing to sanitize untrusted user data exposes the application to serious XSS vulnerabilities.
-**Prevention:** Always implement and enforce a global HTML escaping utility function (e.g., `app.escapeHtml`) to sanitize any dynamic, user-controlled data before it is rendered to the DOM using `innerHTML`.
+## 2026-08-22 - Prevent XSS in search input via DOM interpolation
+**Vulnerability:** User-controlled input (`searchQ`) was directly interpolated into the `value` attribute of a search input field via `innerHTML` without escaping, enabling Cross-Site Scripting (XSS).
+**Learning:** In vanilla JS applications using template literals to generate HTML, data bound to attributes must be escaped just as strictly as data rendered into the DOM text. The `app.escapeHtml()` utility was already available but overlooked in this specific input.
+**Prevention:** Always wrap dynamic variables interpolated into HTML attributes within `innerHTML` template strings with `app.escapeHtml()` or similar sanitization functions.
+## 2026-08-22 - Fix CI failure related to Node version and Capacitor
+**Vulnerability:** CI was failing because Capacitor CLI requires Node >= 22.0.0 and the `npx cap sync android` command failed because the android platform had not been added.
+**Learning:** Capacitor CLI updates often bring new Node.js version requirements that break older workflows. Additionally, platform synchronization requires the platform to be explicitly added beforehand.
+**Prevention:** Ensure CI workflows are updated to match the required Node.js versions specified by new dependencies, and always add target platforms before syncing in CI.
