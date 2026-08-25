@@ -1,0 +1,3 @@
+## 2026-08-25 - Pre-computing properties for filtering optimization
+**Learning:** In vanilla JS filtering loops (like array.filter() for search functionality), dynamic string allocations and repeated `.toLowerCase()` calls on multiple object properties inside the loop create significant performance overhead.
+**Action:** Pre-compute a single, concatenated, lowercased search string property (e.g., `_searchString`) during the initialization phase instead. This drastically reduces the time complexity and overhead of the filtering operation, providing a snappier user experience, particularly for large lists.
