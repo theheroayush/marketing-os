@@ -17,14 +17,14 @@ jobs:
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
-        node-version: 20
+        node-version: 22
         cache: 'npm'
 
     - name: Install Dependencies
       run: npm ci || npm install
 
     - name: Run Web Build
-      run: npm run build
+      run: node build.js
 
     - name: Verify Web Build Artifacts
       run: |
@@ -39,4 +39,5 @@ jobs:
 
     - name: Capacitor Sync Validation
       run: |
+        npx cap add android
         npx cap sync android
