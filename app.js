@@ -489,7 +489,8 @@
     
     const filtered = window.SKILLS.filter(s => {
       const matchCat = catFilter === 'All' || s.cat === catFilter;
-      const matchQ = !q || s.name.toLowerCase().includes(q) || s.tagline.toLowerCase().includes(q) || s.desc.toLowerCase().includes(q);
+      // ⚡ Bolt: Use pre-computed search string
+      const matchQ = !q || (s._searchString && s._searchString.includes(q));
       return matchCat && matchQ;
     });
 
@@ -964,6 +965,11 @@
       console.error("SKILLS data missing.");
       return;
     }
+
+    // ⚡ Bolt: Pre-compute search string for O(1) lowercasing per filter
+    window.SKILLS.forEach(s => {
+      s._searchString = `${s.name} ${s.tagline} ${s.desc}`.toLowerCase();
+    });
 
     const hash = window.location.hash.slice(1) || 'dashboard';
     navigate(hash);
