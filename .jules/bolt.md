@@ -1,0 +1,3 @@
+## 2026-08-29 - Pre-compute Search Strings for Vanilla JS Filtering
+**Learning:** In vanilla JS applications performing frequent client-side filtering on arrays of objects (like searching `window.SKILLS`), performing dynamic string allocations, concatenation, and `.toLowerCase()` operations on multiple object properties inside the `.filter()` callback loop is highly inefficient. It forces O(n) string manipulation on every keystroke.
+**Action:** Always pre-compute a concatenated, lowercased `_searchString` property on objects during initialization, and use a single `.includes()` check on that property inside the filter loop to minimize CPU overhead.
