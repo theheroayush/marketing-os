@@ -1,0 +1,3 @@
+## 2025-02-26 - Avoid Repeated JSON Parsing in LocalStorage
+**Learning:** For synchronous `localStorage` reads containing JSON objects, the performance bottleneck is often `JSON.parse()`, not the string retrieval which is usually optimized. Parsing large JSON strings (like entire session histories or profiles) on every interaction/view switch causes major synchronous slowdowns on the main thread.
+**Action:** Implement memory caching for parsed JSON objects and return deep/shallow clones (e.g. mapping arrays with object spread) instead to prevent state mutability while bypassing `JSON.parse` operations.
