@@ -118,9 +118,16 @@
     },
     getStats: () => {
       const sessions = Storage.getSessions();
-      const uniqueSkills = new Set(sessions.map(s => s.skillId)).size;
-      const totalMessages = sessions.reduce((sum, s) => sum + s.messages.length, 0);
-      return { uniqueSkills, totalMessages, sessionsCount: sessions.length };
+
+      // Performance Optimization: Single-pass iteration to avoid O(N) intermediate array allocation from map() and a second loop from reduce()
+      const skillsSet = new Set();
+      let totalMessages = 0;
+      for (let i = 0; i < sessions.length; i++) {
+        skillsSet.add(sessions[i].skillId);
+        totalMessages += sessions[i].messages.length;
+      }
+
+      return { uniqueSkills: skillsSet.size, totalMessages, sessionsCount: sessions.length };
     }
   };
 
