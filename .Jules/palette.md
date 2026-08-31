@@ -1,0 +1,3 @@
+## 2024-04-02 - Accessible Material Symbols Icon Buttons
+**Learning:** In this project, Material Symbols are implemented as icon-only buttons using text ligatures (e.g., `<span class="material-symbols-outlined">search</span>`). Without proper ARIA attributes, screen readers will read out the literal ligature text (e.g., "search") rather than a descriptive action, and might miss the interactive context.
+**Action:** Always add an `aria-label` to the parent `<button>` to describe the action, and apply `aria-hidden="true"` to the inner `<span class="material-symbols-outlined">` to prevent screen readers from reading the ligature text.
