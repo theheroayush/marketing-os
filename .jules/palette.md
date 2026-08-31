@@ -1,0 +1,3 @@
+## 2024-04-11 - [Accessibility] Icon-Only Button ARIA Labels
+**Learning:** Icon-only buttons using Material Symbols (like `<span class="material-symbols-outlined">search</span>`) read out the ligature text ("search") instead of their function if not properly labeled. In vanilla JS applications rendering components dynamically via `innerHTML` (e.g., in `app.js`), developers frequently miss adding proper ARIA labels because the visual output is clear to sighted users, masking the underlying accessibility issue.
+**Action:** When adding new icon-only buttons via DOM manipulation, standard practice in this codebase should mandate `aria-label` on the parent `<button>` and `aria-hidden="true"` on the inner `<span>` to hide the raw ligature text from screen readers.
