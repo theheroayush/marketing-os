@@ -77,8 +77,20 @@
     }
   };
   app.checkForUpdates = checkForUpdates;
+
+  // Performance optimization: cache parsed sessions
+  let cachedSessionsStr = null;
+  let cachedSessionsObj = null;
+
   const Storage = {
-    getSessions: () => JSON.parse(localStorage.getItem('marku_sessions') || '[]'),
+    getSessions: () => {
+      const str = localStorage.getItem('marku_sessions') || '[]';
+      if (str !== cachedSessionsStr) {
+        cachedSessionsStr = str;
+        cachedSessionsObj = JSON.parse(str);
+      }
+      return cachedSessionsObj.map(s => ({ ...s, messages: s.messages ? [...s.messages] : [] }));
+    },
     saveSession: (session) => {
       const sessions = Storage.getSessions();
       const idx = sessions.findIndex(s => s.id === session.id);
