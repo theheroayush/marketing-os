@@ -1662,7 +1662,11 @@ const getSkillOpener = (id) => {
 
 if (typeof window !== 'undefined') {
   window.CATS = CATS;
-  window.SKILLS = SKILLS;
+  // Pre-compute lowercased search strings to avoid dynamic string allocations and .toLowerCase() calls during list filtering
+  window.SKILLS = SKILLS.map(s => ({
+    ...s,
+    _searchString: `${s.name} ${s.tagline} ${s.desc}`.toLowerCase()
+  }));
   window.getSkillOpener = getSkillOpener;
 }
 if (typeof module !== 'undefined' && module.exports) {

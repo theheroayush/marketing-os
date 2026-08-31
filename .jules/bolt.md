@@ -1,0 +1,3 @@
+## 2026-08-31 - Pre-computing Lowercased Search Strings for Performance
+**Learning:** In vanilla JavaScript array filtering (especially for real-time keystroke searches), calling `.toLowerCase()` on multiple object properties inside the `.filter()` callback creates significant garbage collection overhead and processing time because strings are dynamically allocated and transformed on every check.
+**Action:** Always pre-compute and cache a concatenated, lowercased `_searchString` property on the list objects during initialization (or when the data is loaded), so the runtime filter only needs to execute a single `.includes()` check against a static string.
