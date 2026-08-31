@@ -12,14 +12,17 @@
   let catFilter = 'All';
   let searchQ = '';
 
+  const escapeChars = {
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#039;'
+  };
+
   app.escapeHtml = function(str) {
-    if (!str) return '';
-    return String(str)
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;')
-      .replace(/'/g, '&#039;');
+    if (str === null || str === undefined) return '';
+    return String(str).replace(/[&<>"']/g, match => escapeChars[match]);
   };
 
   const footerHTML = `
