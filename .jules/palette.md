@@ -1,0 +1,3 @@
+## 2026-04-17 - Icon-Only Button Accessibility Pattern
+**Learning:** The MarkU UI relies heavily on Material Symbols for icon-only buttons (`.icon-btn` and standalone buttons), but many lacked screen reader context. The established pattern in this app is a `<button>` wrapping a `<span class="material-symbols-outlined">`.
+**Action:** Applied the standard a11y pattern: added `aria-label` to the parent `<button>` to describe the action, and `aria-hidden="true"` to the inner `<span>` to prevent screen readers from reading out the raw icon ligature text. This pattern should be consistently applied to all new icon-only buttons.
