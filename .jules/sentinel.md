@@ -2,3 +2,8 @@
 **Vulnerability:** User inputs like profile names (`p.name`) and team member emails (`email`) were being injected directly into the DOM via `innerHTML` without sanitization. This allows for Stored Cross-Site Scripting (XSS) if malicious payloads are saved in local storage.
 **Learning:** In vanilla JavaScript applications utilizing template literals with `innerHTML` for rendering, failing to sanitize untrusted user data exposes the application to serious XSS vulnerabilities.
 **Prevention:** Always implement and enforce a global HTML escaping utility function (e.g., `app.escapeHtml`) to sanitize any dynamic, user-controlled data before it is rendered to the DOM using `innerHTML`.
+
+## 2024-05-24 - [HIGH] Fix Missing XSS Escaping in Edge Cases
+**Vulnerability:** Even with a global HTML escaping utility (`app.escapeHtml`), DOM and Stored XSS vulnerabilities were found where escaping was missed. Instances included `searchQ` rendered as an `<input>` value attribute, `projectName` used in PDF generation headers, and chat messages which bypassed regex tag-stripping before truncation.
+**Learning:** Having an escape function isn't enough; every single instance of user-controlled variables entering the DOM (or innerHTML templates) must be methodically wrapped in it. Regex stripping tags alone is insufficient to prevent XSS if malformed tags bypass it. Applying string operations like slicing before escaping ensures partial characters do not break formatting.
+**Prevention:** Audit all uses of string interpolation for `innerHTML` rendering. Always apply `app.escapeHtml()` directly as the final transformation right before insertion into the template string, regardless of prior transformations.
