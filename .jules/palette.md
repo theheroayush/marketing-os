@@ -1,0 +1,3 @@
+## 2026-09-01 - Adding ARIA labels to icon buttons
+**Learning:** Found multiple icon-only buttons lacking ARIA labels across `app.js` and `index.html`. This creates accessibility barriers, as screen readers will only read the icon symbol text or ignore the button. Actively searching and updating dynamically generated HTML within JavaScript template literals is crucial, as they are easily overlooked compared to static HTML files.
+**Action:** When working with vanilla JS apps, explicitly run `grep` to check template literals (`app.js`) for interactive elements that might be missing `aria-label` or role attributes. Ensure standard search/replace methods target these dynamically injected HTML snippets to ensure total coverage.
