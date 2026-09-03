@@ -1,0 +1,3 @@
+## 2026-09-03 - Adding ARIA labels to dynamically generated icon-only buttons
+**Learning:** Icon-only buttons without accessible names are invisible to screen readers. In vanilla JavaScript applications, these are often dynamically generated within template literals (like in `app.js`), making them easy to overlook compared to static HTML files.
+**Action:** When auditing or implementing accessibility improvements, actively search and update dynamically generated HTML strings within JavaScript files, and always remember to sanitize injected dynamic data (e.g., using `app.escapeHtml()`) within the `aria-label` attributes to prevent XSS.
