@@ -14,17 +14,21 @@ jobs:
     - name: Checkout Repository
       uses: actions/checkout@v4
 
+    - name: Install pnpm
+      uses: pnpm/action-setup@v4
+      with:
+        version: 10
+
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
-        node-version: 20
-        cache: 'npm'
+        node-version: 22
 
     - name: Install Dependencies
-      run: npm ci || npm install
+      run: pnpm install
 
     - name: Run Web Build
-      run: npm run build
+      run: pnpm run build
 
     - name: Verify Web Build Artifacts
       run: |
@@ -39,4 +43,5 @@ jobs:
 
     - name: Capacitor Sync Validation
       run: |
+        npx cap add android
         npx cap sync android
