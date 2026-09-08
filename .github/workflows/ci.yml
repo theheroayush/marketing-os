@@ -25,7 +25,7 @@ jobs:
         node-version: 20
 
     - name: Install Dependencies
-      run: pnpm install --frozen-lockfile
+      run: pnpm install --no-frozen-lockfile
 
     - name: Run Web Build
       run: pnpm run build
