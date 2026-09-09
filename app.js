@@ -531,11 +531,11 @@
                   ${s.emoji}
                 </div>
                 <span style="font-size:0.65rem;font-weight:700;border-radius:4px;padding:2px 6px;color:${c.color};background:${c.bg || '#333'}">
-                  ${s.cat}
+                  ${app.escapeHtml(s.cat)}
                 </span>
               </div>
-              <h4 style="font-size:0.95rem;margin-top:4px;">${s.name}</h4>
-              <p style="font-size:0.75rem;color:var(--text-muted);line-height:1.4">${s.tagline}</p>
+              <h4 style="font-size:0.95rem;margin-top:4px;">${app.escapeHtml(s.name)}</h4>
+              <p style="font-size:0.75rem;color:var(--text-muted);line-height:1.4">${app.escapeHtml(s.tagline)}</p>
               <div style="margin-top:auto;font-size:0.75rem;color:${c.color};font-weight:700;">Start &rarr;</div>
             </div>
           `;
@@ -616,9 +616,9 @@
         <button class="back-btn" onclick="app.navigate('history')"><span class="material-symbols-outlined">history</span></button>
         <div style="flex:1;text-align:center;">
           <h2 style="font-size:1rem;font-weight:800;display:flex;align-items:center;justify-content:center;gap:6px;">
-            <span style="font-size:1.2rem">${activeSkill.emoji}</span> ${activeSkill.name}
+            <span style="font-size:1.2rem">${activeSkill.emoji}</span> ${app.escapeHtml(activeSkill.name)}
           </h2>
-          <p style="font-size:0.7rem;color:${accentColor};margin-top:2px;">${catInfo.icon} ${activeSkill.cat}</p>
+          <p style="font-size:0.7rem;color:${accentColor};margin-top:2px;">${catInfo.icon} ${app.escapeHtml(activeSkill.cat)}</p>
         </div>
         <div style="display:flex;gap:8px;">
           <button class="icon-btn" onclick="app.exportPDF()" title="Export Customized PDF"><span class="material-symbols-outlined">picture_as_pdf</span></button>
@@ -938,7 +938,7 @@
                 <div style="display:flex;align-items:center;gap:10px">
                   <div style="width:32px;height:32px;border-radius:8px;background:var(--border);display:flex;align-items:center;justify-content:center;font-size:18px">${s.skillEmoji}</div>
                   <div>
-                    <h4 style="font-size:1rem;margin:0">${s.skillName}</h4>
+                    <h4 style="font-size:1rem;margin:0">${app.escapeHtml(s.skillName)}</h4>
                     <span style="font-size:0.7rem;color:var(--text-muted)">${new Date(s.ts).toLocaleString()}</span>
                   </div>
                 </div>
@@ -999,7 +999,7 @@
       <div style="border-bottom:2px solid #000; padding-bottom:10px; margin-bottom:20px; text-align:left;">
         <h1 style="margin:0; font-size:28px; font-weight:800;">MarkU AI Report</h1>
         <div style="display:flex; justify-content:space-between; margin-top:10px; font-size:14px; color:#444; font-weight:600;">
-          <span>Project Team: <strong>${projectName}</strong></span>
+          <span>Project Team: <strong>${app.escapeHtml(projectName)}</strong></span>
           <span>Date: ${new Date().toLocaleDateString()}</span>
         </div>
       </div>
