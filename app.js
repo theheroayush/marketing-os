@@ -489,7 +489,9 @@
     
     const filtered = window.SKILLS.filter(s => {
       const matchCat = catFilter === 'All' || s.cat === catFilter;
-      const matchQ = !q || s.name.toLowerCase().includes(q) || s.tagline.toLowerCase().includes(q) || s.desc.toLowerCase().includes(q);
+      // ⚡ Bolt Optimization: Utilizing the pre-computed _searchString
+      // Avoids repeated string allocations and .toLowerCase() calls during render.
+      const matchQ = !q || s._searchString.includes(q);
       return matchCat && matchQ;
     });
 
