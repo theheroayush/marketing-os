@@ -1660,6 +1660,11 @@ const getSkillOpener = (id) => {
     return openers[id] || "Tell me what you are working on and I will get started right away.";
 };
 
+// Pre-compute search string for optimized filtering
+SKILLS.forEach(s => {
+  s._searchString = `${(s.name || '').toLowerCase()}|${(s.tagline || '').toLowerCase()}|${(s.desc || '').toLowerCase()}`;
+});
+
 if (typeof window !== 'undefined') {
   window.CATS = CATS;
   window.SKILLS = SKILLS;
