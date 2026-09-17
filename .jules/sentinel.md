@@ -6,3 +6,7 @@
 **Vulnerability:** User inputs like `config.title`, `searchQ`, and `projectName` were injected directly into the DOM via `innerHTML` without sanitization, leading to Stored XSS vulnerabilities.
 **Learning:** In vanilla JavaScript applications utilizing template literals with `innerHTML` for rendering, failing to sanitize untrusted user data exposes the application to serious XSS vulnerabilities.
 **Prevention:** Always implement and enforce a global HTML escaping utility function (e.g., `app.escapeHtml`) to sanitize any dynamic, user-controlled data before it is rendered to the DOM using `innerHTML`.
+## 2026-09-17 - [HIGH] Fix Stored XSS via HTML Escaping History View Preview
+**Vulnerability:** User inputs like history view message preview in the history view were being injected directly into the DOM via `innerHTML` without proper sanitization. Relying solely on `replace(/<[^>]*>/g, '')` to strip HTML tags is insufficient for XSS mitigation. This allows for Stored Cross-Site Scripting (XSS) if malicious payloads are saved in local storage.
+**Learning:** In vanilla JavaScript applications utilizing template literals with `innerHTML` for rendering, failing to sanitize untrusted user data exposes the application to serious XSS vulnerabilities. Relying solely on `replace(/<[^>]*>/g, '')` to strip HTML tags is insufficient for XSS mitigation.
+**Prevention:** Always implement and enforce a global HTML escaping utility function (e.g., `app.escapeHtml`) to sanitize any dynamic, user-controlled data before it is rendered to the DOM using `innerHTML`.
