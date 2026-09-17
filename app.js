@@ -487,9 +487,10 @@
     const cats = ['All', ...Object.keys(window.CATS)];
     const q = searchQ.toLowerCase();
     
+    // ⚡ Bolt: Use the pre-computed _searchString to speed up filtering
     const filtered = window.SKILLS.filter(s => {
       const matchCat = catFilter === 'All' || s.cat === catFilter;
-      const matchQ = !q || s.name.toLowerCase().includes(q) || s.tagline.toLowerCase().includes(q) || s.desc.toLowerCase().includes(q);
+      const matchQ = !q || s._searchString.includes(q);
       return matchCat && matchQ;
     });
 
@@ -964,6 +965,11 @@
       console.error("SKILLS data missing.");
       return;
     }
+
+    // ⚡ Bolt: pre-compute a lowercase search string for faster filtering
+    window.SKILLS.forEach(s => {
+      s._searchString = `${(s.name || "").toLowerCase()}|${(s.tagline || "").toLowerCase()}|${(s.desc || "").toLowerCase()}`;
+    });
 
     const hash = window.location.hash.slice(1) || 'dashboard';
     navigate(hash);
