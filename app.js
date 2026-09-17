@@ -225,7 +225,7 @@
           <label class="form-label">Add Team Member (Email)</label>
           <div style="display:flex; gap:8px;">
             <input type="email" id="modal-team-email" class="form-input" placeholder="colleague@example.com">
-            <button onclick="app.addTeamMemberToModal()" class="btn btn-primary" style="padding:0 12px;"><span class="material-symbols-outlined">add</span></button>
+            <button aria-label="Add Team Member" onclick="app.addTeamMemberToModal()" class="btn btn-primary" style="padding:0 12px;"><span class="material-symbols-outlined">add</span></button>
           </div>
           <div id="modal-team-list" class="team-list"></div>
         </div>
@@ -369,13 +369,13 @@
 <span class="text-[10px] font-bold uppercase tracking-tighter text-on-surface-variant font-plus-jakarta">Create Post</span>
 </div>
 <div class="flex flex-col items-center gap-2 group">
-<button onclick="app.navigate('skills')" class="w-full aspect-square bg-surface-container-high rounded-3xl flex items-center justify-center text-secondary group-active:scale-90 transition-transform quick-action-btn">
+<button aria-label="Skills Hub" onclick="app.navigate('skills')" class="w-full aspect-square bg-surface-container-high rounded-3xl flex items-center justify-center text-secondary group-active:scale-90 transition-transform quick-action-btn">
 <span class="material-symbols-outlined text-3xl" data-icon="psychology">psychology</span>
 </button>
 <span class="text-[10px] font-bold uppercase tracking-tighter text-on-surface-variant font-plus-jakarta">New Strategy</span>
 </div>
 <div class="flex flex-col items-center gap-2 group">
-<button onclick="app.navigate('analytics')" class="w-full aspect-square bg-surface-container-high rounded-3xl flex items-center justify-center text-tertiary group-active:scale-90 transition-transform quick-action-btn">
+<button aria-label="Analytics" onclick="app.navigate('analytics')" class="w-full aspect-square bg-surface-container-high rounded-3xl flex items-center justify-center text-tertiary group-active:scale-90 transition-transform quick-action-btn">
 <span class="material-symbols-outlined text-3xl" data-icon="query_stats">query_stats</span>
 </button>
 <span class="text-[10px] font-bold uppercase tracking-tighter text-on-surface-variant font-plus-jakarta">Performance</span>
@@ -503,7 +503,7 @@
         <input type="text" id="skills-search" placeholder="Search skills..." value="${app.escapeHtml(searchQ)}"
                style="flex:1;background:transparent;border:none;color:var(--text);font-size:0.95rem;outline:none;" 
                onkeyup="app.handleSearch(event)">
-        ${searchQ ? `<button onclick="app.clearSearch()" style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:18px;">&times;</button>` : ''}
+        ${searchQ ? `<button aria-label="Clear Search" onclick="app.clearSearch()" style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:18px;">&times;</button>` : ''}
       </div>
 
       <!-- Categories Scroll -->
@@ -613,7 +613,7 @@
 
     el.innerHTML = `
       <div class="skill-header" style="position:sticky;top:60px;background:var(--bg);z-index:10;padding-bottom:10px;border-bottom:1px solid ${accentColor}44;margin-bottom:16px;">
-        <button class="back-btn" onclick="app.navigate('history')"><span class="material-symbols-outlined">history</span></button>
+        <button aria-label="Go to History" class="back-btn" onclick="app.navigate('history')"><span class="material-symbols-outlined">history</span></button>
         <div style="flex:1;text-align:center;">
           <h2 style="font-size:1rem;font-weight:800;display:flex;align-items:center;justify-content:center;gap:6px;">
             <span style="font-size:1.2rem">${activeSkill.emoji}</span> ${activeSkill.name}
@@ -670,7 +670,7 @@
                     style="flex:1;background:var(--card-bg);border:1px solid var(--border);border-radius:12px;padding:12px 45px 12px 14px;color:var(--text);font-family:inherit;font-size:0.95rem;resize:none;max-height:120px;min-height:44px;"
                     oninput="this.style.height='';this.style.height=Math.min(this.scrollHeight, 120)+'px';"
                     onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();app.sendChatMessage(event);}"></textarea>
-          <button type="submit" disabled style="position:absolute;right:8px;bottom:6px;width:32px;height:32px;border-radius:8px;border:none;background:${accentColor};color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0.5;transition:0.2s;" id="chat-send-btn">
+          <button aria-label="Send Message" type="submit" disabled style="position:absolute;right:8px;bottom:6px;width:32px;height:32px;border-radius:8px;border:none;background:${accentColor};color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0.5;transition:0.2s;" id="chat-send-btn">
             <span class="material-symbols-outlined" style="font-size:18px;">arrow_upward</span>
           </button>
         </form>
