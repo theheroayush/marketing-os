@@ -6,3 +6,7 @@
 **Vulnerability:** User inputs like `config.title`, `searchQ`, and `projectName` were injected directly into the DOM via `innerHTML` without sanitization, leading to Stored XSS vulnerabilities.
 **Learning:** In vanilla JavaScript applications utilizing template literals with `innerHTML` for rendering, failing to sanitize untrusted user data exposes the application to serious XSS vulnerabilities.
 **Prevention:** Always implement and enforce a global HTML escaping utility function (e.g., `app.escapeHtml`) to sanitize any dynamic, user-controlled data before it is rendered to the DOM using `innerHTML`.
+## 2026-09-18 - Fix Stored XSS in Markdown Parser
+**Vulnerability:** The `parseMd` function in `app.js` only escaped `<` and `>` characters using simple string replacement, leaving it vulnerable to more complex XSS payloads (e.g., malformed HTML tags or attribute injection) when rendering user-provided chat messages or system responses.
+**Learning:** In custom markdown or text parsing functions, relying on manual string replacement for HTML escaping is error-prone and often incomplete. It fails to cover all edge cases needed to prevent XSS.
+**Prevention:** Always use a robust, centralized HTML escaping utility (like `app.escapeHtml`) that properly sanitizes quotes, ampersands, and other special characters before rendering any dynamic content via `innerHTML`.
