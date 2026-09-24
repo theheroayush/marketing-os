@@ -489,7 +489,9 @@
     
     const filtered = window.SKILLS.filter(s => {
       const matchCat = catFilter === 'All' || s.cat === catFilter;
-      const matchQ = !q || s.name.toLowerCase().includes(q) || s.tagline.toLowerCase().includes(q) || s.desc.toLowerCase().includes(q);
+      // Bolt Performance: Uses the pre-computed _searchString to avoid repetitive string
+      // allocation and multiple .toLowerCase() calls on every filter pass.
+      const matchQ = !q || (s._searchString && s._searchString.includes(q));
       return matchCat && matchQ;
     });
 
@@ -964,6 +966,12 @@
       console.error("SKILLS data missing.");
       return;
     }
+
+    // Bolt Performance: Pre-compute lowercase search strings during initialization
+    // to avoid repetitive allocations during array filter iterations.
+    window.SKILLS.forEach(s => {
+      s._searchString = `${s.name || ""} | ${s.tagline || ""} | ${s.desc || ""}`.toLowerCase();
+    });
 
     const hash = window.location.hash.slice(1) || 'dashboard';
     navigate(hash);
