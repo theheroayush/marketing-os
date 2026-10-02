@@ -489,7 +489,8 @@
     
     const filtered = window.SKILLS.filter(s => {
       const matchCat = catFilter === 'All' || s.cat === catFilter;
-      const matchQ = !q || s.name.toLowerCase().includes(q) || s.tagline.toLowerCase().includes(q) || s.desc.toLowerCase().includes(q);
+      // Bolt: Use pre-computed search string to significantly reduce repetitive string allocations
+      const matchQ = !q || (s._searchString && s._searchString.includes(q));
       return matchCat && matchQ;
     });
 
@@ -963,6 +964,11 @@
     if (!window.SKILLS) {
       console.error("SKILLS data missing.");
       return;
+    }
+
+    // Bolt: Pre-compute search strings to avoid repetitive allocations in render loop
+    for (const s of window.SKILLS) {
+      s._searchString = `${s.name || ""} | ${s.tagline || ""} | ${s.desc || ""}`.toLowerCase();
     }
 
     const hash = window.location.hash.slice(1) || 'dashboard';
