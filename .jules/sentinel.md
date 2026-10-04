@@ -6,3 +6,7 @@
 **Vulnerability:** User inputs like `config.title`, `searchQ`, and `projectName` were injected directly into the DOM via `innerHTML` without sanitization, leading to Stored XSS vulnerabilities.
 **Learning:** In vanilla JavaScript applications utilizing template literals with `innerHTML` for rendering, failing to sanitize untrusted user data exposes the application to serious XSS vulnerabilities.
 **Prevention:** Always implement and enforce a global HTML escaping utility function (e.g., `app.escapeHtml`) to sanitize any dynamic, user-controlled data before it is rendered to the DOM using `innerHTML`.
+## 2026-10-04 - HTML Entity Injection in Markdown Parser
+**Vulnerability:** Double-escaping prevention flaw in custom Markdown parser allowed HTML entity injection (e.g., &lt;).
+**Learning:** When writing custom HTML sanitization or markdown parsing via string replacements, escaping angle brackets before ampersands creates an impossible situation where the ampersand cannot be escaped without double-escaping the generated HTML entities.
+**Prevention:** Always escape the ampersand character first before escaping other HTML special characters in any custom sanitization or string replacement logic.
