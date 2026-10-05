@@ -663,15 +663,15 @@
       <div class="chat-input-wrapper">
         <form onsubmit="app.sendChatMessage(event)" style="position:relative;max-width:600px;margin:0 auto;display:flex;gap:8px;align-items:flex-end;">
           <input type="file" id="local-file-upload" style="display:none" onchange="app.handleFileUpload(event)" accept="image/*,.txt,.md,.csv,.json">
-          <button type="button" onclick="document.getElementById('local-file-upload').click()" style="width:44px;height:44px;border-radius:12px;border:1px solid var(--border);background:var(--card-bg);color:var(--text-muted);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:0.2s;flex-shrink:0;" title="Attach Local File">
+          <button type="button" aria-label="Attach local file" onclick="document.getElementById('local-file-upload').click()" style="width:44px;height:44px;border-radius:12px;border:1px solid var(--border);background:var(--card-bg);color:var(--text-muted);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:0.2s;flex-shrink:0;" title="Attach Local File">
             <span class="material-symbols-outlined" style="font-size:22px;transform:rotate(45deg);">attach_file</span>
           </button>
           <textarea id="chat-input" placeholder="Type your answer... (Press Enter to send)" 
                     style="flex:1;background:var(--card-bg);border:1px solid var(--border);border-radius:12px;padding:12px 45px 12px 14px;color:var(--text);font-family:inherit;font-size:0.95rem;resize:none;max-height:120px;min-height:44px;"
                     oninput="this.style.height='';this.style.height=Math.min(this.scrollHeight, 120)+'px';"
                     onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();app.sendChatMessage(event);}"></textarea>
-          <button type="submit" disabled style="position:absolute;right:8px;bottom:6px;width:32px;height:32px;border-radius:8px;border:none;background:${accentColor};color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0.5;transition:0.2s;" id="chat-send-btn">
-            <span class="material-symbols-outlined" style="font-size:18px;">arrow_upward</span>
+          <button type="submit" aria-label="Send message" disabled style="position:absolute;right:8px;bottom:6px;width:32px;height:32px;border-radius:8px;border:none;background:${accentColor};color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0.5;transition:0.2s;" id="chat-send-btn">
+            ${isGenerating ? '<span class="material-symbols-outlined spinner" style="font-size:18px;">progress_activity</span>' : '<span class="material-symbols-outlined" style="font-size:18px;">arrow_upward</span>'}
           </button>
         </form>
       </div>
