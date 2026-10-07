@@ -1,0 +1,3 @@
+## 2026-10-07 - Pre-computing Search Strings for List Filtering
+**Learning:** In vanilla JS applications filtering large arrays of objects (like `window.SKILLS`), running string concatenation and `.toLowerCase()` on multiple properties inside the filter loop is computationally expensive and scales poorly as the array grows or the user types quickly.
+**Action:** Pre-compute a single, concatenated, lowercased `_searchString` property for each object during application initialization. Use a delimiter like `|` to prevent cross-field false positive matches. During filtering, perform a single `.includes()` check against this pre-computed string. This significantly reduces dynamic memory allocation and CPU cycles during critical interaction paths.
