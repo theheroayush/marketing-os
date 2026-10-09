@@ -1,0 +1,3 @@
+## $(date +%Y-%m-%d) - Pre-computing complex search strings
+**Learning:** Repetitive string allocations and `.toLowerCase()` conversions inside rapid filter loops (like debounced keyup search inputs) can cause measurable performance drag on the main thread, specifically when dealing with large objects array where multiple fields are checked per item.
+**Action:** Instead of dynamically transforming properties for comparison within the filter loop during rendering, iterate over static data collections once during initialization (e.g. `init()`) to pre-compute and store a unified `_searchString` property to reduce computation during each render cycle.
