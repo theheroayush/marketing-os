@@ -193,7 +193,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <h2 class="modal-title">${app.escapeHtml(config.title || 'Modal')}</h2>
-          <button class="modal-close" onclick="app.closeModal()">
+          <button class="modal-close" onclick="app.closeModal()" aria-label="Close modal">
             <span class="material-symbols-outlined">close</span>
           </button>
         </div>
@@ -218,14 +218,14 @@
       title: 'Create Project Team',
       body: `
         <div class="form-group">
-          <label class="form-label">Project Name</label>
+          <label class="form-label" for="modal-project-name">Project Name</label>
           <input type="text" id="modal-project-name" class="form-input" placeholder="e.g. Acme Marketing SEO">
         </div>
         <div class="form-group">
-          <label class="form-label">Add Team Member (Email)</label>
+          <label class="form-label" for="modal-team-email">Add Team Member (Email)</label>
           <div style="display:flex; gap:8px;">
             <input type="email" id="modal-team-email" class="form-input" placeholder="colleague@example.com">
-            <button onclick="app.addTeamMemberToModal()" class="btn btn-primary" style="padding:0 12px;"><span class="material-symbols-outlined">add</span></button>
+            <button onclick="app.addTeamMemberToModal()" class="btn btn-primary" style="padding:0 12px;" aria-label="Add team member"><span class="material-symbols-outlined">add</span></button>
           </div>
           <div id="modal-team-list" class="team-list"></div>
         </div>
@@ -255,7 +255,7 @@
     list.innerHTML = window.modalTeam.map((email, idx) => `
       <div class="team-member">
         <span>${app.escapeHtml(email)}</span>
-        <button onclick="app.removeFromModalTeam(${idx})" class="remove-member">
+        <button onclick="app.removeFromModalTeam(${idx})" class="remove-member" aria-label="Remove team member">
           <span class="material-symbols-outlined">delete</span>
         </button>
       </div>
@@ -499,11 +499,11 @@
       
       <!-- Search Box -->
       <div style="background:var(--card-bg);border:1px solid var(--border);border-radius:12px;padding:10px 14px;display:flex;align-items:center;gap:8px;margin-bottom:16px;">
-        <span class="material-symbols-outlined" style="color:var(--text-muted);font-size:18px">search</span>
-        <input type="text" id="skills-search" placeholder="Search skills..." value="${app.escapeHtml(searchQ)}"
+        <span class="material-symbols-outlined" style="color:var(--text-muted);font-size:18px" aria-hidden="true">search</span>
+        <input type="text" id="skills-search" aria-label="Search skills" placeholder="Search skills..." value="${app.escapeHtml(searchQ)}"
                style="flex:1;background:transparent;border:none;color:var(--text);font-size:0.95rem;outline:none;" 
                onkeyup="app.handleSearch(event)">
-        ${searchQ ? `<button onclick="app.clearSearch()" style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:18px;">&times;</button>` : ''}
+        ${searchQ ? `<button onclick="app.clearSearch()" aria-label="Clear search" style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:18px;">&times;</button>` : ''}
       </div>
 
       <!-- Categories Scroll -->
@@ -613,7 +613,7 @@
 
     el.innerHTML = `
       <div class="skill-header" style="position:sticky;top:60px;background:var(--bg);z-index:10;padding-bottom:10px;border-bottom:1px solid ${accentColor}44;margin-bottom:16px;">
-        <button class="back-btn" onclick="app.navigate('history')"><span class="material-symbols-outlined">history</span></button>
+        <button class="back-btn" onclick="app.navigate('history')" aria-label="Back to history"><span class="material-symbols-outlined">history</span></button>
         <div style="flex:1;text-align:center;">
           <h2 style="font-size:1rem;font-weight:800;display:flex;align-items:center;justify-content:center;gap:6px;">
             <span style="font-size:1.2rem">${activeSkill.emoji}</span> ${activeSkill.name}
@@ -621,9 +621,9 @@
           <p style="font-size:0.7rem;color:${accentColor};margin-top:2px;">${catInfo.icon} ${activeSkill.cat}</p>
         </div>
         <div style="display:flex;gap:8px;">
-          <button class="icon-btn" onclick="app.exportPDF()" title="Export Customized PDF"><span class="material-symbols-outlined">picture_as_pdf</span></button>
-          <button class="icon-btn" onclick="app.openSkill('${activeSkill.id}')" title="New Session" style="color:var(--text-dim)"><span class="material-symbols-outlined">restart_alt</span></button>
-          <button class="icon-btn" onclick="app.triggerSetupApiKey()" title="Setup API Key" style="color:var(--text-dim)"><span class="material-symbols-outlined">key</span></button>
+          <button class="icon-btn" onclick="app.exportPDF()" title="Export Customized PDF" aria-label="Export PDF"><span class="material-symbols-outlined">picture_as_pdf</span></button>
+          <button class="icon-btn" onclick="app.openSkill('${activeSkill.id}')" title="New Session" style="color:var(--text-dim)" aria-label="New Session"><span class="material-symbols-outlined">restart_alt</span></button>
+          <button class="icon-btn" onclick="app.triggerSetupApiKey()" title="Setup API Key" style="color:var(--text-dim)" aria-label="Setup API Key"><span class="material-symbols-outlined">key</span></button>
         </div>
       </div>
 
@@ -662,16 +662,16 @@
       <!-- Chat Input Area (Adjusted for bottom nav on mobile) -->
       <div class="chat-input-wrapper">
         <form onsubmit="app.sendChatMessage(event)" style="position:relative;max-width:600px;margin:0 auto;display:flex;gap:8px;align-items:flex-end;">
-          <input type="file" id="local-file-upload" style="display:none" onchange="app.handleFileUpload(event)" accept="image/*,.txt,.md,.csv,.json">
-          <button type="button" onclick="document.getElementById('local-file-upload').click()" style="width:44px;height:44px;border-radius:12px;border:1px solid var(--border);background:var(--card-bg);color:var(--text-muted);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:0.2s;flex-shrink:0;" title="Attach Local File">
-            <span class="material-symbols-outlined" style="font-size:22px;transform:rotate(45deg);">attach_file</span>
+          <input type="file" id="local-file-upload" style="display:none" onchange="app.handleFileUpload(event)" accept="image/*,.txt,.md,.csv,.json" aria-hidden="true">
+          <button type="button" onclick="document.getElementById('local-file-upload').click()" style="width:44px;height:44px;border-radius:12px;border:1px solid var(--border);background:var(--card-bg);color:var(--text-muted);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:0.2s;flex-shrink:0;" title="Attach Local File" aria-label="Attach file">
+            <span class="material-symbols-outlined" style="font-size:22px;transform:rotate(45deg);" aria-hidden="true">attach_file</span>
           </button>
-          <textarea id="chat-input" placeholder="Type your answer... (Press Enter to send)" 
+          <textarea id="chat-input" aria-label="Chat input" placeholder="Type your answer... (Press Enter to send)"
                     style="flex:1;background:var(--card-bg);border:1px solid var(--border);border-radius:12px;padding:12px 45px 12px 14px;color:var(--text);font-family:inherit;font-size:0.95rem;resize:none;max-height:120px;min-height:44px;"
                     oninput="this.style.height='';this.style.height=Math.min(this.scrollHeight, 120)+'px';"
                     onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();app.sendChatMessage(event);}"></textarea>
-          <button type="submit" disabled style="position:absolute;right:8px;bottom:6px;width:32px;height:32px;border-radius:8px;border:none;background:${accentColor};color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0.5;transition:0.2s;" id="chat-send-btn">
-            <span class="material-symbols-outlined" style="font-size:18px;">arrow_upward</span>
+          <button type="submit" disabled style="position:absolute;right:8px;bottom:6px;width:32px;height:32px;border-radius:8px;border:none;background:${accentColor};color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0.5;transition:0.2s;" id="chat-send-btn" aria-label="Send message">
+            <span class="material-symbols-outlined" style="font-size:18px;" aria-hidden="true">arrow_upward</span>
           </button>
         </form>
       </div>
@@ -1138,7 +1138,7 @@
         
         <form action="mailto:activohietz@gmail.com" method="GET" style="display:flex; flex-direction:column; gap:12px;">
           <input type="hidden" name="subject" value="MarkU Feedback & Support">
-          <textarea name="body" placeholder="Describe your issue or feature request here..." style="width:100%; min-height:100px; background:var(--bg-input); border:1px solid var(--border); border-radius:8px; padding:12px; color:var(--text); font-family:inherit; resize:vertical;"></textarea>
+          <textarea name="body" aria-label="Support message body" placeholder="Describe your issue or feature request here..." style="width:100%; min-height:100px; background:var(--bg-input); border:1px solid var(--border); border-radius:8px; padding:12px; color:var(--text); font-family:inherit; resize:vertical;"></textarea>
           <button type="submit" class="btn btn-primary" style="align-self:flex-start;">Submit Ticket via Email</button>
         </form>
       </div>
@@ -1157,14 +1157,14 @@
       title: 'Manage Project Team',
       body: `
         <div class="form-group">
-          <label class="form-label">Project Name</label>
+          <label class="form-label" for="modal-project-name">Project Name</label>
           <input type="text" id="modal-project-name" class="form-input" value="${app.escapeHtml(p.name)}">
         </div>
         <div class="form-group">
-          <label class="form-label">Add Team Member (Email)</label>
+          <label class="form-label" for="modal-team-email">Add Team Member (Email)</label>
           <div style="display:flex; gap:8px;">
             <input type="email" id="modal-team-email" class="form-input" placeholder="colleague@example.com">
-            <button onclick="app.addTeamMemberToModal()" class="btn btn-primary" style="padding:0 12px;"><span class="material-symbols-outlined">add</span></button>
+            <button onclick="app.addTeamMemberToModal()" class="btn btn-primary" style="padding:0 12px;" aria-label="Add team member"><span class="material-symbols-outlined">add</span></button>
           </div>
           <div id="modal-team-list" class="team-list"></div>
         </div>
@@ -1279,7 +1279,7 @@
           </div>
 
           <div class="form-group" style="margin-bottom:0;">
-            <label class="form-label" style="font-size:0.7rem;">Description</label>
+            <label class="form-label" for="support-message" style="font-size:0.7rem;">Description</label>
             <textarea id="support-message" class="form-input" style="min-height:100px; resize:vertical; padding:10px;" placeholder="How can we help you today?"></textarea>
           </div>
 
