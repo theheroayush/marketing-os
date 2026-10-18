@@ -522,24 +522,8 @@
       </div>
 
       <div class="grid-2 gap-16">
-        ${filtered.length > 0 ? filtered.map(s => {
-          const c = window.CATS[s.cat];
-          return `
-            <div class="card" onclick="app.openSkill('${s.id}')" style="cursor:pointer;display:flex;flex-direction:column;gap:8px;transition:0.2s;">
-              <div style="display:flex;justify-content:space-between;align-items:start;">
-                <div style="width:36px;height:36px;border-radius:10px;background:${c.bg || '#333'};display:flex;align-items:center;justify-content:center;font-size:18px;">
-                  ${s.emoji}
-                </div>
-                <span style="font-size:0.65rem;font-weight:700;border-radius:4px;padding:2px 6px;color:${c.color};background:${c.bg || '#333'}">
-                  ${s.cat}
-                </span>
-              </div>
-              <h4 style="font-size:0.95rem;margin-top:4px;">${s.name}</h4>
-              <p style="font-size:0.75rem;color:var(--text-muted);line-height:1.4">${s.tagline}</p>
-              <div style="margin-top:auto;font-size:0.75rem;color:${c.color};font-weight:700;">Start &rarr;</div>
-            </div>
-          `;
-        }).join('') : `<p style="grid-column:1/-1;text-align:center;color:var(--text-muted);padding:40px 0;">No skills found.</p>`}
+        <!-- Bolt optimization: Use pre-computed DOM HTML directly instead of building templates on every filter/keystroke -->
+        ${filtered.length > 0 ? filtered.map(s => s._htmlCard).join('') : `<p style="grid-column:1/-1;text-align:center;color:var(--text-muted);padding:40px 0;">No skills found.</p>`}
       </div>
     `;
   }
@@ -968,6 +952,23 @@
     // Pre-compute search string for O(1) filtering performance
     window.SKILLS.forEach(s => {
       s._searchString = `${s.name} ${s.tagline} ${s.desc}`.toLowerCase();
+      // Bolt optimization: Pre-compute DOM HTML to prevent string concatenations on every keystroke
+      const c = window.CATS[s.cat] || {};
+      s._htmlCard = `
+            <div class="card" onclick="app.openSkill('${s.id}')" style="cursor:pointer;display:flex;flex-direction:column;gap:8px;transition:0.2s;">
+              <div style="display:flex;justify-content:space-between;align-items:start;">
+                <div style="width:36px;height:36px;border-radius:10px;background:${c.bg || '#333'};display:flex;align-items:center;justify-content:center;font-size:18px;">
+                  ${s.emoji}
+                </div>
+                <span style="font-size:0.65rem;font-weight:700;border-radius:4px;padding:2px 6px;color:${c.color || '#fff'};background:${c.bg || '#333'}">
+                  ${s.cat}
+                </span>
+              </div>
+              <h4 style="font-size:0.95rem;margin-top:4px;">${s.name}</h4>
+              <p style="font-size:0.75rem;color:var(--text-muted);line-height:1.4">${s.tagline}</p>
+              <div style="margin-top:auto;font-size:0.75rem;color:${c.color || '#fff'};font-weight:700;">Start &rarr;</div>
+            </div>
+          `;
     });
 
     const hash = window.location.hash.slice(1) || 'dashboard';
