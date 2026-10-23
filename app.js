@@ -77,27 +77,54 @@
     }
   };
   app.checkForUpdates = checkForUpdates;
+  // Cache to reduce redundant localStorage access and JSON.parse overhead
+  let _sessionsCache = null;
+  let _profilesCache = null;
+  let _activeProfileIdCache = null;
+
   const Storage = {
-    getSessions: () => JSON.parse(localStorage.getItem('marku_sessions') || '[]'),
+    getSessions: () => {
+      if (!_sessionsCache) {
+        _sessionsCache = JSON.parse(localStorage.getItem('marku_sessions') || '[]');
+      }
+      return _sessionsCache;
+    },
     saveSession: (session) => {
       const sessions = Storage.getSessions();
       const idx = sessions.findIndex(s => s.id === session.id);
       if (idx > -1) sessions[idx] = session;
       else sessions.unshift(session);
-      localStorage.setItem('marku_sessions', JSON.stringify(sessions.slice(0, 50)));
+      const toSave = sessions.slice(0, 50);
+      _sessionsCache = toSave;
+      localStorage.setItem('marku_sessions', JSON.stringify(toSave));
     },
     deleteSession: (id) => {
       const sessions = Storage.getSessions().filter(s => s.id !== id);
+      _sessionsCache = sessions;
       localStorage.setItem('marku_sessions', JSON.stringify(sessions));
       if (currentView === 'history') app.renderHistoryView();
     },
     getProfiles: () => {
-      let ps = JSON.parse(localStorage.getItem('marku_profiles') || '[{"id":"default","name":"Default Profile","content":"","team":[]}]');
-      return ps.map(p => ({ ...p, team: p.team || [] }));
+      if (!_profilesCache) {
+        let ps = JSON.parse(localStorage.getItem('marku_profiles') || '[{"id":"default","name":"Default Profile","content":"","team":[]}]');
+        _profilesCache = ps.map(p => ({ ...p, team: p.team || [] }));
+      }
+      return _profilesCache;
     },
-    saveProfiles: (profiles) => localStorage.setItem('marku_profiles', JSON.stringify(profiles)),
-    getActiveProfileId: () => localStorage.getItem('marku_active_profile') || 'default',
-    setActiveProfileId: (id) => localStorage.setItem('marku_active_profile', id),
+    saveProfiles: (profiles) => {
+      _profilesCache = profiles;
+      localStorage.setItem('marku_profiles', JSON.stringify(profiles));
+    },
+    getActiveProfileId: () => {
+      if (_activeProfileIdCache === null) {
+        _activeProfileIdCache = localStorage.getItem('marku_active_profile') || 'default';
+      }
+      return _activeProfileIdCache;
+    },
+    setActiveProfileId: (id) => {
+      _activeProfileIdCache = id;
+      localStorage.setItem('marku_active_profile', id);
+    },
     getProductCtx: () => {
       const ps = Storage.getProfiles();
       const aid = Storage.getActiveProfileId();
