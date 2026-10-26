@@ -134,8 +134,11 @@
   function parseMd(text) {
     if (!text) return '';
     let html = text
+      .replace(/&/g, "&amp;")
       .replace(/</g, "&lt;")
       .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;")
       .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
       .replace(/`(.*?)`/g, '<code style="background:var(--border);padding:2px 4px;border-radius:4px;color:var(--accent);font-size:0.85em;">$1</code>');
     return html.replace(/\n/g, '<br>');
@@ -944,7 +947,7 @@
                 </div>
               </div>
               <p style="font-size:0.8rem;color:var(--text-dim);margin-bottom:8px;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;">
-                ${s.messages[s.messages.length - 1].content.replace(/<[^>]*>/g, '').slice(0, 120)}...
+                ${app.escapeHtml(s.messages[s.messages.length - 1].content.replace(/<[^>]*>/g, '')).slice(0, 120)}...
               </p>
             </div>
             <button onclick="app.deleteSession('${s.id}')" style="position:absolute;top:10px;right:10px;background:none;border:none;color:var(--red);cursor:pointer;" title="Delete">
