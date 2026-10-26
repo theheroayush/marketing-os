@@ -284,7 +284,6 @@
   };
 
   app.switchProfile = function(id) {
-    console.log("Switching profile to:", id);
     if (!id) return;
     Storage.setActiveProfileId(id);
     const profiles = Storage.getProfiles();
