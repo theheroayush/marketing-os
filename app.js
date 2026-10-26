@@ -321,7 +321,7 @@
             </select>
           </div>
         </div>
-        <button onclick="app.newProfile()" class="btn btn-primary project-switcher-btn" style="padding:12px 18px; border-radius:10px; display:flex; align-items:center; justify-content:center; gap:8px;" title="Create New Project Workspace">
+        <button aria-label="Create New Project Workspace" onclick="app.newProfile()" class="btn btn-primary project-switcher-btn" style="padding:12px 18px; border-radius:10px; display:flex; align-items:center; justify-content:center; gap:8px;" title="Create New Project Workspace">
           <span class="material-symbols-outlined" style="font-size:20px;">add_circle</span>
           <span style="font-weight:700; white-space: nowrap;">New Project</span>
         </button>
@@ -621,9 +621,9 @@
           <p style="font-size:0.7rem;color:${accentColor};margin-top:2px;">${catInfo.icon} ${activeSkill.cat}</p>
         </div>
         <div style="display:flex;gap:8px;">
-          <button class="icon-btn" onclick="app.exportPDF()" title="Export Customized PDF"><span class="material-symbols-outlined">picture_as_pdf</span></button>
-          <button class="icon-btn" onclick="app.openSkill('${activeSkill.id}')" title="New Session" style="color:var(--text-dim)"><span class="material-symbols-outlined">restart_alt</span></button>
-          <button class="icon-btn" onclick="app.triggerSetupApiKey()" title="Setup API Key" style="color:var(--text-dim)"><span class="material-symbols-outlined">key</span></button>
+          <button class="icon-btn" aria-label="Export Customized PDF" onclick="app.exportPDF()" title="Export Customized PDF"><span class="material-symbols-outlined">picture_as_pdf</span></button>
+          <button class="icon-btn" aria-label="New Session" onclick="app.openSkill('${activeSkill.id}')" title="New Session" style="color:var(--text-dim)"><span class="material-symbols-outlined">restart_alt</span></button>
+          <button class="icon-btn" aria-label="Setup API Key" onclick="app.triggerSetupApiKey()" title="Setup API Key" style="color:var(--text-dim)"><span class="material-symbols-outlined">key</span></button>
         </div>
       </div>
 
@@ -663,14 +663,14 @@
       <div class="chat-input-wrapper">
         <form onsubmit="app.sendChatMessage(event)" style="position:relative;max-width:600px;margin:0 auto;display:flex;gap:8px;align-items:flex-end;">
           <input type="file" id="local-file-upload" style="display:none" onchange="app.handleFileUpload(event)" accept="image/*,.txt,.md,.csv,.json">
-          <button type="button" onclick="document.getElementById('local-file-upload').click()" style="width:44px;height:44px;border-radius:12px;border:1px solid var(--border);background:var(--card-bg);color:var(--text-muted);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:0.2s;flex-shrink:0;" title="Attach Local File">
+          <button type="button" aria-label="Attach Local File" onclick="document.getElementById('local-file-upload').click()" style="width:44px;height:44px;border-radius:12px;border:1px solid var(--border);background:var(--card-bg);color:var(--text-muted);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:0.2s;flex-shrink:0;" title="Attach Local File">
             <span class="material-symbols-outlined" style="font-size:22px;transform:rotate(45deg);">attach_file</span>
           </button>
           <textarea id="chat-input" placeholder="Type your answer... (Press Enter to send)" 
                     style="flex:1;background:var(--card-bg);border:1px solid var(--border);border-radius:12px;padding:12px 45px 12px 14px;color:var(--text);font-family:inherit;font-size:0.95rem;resize:none;max-height:120px;min-height:44px;"
                     oninput="this.style.height='';this.style.height=Math.min(this.scrollHeight, 120)+'px';"
                     onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();app.sendChatMessage(event);}"></textarea>
-          <button type="submit" disabled style="position:absolute;right:8px;bottom:6px;width:32px;height:32px;border-radius:8px;border:none;background:${accentColor};color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0.5;transition:0.2s;" id="chat-send-btn">
+          <button type="submit" aria-label="Send message" disabled style="position:absolute;right:8px;bottom:6px;width:32px;height:32px;border-radius:8px;border:none;background:${accentColor};color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0.5;transition:0.2s;" id="chat-send-btn">
             <span class="material-symbols-outlined" style="font-size:18px;">arrow_upward</span>
           </button>
         </form>
@@ -947,7 +947,7 @@
                 ${s.messages[s.messages.length - 1].content.replace(/<[^>]*>/g, '').slice(0, 120)}...
               </p>
             </div>
-            <button onclick="app.deleteSession('${s.id}')" style="position:absolute;top:10px;right:10px;background:none;border:none;color:var(--red);cursor:pointer;" title="Delete">
+            <button aria-label="Delete Session" onclick="app.deleteSession('${s.id}')" style="position:absolute;top:10px;right:10px;background:none;border:none;color:var(--red);cursor:pointer;" title="Delete">
               <span class="material-symbols-outlined" style="font-size:18px">delete</span>
             </button>
           </div>
