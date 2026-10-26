@@ -12,14 +12,21 @@
   let catFilter = 'All';
   let searchQ = '';
 
+  // ⚡ Bolt Performance Optimization: Single-pass HTML entity escaping.
+  // Replaces O(5N) multiple string traversal and intermediate string
+  // allocations with an O(N) single-pass regex lookup map.
+  const ESCAPE_MAP = {
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#039;'
+  };
+  const ESCAPE_REGEX = /[&<>"']/g;
+
   app.escapeHtml = function(str) {
     if (!str) return '';
-    return String(str)
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;')
-      .replace(/'/g, '&#039;');
+    return String(str).replace(ESCAPE_REGEX, m => ESCAPE_MAP[m]);
   };
 
   const footerHTML = `
