@@ -1,8 +1,4 @@
-## 2024-05-18 - [HIGH] Fix Stored XSS via HTML Escaping
-**Vulnerability:** User inputs like profile names (`p.name`) and team member emails (`email`) were being injected directly into the DOM via `innerHTML` without sanitization. This allows for Stored Cross-Site Scripting (XSS) if malicious payloads are saved in local storage.
-**Learning:** In vanilla JavaScript applications utilizing template literals with `innerHTML` for rendering, failing to sanitize untrusted user data exposes the application to serious XSS vulnerabilities.
-**Prevention:** Always implement and enforce a global HTML escaping utility function (e.g., `app.escapeHtml`) to sanitize any dynamic, user-controlled data before it is rendered to the DOM using `innerHTML`.
-## 2026-09-10 - Prevent XSS in UI Rendering via innerHTML
-**Vulnerability:** User inputs like `config.title`, `searchQ`, and `projectName` were injected directly into the DOM via `innerHTML` without sanitization, leading to Stored XSS vulnerabilities.
-**Learning:** In vanilla JavaScript applications utilizing template literals with `innerHTML` for rendering, failing to sanitize untrusted user data exposes the application to serious XSS vulnerabilities.
-**Prevention:** Always implement and enforce a global HTML escaping utility function (e.g., `app.escapeHtml`) to sanitize any dynamic, user-controlled data before it is rendered to the DOM using `innerHTML`.
+## 2026-10-03 - [Fix Markdown Parser XSS]
+**Vulnerability:** XSS in custom Markdown parser `parseMd` due to incomplete escaping (only `<` and `>`).
+**Learning:** Even simple markdown to HTML converters need full entity escaping before formatting rules are applied. Furthermore, the `&` character must always be escaped first to prevent double-escaping other entities like `&lt;`.
+**Prevention:** Implement a standard full HTML sanitization sweep (`&`, `<`, `>`, `"`, `'`) before applying any text replacements that output raw HTML tags.
