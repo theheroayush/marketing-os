@@ -193,8 +193,8 @@
       <div class="modal-content">
         <div class="modal-header">
           <h2 class="modal-title">${app.escapeHtml(config.title || 'Modal')}</h2>
-          <button class="modal-close" onclick="app.closeModal()">
-            <span class="material-symbols-outlined">close</span>
+          <button class="modal-close" aria-label="Close modal" onclick="app.closeModal()">
+            <span class="material-symbols-outlined" aria-hidden="true">close</span>
           </button>
         </div>
         <div class="modal-body">
@@ -255,8 +255,8 @@
     list.innerHTML = window.modalTeam.map((email, idx) => `
       <div class="team-member">
         <span>${app.escapeHtml(email)}</span>
-        <button onclick="app.removeFromModalTeam(${idx})" class="remove-member">
-          <span class="material-symbols-outlined">delete</span>
+        <button onclick="app.removeFromModalTeam(${idx})" aria-label="Remove team member" class="remove-member">
+          <span class="material-symbols-outlined" aria-hidden="true">delete</span>
         </button>
       </div>
     `).join('');
