@@ -468,7 +468,7 @@
             <div style="display:flex;align-items:center;gap:10px">
               <span style="font-size:20px">${s.skillEmoji}</span>
               <div style="flex:1">
-                <div style="font-weight:700;font-size:0.9rem">${s.skillName}</div>
+                <div style="font-weight:700;font-size:0.9rem">${ /* Security: sanitize */ app.escapeHtml(s.skillName) }</div>
                 <div style="font-size:0.75rem;color:var(--text-muted)">${new Date(s.ts).toLocaleDateString()} • ${s.messages.length} messages</div>
               </div>
               <span class="material-symbols-outlined" style="font-size:18px;color:var(--text-muted)">chevron_right</span>
@@ -938,7 +938,7 @@
                 <div style="display:flex;align-items:center;gap:10px">
                   <div style="width:32px;height:32px;border-radius:8px;background:var(--border);display:flex;align-items:center;justify-content:center;font-size:18px">${s.skillEmoji}</div>
                   <div>
-                    <h4 style="font-size:1rem;margin:0">${s.skillName}</h4>
+                    <h4 style="font-size:1rem;margin:0">${ /* Security: sanitize */ app.escapeHtml(s.skillName) }</h4>
                     <span style="font-size:0.7rem;color:var(--text-muted)">${new Date(s.ts).toLocaleString()}</span>
                   </div>
                 </div>
