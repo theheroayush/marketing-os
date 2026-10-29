@@ -6,3 +6,7 @@
 **Vulnerability:** User inputs like `config.title`, `searchQ`, and `projectName` were injected directly into the DOM via `innerHTML` without sanitization, leading to Stored XSS vulnerabilities.
 **Learning:** In vanilla JavaScript applications utilizing template literals with `innerHTML` for rendering, failing to sanitize untrusted user data exposes the application to serious XSS vulnerabilities.
 **Prevention:** Always implement and enforce a global HTML escaping utility function (e.g., `app.escapeHtml`) to sanitize any dynamic, user-controlled data before it is rendered to the DOM using `innerHTML`.
+## 2025-02-14 - XSS in Application History View
+**Vulnerability:** XSS vulnerability in `app.js` when rendering the history view. Untrusted message content is sanitized using a regex `/<[^>]*>/g` which fails to match and strip malformed HTML tags (e.g., `<img src=x onerror=alert(1)`).
+**Learning:** Relying solely on regex tag stripping is insufficient for sanitizing untrusted input as it can be easily bypassed with malformed HTML.
+**Prevention:** Always wrap regex-stripped output in a robust HTML escaping function (like `app.escapeHtml()`) before injecting it into the DOM.
