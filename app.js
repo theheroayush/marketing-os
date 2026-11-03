@@ -77,27 +77,64 @@
     }
   };
   app.checkForUpdates = checkForUpdates;
+  // Cache variables for frequently accessed localStorage items
+  let cachedSessions = null;
+  let cachedProfiles = null;
+  let cachedActiveProfileId = null;
+
+  // Add storage event listener to maintain multi-tab synchronization
+  window.addEventListener('storage', (e) => {
+    if (e.key === 'marku_sessions') cachedSessions = null;
+    if (e.key === 'marku_profiles') cachedProfiles = null;
+    if (e.key === 'marku_active_profile') cachedActiveProfileId = null;
+  });
+
   const Storage = {
-    getSessions: () => JSON.parse(localStorage.getItem('marku_sessions') || '[]'),
+    getSessions: () => {
+      // ⚡ Bolt Performance: Use structuredClone to prevent cache poisoning by reference mutation
+      if (!cachedSessions) {
+        cachedSessions = JSON.parse(localStorage.getItem('marku_sessions') || '[]');
+      }
+      return structuredClone(cachedSessions);
+    },
     saveSession: (session) => {
       const sessions = Storage.getSessions();
       const idx = sessions.findIndex(s => s.id === session.id);
       if (idx > -1) sessions[idx] = session;
       else sessions.unshift(session);
-      localStorage.setItem('marku_sessions', JSON.stringify(sessions.slice(0, 50)));
+      const newSessions = sessions.slice(0, 50);
+      cachedSessions = newSessions;
+      localStorage.setItem('marku_sessions', JSON.stringify(newSessions));
     },
     deleteSession: (id) => {
       const sessions = Storage.getSessions().filter(s => s.id !== id);
+      cachedSessions = sessions;
       localStorage.setItem('marku_sessions', JSON.stringify(sessions));
       if (currentView === 'history') app.renderHistoryView();
     },
     getProfiles: () => {
-      let ps = JSON.parse(localStorage.getItem('marku_profiles') || '[{"id":"default","name":"Default Profile","content":"","team":[]}]');
-      return ps.map(p => ({ ...p, team: p.team || [] }));
+      // ⚡ Bolt Performance: Cache repeated parsing of profiles
+      if (!cachedProfiles) {
+        let ps = JSON.parse(localStorage.getItem('marku_profiles') || '[{"id":"default","name":"Default Profile","content":"","team":[]}]');
+        cachedProfiles = ps.map(p => ({ ...p, team: p.team || [] }));
+      }
+      return structuredClone(cachedProfiles);
     },
-    saveProfiles: (profiles) => localStorage.setItem('marku_profiles', JSON.stringify(profiles)),
-    getActiveProfileId: () => localStorage.getItem('marku_active_profile') || 'default',
-    setActiveProfileId: (id) => localStorage.setItem('marku_active_profile', id),
+    saveProfiles: (profiles) => {
+      cachedProfiles = profiles;
+      localStorage.setItem('marku_profiles', JSON.stringify(profiles));
+    },
+    getActiveProfileId: () => {
+      // ⚡ Bolt Performance: Cache active profile ID to avoid synchronous disk I/O
+      if (cachedActiveProfileId === null) {
+        cachedActiveProfileId = localStorage.getItem('marku_active_profile') || 'default';
+      }
+      return cachedActiveProfileId;
+    },
+    setActiveProfileId: (id) => {
+      cachedActiveProfileId = id;
+      localStorage.setItem('marku_active_profile', id);
+    },
     getProductCtx: () => {
       const ps = Storage.getProfiles();
       const aid = Storage.getActiveProfileId();
