@@ -193,8 +193,8 @@
       <div class="modal-content">
         <div class="modal-header">
           <h2 class="modal-title">${app.escapeHtml(config.title || 'Modal')}</h2>
-          <button class="modal-close" onclick="app.closeModal()">
-            <span class="material-symbols-outlined">close</span>
+          <button class="modal-close" onclick="app.closeModal()" aria-label="Close">
+            <span class="material-symbols-outlined" aria-hidden="true">close</span>
           </button>
         </div>
         <div class="modal-body">
@@ -225,7 +225,7 @@
           <label class="form-label">Add Team Member (Email)</label>
           <div style="display:flex; gap:8px;">
             <input type="email" id="modal-team-email" class="form-input" placeholder="colleague@example.com">
-            <button onclick="app.addTeamMemberToModal()" class="btn btn-primary" style="padding:0 12px;"><span class="material-symbols-outlined">add</span></button>
+            <button onclick="app.addTeamMemberToModal()" class="btn btn-primary" style="padding:0 12px;" aria-label="Add Team Member"><span class="material-symbols-outlined" aria-hidden="true">add</span></button>
           </div>
           <div id="modal-team-list" class="team-list"></div>
         </div>
@@ -255,8 +255,8 @@
     list.innerHTML = window.modalTeam.map((email, idx) => `
       <div class="team-member">
         <span>${app.escapeHtml(email)}</span>
-        <button onclick="app.removeFromModalTeam(${idx})" class="remove-member">
-          <span class="material-symbols-outlined">delete</span>
+        <button onclick="app.removeFromModalTeam(${idx})" class="remove-member" aria-label="Remove Team Member">
+          <span class="material-symbols-outlined" aria-hidden="true">delete</span>
         </button>
       </div>
     `).join('');
@@ -503,7 +503,7 @@
         <input type="text" id="skills-search" placeholder="Search skills..." value="${app.escapeHtml(searchQ)}"
                style="flex:1;background:transparent;border:none;color:var(--text);font-size:0.95rem;outline:none;" 
                onkeyup="app.handleSearch(event)">
-        ${searchQ ? `<button onclick="app.clearSearch()" style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:18px;">&times;</button>` : ''}
+        ${searchQ ? `<button onclick="app.clearSearch()" aria-label="Clear Search" style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:18px;">&times;</button>` : ''}
       </div>
 
       <!-- Categories Scroll -->
@@ -613,7 +613,7 @@
 
     el.innerHTML = `
       <div class="skill-header" style="position:sticky;top:60px;background:var(--bg);z-index:10;padding-bottom:10px;border-bottom:1px solid ${accentColor}44;margin-bottom:16px;">
-        <button class="back-btn" onclick="app.navigate('history')"><span class="material-symbols-outlined">history</span></button>
+        <button class="back-btn" onclick="app.navigate('history')" aria-label="Back to History"><span class="material-symbols-outlined" aria-hidden="true">history</span></button>
         <div style="flex:1;text-align:center;">
           <h2 style="font-size:1rem;font-weight:800;display:flex;align-items:center;justify-content:center;gap:6px;">
             <span style="font-size:1.2rem">${activeSkill.emoji}</span> ${activeSkill.name}
@@ -947,8 +947,8 @@
                 ${s.messages[s.messages.length - 1].content.replace(/<[^>]*>/g, '').slice(0, 120)}...
               </p>
             </div>
-            <button onclick="app.deleteSession('${s.id}')" style="position:absolute;top:10px;right:10px;background:none;border:none;color:var(--red);cursor:pointer;" title="Delete">
-              <span class="material-symbols-outlined" style="font-size:18px">delete</span>
+            <button onclick="app.deleteSession('${s.id}')" style="position:absolute;top:10px;right:10px;background:none;border:none;color:var(--red);cursor:pointer;" title="Delete" aria-label="Delete Session">
+              <span class="material-symbols-outlined" style="font-size:18px" aria-hidden="true">delete</span>
             </button>
           </div>
         `).join('') : '<div style="text-align:center;padding:40px;color:var(--text-muted)">No history yet. Start a skill in the Skills Hub!</div>'}
@@ -1164,7 +1164,7 @@
           <label class="form-label">Add Team Member (Email)</label>
           <div style="display:flex; gap:8px;">
             <input type="email" id="modal-team-email" class="form-input" placeholder="colleague@example.com">
-            <button onclick="app.addTeamMemberToModal()" class="btn btn-primary" style="padding:0 12px;"><span class="material-symbols-outlined">add</span></button>
+            <button onclick="app.addTeamMemberToModal()" class="btn btn-primary" style="padding:0 12px;" aria-label="Add Team Member"><span class="material-symbols-outlined" aria-hidden="true">add</span></button>
           </div>
           <div id="modal-team-list" class="team-list"></div>
         </div>
