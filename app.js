@@ -503,7 +503,7 @@
         <input type="text" id="skills-search" placeholder="Search skills..." value="${app.escapeHtml(searchQ)}"
                style="flex:1;background:transparent;border:none;color:var(--text);font-size:0.95rem;outline:none;" 
                onkeyup="app.handleSearch(event)">
-        ${searchQ ? `<button onclick="app.clearSearch()" style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:18px;">&times;</button>` : ''}
+        ${searchQ ? `<button aria-label="Clear search" onclick="app.clearSearch()" style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:18px;">&times;</button>` : ''}
       </div>
 
       <!-- Categories Scroll -->
